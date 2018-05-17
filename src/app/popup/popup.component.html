@@ -1,0 +1,38 @@
+<mat-card>
+  <mat-card-title>Welcome</mat-card-title>
+  <mat-card-content>
+    <form>
+      <section>
+        <mat-form-field>
+          <textarea matInput type="text" id="quoteText" placeholder="Quote"></textarea>
+        </mat-form-field>
+      </section>
+      <section>
+        <mat-form-field>
+          <input matInput type="text" id="quoteAuthor" placeholder="Author">
+        </mat-form-field>
+      </section>
+      <section>
+        <mat-form-field>
+          <input matInput type="text" id="quoteSource" placeholder="Source">
+        </mat-form-field>
+      </section>
+      <menu>
+        <button mat-button id="cancel" type="reset" ><mat-icon>cancel</mat-icon></button>
+        <button mat-button id="submit"><mat-icon>send</mat-icon></button>
+      </menu>
+    </form>
+  </mat-card-content>
+  <mat-card-footer>
+    <!-- Slider with Starting Value -->
+    <mat-slider thumbLabel step="0.1" max="30" [value]="minutes"></mat-slider>
+    <button mat-button id="play" (click)="startTimer()" [disabled]="running">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    <button mat-button id="stop" (click)="stopTimer()" [disabled]="!running">
+      <mat-icon>stop</mat-icon>
+    </button>
+
+  </mat-card-footer>
+
+</mat-card>
