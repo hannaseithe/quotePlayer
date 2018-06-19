@@ -66,19 +66,31 @@ function _startTimer(minutes) {
     }, minutes * 6000);
 }
 
+function sendMessage(message, data) {
+    chrome.runtime.sendMessage({
+        msg: message,
+        data: data
+    });
+}
+
+function updateState(newState) {
+    Object.assign(state, newState);
+    sendMessage("updateState", state);
+}
+
 var stopInterval = function () {
     chrome.notifications.clear("quote" + notificationId);
     notificationId++;
     window.clearTimeout(timeoutId);
-    state.running = false;
+    updateState({running: false});
 }
 
 var saveQuote = function (formElements) {
-    var quoteText = formElements.quoteText.value;
-    var quoteAuthor = formElements.quoteAuthor.value;
-    var quoteSource = formElements.quoteSource.value;
+    var quoteText = formElements.text;
+    var quoteAuthor = formElements.author;
+    var quoteSource = formElements.source;
 
-    if (quoteText && quoteAuthor && quoteSource) {
+    if (quoteText) {
         lib.insert("quotes", { quote: quoteText, author: quoteAuthor, source: quoteSource });
         lib.commit();
         quotes = lib.queryAll('quotes');

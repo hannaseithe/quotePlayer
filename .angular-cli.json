@@ -23,7 +23,7 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": ["../node_modules/localstoragedb/localstoragedb.js","background.js"],
+      "scripts": ["../node_modules/localstoragedb/localstoragedb.js","background.js", "../node_modules/hammerjs/hammer.min.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

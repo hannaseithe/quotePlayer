@@ -1,35 +1,39 @@
 <mat-card>
   <mat-card-title>Welcome</mat-card-title>
   <mat-card-content>
-    <form>
+    <form [formGroup]="quoteForm" (ngSubmit)="onSubmit()">
       <section>
         <mat-form-field>
-          <textarea matInput type="text" id="quoteText" placeholder="Quote"></textarea>
+          <textarea matInput type="text" formControlName="text" placeholder="Quote"></textarea>
         </mat-form-field>
       </section>
       <section>
         <mat-form-field>
-          <input matInput type="text" id="quoteAuthor" placeholder="Author">
+          <input matInput type="text"  formControlName="author" placeholder="Author">
         </mat-form-field>
       </section>
       <section>
         <mat-form-field>
-          <input matInput type="text" id="quoteSource" placeholder="Source">
+          <input matInput type="text"  formControlName="source" placeholder="Source">
         </mat-form-field>
       </section>
-      <menu>
-        <button mat-button id="cancel" type="reset" ><mat-icon>cancel</mat-icon></button>
-        <button mat-button id="submit"><mat-icon>send</mat-icon></button>
-      </menu>
+
+      <button mat-button [disabled]="quoteForm.pristine" type="reset">
+        <mat-icon>cancel</mat-icon>
+      </button>
+      <button mat-button [disabled]="quoteForm.pristine" type="submit">
+        <mat-icon>send</mat-icon>
+      </button>
+
     </form>
   </mat-card-content>
-  <mat-card-footer>
+  <mat-card-footer class="popup-footer">
     <!-- Slider with Starting Value -->
-    <mat-slider thumbLabel step="0.1" max="30" [value]="minutes"></mat-slider>
-    <button mat-button id="play" (click)="startTimer()" [disabled]="running">
+    <mat-slider thumbLabel step="0.1" max="30" (change)="update($event.value)" ></mat-slider>
+    <button mat-button id="play" (click)="startTimer()" [disabled]="state.running">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button mat-button id="stop" (click)="stopTimer()" [disabled]="!running">
+    <button mat-button id="stop" (click)="stopTimer()" [disabled]="!state.running">
       <mat-icon>stop</mat-icon>
     </button>
 
