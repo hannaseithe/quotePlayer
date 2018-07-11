@@ -1,11 +1,11 @@
-var timeoutId;
+/* var timeoutId;
 var notificationId = 0;
 
 var state = {
     count: 0,
     running: false,
     minutes: null
-}
+} */
 
 var lib = new window.localStorageDB('library', localStorage);
 
@@ -37,9 +37,9 @@ if (lib.isNew()) {
     // all create/drop/insert/update/delete operations should be committed
     lib.commit();
 }
-var quotes = lib.queryAll('quotes');
+/* var quotes = lib.queryAll('quotes'); */
 
-var startInterval = function (duration) {
+/* var startInterval = function (duration) {
     this.state.running = true;
     this.state.minutes = duration || 1;
     _startTimer(state.minutes);
@@ -64,26 +64,26 @@ function _startTimer(minutes) {
         state.count++;
 
     }, minutes * 6000);
-}
+} */
 
-function sendMessage(message, data) {
+/* function sendMessage(message, data) {
     chrome.runtime.sendMessage({
         msg: message,
         data: data
     });
-}
+} */
 
-function updateState(newState) {
+/* function updateState(newState) {
     Object.assign(state, newState);
     sendMessage("updateState", state);
-}
+} */
 
-var stopInterval = function () {
+/* var stopInterval = function () {
     chrome.notifications.clear("quote" + notificationId);
     notificationId++;
     window.clearTimeout(timeoutId);
     updateState({running: false});
-}
+} */
 
 var saveQuote = function (formElements) {
     var quoteText = formElements.text;
@@ -98,7 +98,7 @@ var saveQuote = function (formElements) {
 
 }
 
-chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
+/* chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
     if (id === "quote" + notificationId) {
         if (buttonIndex === 0) {
             chrome.notifications.clear(id);
@@ -114,9 +114,9 @@ chrome.notifications.onClosed.addListener(function (id) {
     if (id === "quote" + notificationId) {
         _startTimer(this.state.minutes);
     }
-});
+}); */
 
-chrome.runtime.onMessage.addListener(
+/* chrome.runtime.onMessage.addListener(
     function (request, sender, sendResponse) {
         switch (request.msg) {
             case "getState":
@@ -133,4 +133,4 @@ chrome.runtime.onMessage.addListener(
             default:
                 console.log("background.js: Unidentified Message received ");
         }
-    });
+    }); */

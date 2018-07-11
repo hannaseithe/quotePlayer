@@ -5,6 +5,7 @@
   },
   "apps": [
     {
+      "name": "app1",
       "root": "src",
       "outDir": "dist",
       "assets": [
@@ -23,7 +24,33 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": ["../node_modules/localstoragedb/localstoragedb.js","background.js", "../node_modules/hammerjs/hammer.min.js"],
+      "scripts": [],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+        "dev": "environments/environment.ts",
+        "prod": "environments/environment.prod.ts"
+      }
+    },
+    {
+      "name": "app2",
+      "root": "src2",
+      "outDir": "dist/app2",
+      "assets": [
+        "assets",
+        "favicon.ico"
+      ],
+      "index": "index.html",
+      "baseHref" : "/app2/",
+      "main": "main.ts",
+      "polyfills": "polyfills.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.app.json",
+      "testTsconfig": "tsconfig.spec.json",
+      "prefix": "app",
+      "styles": [
+        "styles.css"
+      ],
+      "scripts": ["../node_modules/localstoragedb/localstoragedb.js", "../node_modules/hammerjs/hammer.min.js"],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

@@ -1,0 +1,19 @@
+import 'rxjs/add/operator/toPromise';
+import { Injectable } from '@angular/core';
+import { DataService } from './data.service';
+import { LocalStorageDbService } from './local-storage-db.service';
+
+@Injectable()
+export class AppLoadService {
+ 
+  constructor(private data:DataService, private localStorageDB: LocalStorageDbService) { }
+ 
+  init(): Promise<any> {
+    return new Promise((resolve, reject) => {
+          console.log(`initializeApp:: inside promise`);
+
+          this.data.init(this.localStorageDB);
+        });
+  }
+
+}

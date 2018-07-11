@@ -109,9 +109,5 @@ export class PopupComponent implements OnInit {
             source: formModel.soruce as string
         }
     } ;
-
-    openBackground() {
-        chrome.tabs.create({url: chrome.extension.getURL('app2/index.html')});
-    }
     
 }
