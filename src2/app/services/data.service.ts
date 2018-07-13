@@ -22,13 +22,21 @@ export class DataService {
     this.allQuotes = this.dataSource.allQuotes;
   }
 
-  saveQuote(quote:Quote) {
-    this.dataSource.saveQuote(quote)
+  saveOrUpdateQuote(quote:Quote) {
+    if (quote.ID) {
+      this.dataSource.updateQuote(quote)
+    } else {
+      this.dataSource.saveQuote(quote)
+    }
   }
 
   getQuote(id: number) {
     return this.allQuotes.getValue()
-    .find((element) => element.id === id)
+    .find((element) => element.ID === id)
+  }
+
+  deleteQuote(quote:Quote) {
+    this.dataSource.deleteQuote(quote)
   }
 
 }

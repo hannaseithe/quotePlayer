@@ -16,6 +16,7 @@ import { AppLoadService } from './services/app-load.service';
 import { AllQuotesComponent } from './all-quotes/all-quotes.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { QuoteDialogComponent } from './quote-dialog/quote-dialog.component';
+import { CheckDeleteDialogComponent } from './check-delete-dialog/check-delete-dialog.component';
 
 export function init_app(appLoadService: AppLoadService) {
   return () => appLoadService.init();
@@ -26,7 +27,8 @@ export function init_app(appLoadService: AppLoadService) {
     AppComponent,
     QuoteComponent,
     AllQuotesComponent,
-    QuoteDialogComponent
+    QuoteDialogComponent,
+    CheckDeleteDialogComponent
   ],
   imports: [
     CdkTableModule,
@@ -50,7 +52,7 @@ export function init_app(appLoadService: AppLoadService) {
     LocalStorageDbService,
     PlayerService
   ],
-  entryComponents: [QuoteDialogComponent],
+  entryComponents: [QuoteDialogComponent, CheckDeleteDialogComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

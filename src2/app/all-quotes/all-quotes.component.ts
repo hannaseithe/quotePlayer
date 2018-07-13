@@ -4,6 +4,7 @@ import { DataService } from '../services/data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
+import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
 
 @Component({
   selector: 'app-all-quotes',
@@ -12,20 +13,22 @@ import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 })
 export class AllQuotesComponent implements OnInit {
 
-  dataSource: BehaviorSubject<Quote[]>; 
+  dataSource: BehaviorSubject<Quote[]>;
 
   displayedColumns = ['quote', 'author', 'source', 'edit'];
 
-  constructor(private data: DataService, public dialog: MatDialog) {
+  constructor(private data: DataService,
+    public dialog: MatDialog) {
     this.dataSource = data.allQuotes;
-   }
+    this.dataSource.subscribe(x => console.log(x));
+  }
 
   ngOnInit() {
   }
 
   edit(element): void {
     let dialogRef = this.dialog.open(QuoteDialogComponent, {
-      width: '250px',
+      width: '500px',
       data: { element: element }
     });
 
@@ -34,4 +37,18 @@ export class AllQuotesComponent implements OnInit {
     });
   }
 
+  delete(element): void {
+    let dialogRef = this.dialog.open(CheckDeleteDialogComponent, {
+      width: '500px',
+      data: { element: element }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.data.deleteQuote(element);
+      }
+
+      console.log('The dialog was closed');
+    });
+  }
 }

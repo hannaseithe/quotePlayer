@@ -16,7 +16,13 @@ export class QuoteDialogComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onClose(event): void {
+    this.dialogRef.close();
+  }
+
   ngOnInit() {
   }
+
+
 
 }

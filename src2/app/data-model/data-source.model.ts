@@ -6,4 +6,6 @@ export interface DataSourceService {
     currentQuotes: BehaviorSubject<Array<Quote>>;
     allQuotes: BehaviorSubject<Array<Quote>>;
     saveQuote: Function;
+    updateQuote: Function;
+    deleteQuote: Function;
 }

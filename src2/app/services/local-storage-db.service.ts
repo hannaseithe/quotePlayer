@@ -54,7 +54,7 @@ export class LocalStorageDbService implements DataSourceService {
   allQuotes: BehaviorSubject<Array<Quote>>;  
 
   saveQuote(formElements) {
-    var quoteText = formElements.text;
+    var quoteText = formElements.quote;
     var quoteAuthor = formElements.author;
     var quoteSource = formElements.source;
 
@@ -65,6 +65,28 @@ export class LocalStorageDbService implements DataSourceService {
       this.allQuotes.next(this.lib.queryAll('quotes'));
     }
 
+  }
+
+  updateQuote(formElements) {
+
+    if (formElements.quote) {
+      this.lib.update("quotes", {ID: formElements.ID }, function(row) {
+        row.quote = formElements.quote;
+        row.author = formElements.author;
+        row.source = formElements.source;
+        return row;
+      });
+      this.lib.commit();
+      this.currentQuotes.next(this.lib.queryAll('quotes'));
+      this.allQuotes.next(this.lib.queryAll('quotes'));
+    }
+  }
+
+  deleteQuote(quote) {
+    this.lib.deleteRows("quotes", {ID: quote.ID});
+    this.lib.commit();
+    this.currentQuotes.next(this.lib.queryAll('quotes'));
+    this.allQuotes.next(this.lib.queryAll('quotes'));
   }
 
   getCurrentQuotes() {

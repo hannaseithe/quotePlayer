@@ -10,7 +10,7 @@ import { QuoteDialogComponent } from './quote-dialog/quote-dialog.component';
 })
 export class AppComponent {
   title = 'app';
-  constructor(private player: PlayerService, public dialog: MatDialog) {
+  constructor(public dialog: MatDialog) {
 
   }
 
