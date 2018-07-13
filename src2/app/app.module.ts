@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -13,6 +13,9 @@ import { DataService } from './services/data.service';
 import { LocalStorageDbService } from './services/local-storage-db.service';
 import { PlayerService } from './services/player.service';
 import { AppLoadService } from './services/app-load.service';
+import { AllQuotesComponent } from './all-quotes/all-quotes.component';
+import { CdkTableModule } from '@angular/cdk/table';
+import { QuoteDialogComponent } from './quote-dialog/quote-dialog.component';
 
 export function init_app(appLoadService: AppLoadService) {
   return () => appLoadService.init();
@@ -21,9 +24,12 @@ export function init_app(appLoadService: AppLoadService) {
 @NgModule({
   declarations: [
     AppComponent,
-    QuoteComponent
+    QuoteComponent,
+    AllQuotesComponent,
+    QuoteDialogComponent
   ],
   imports: [
+    CdkTableModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -32,17 +38,20 @@ export function init_app(appLoadService: AppLoadService) {
     MatFormFieldModule,
     MatCardModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatTableModule,
+    MatDialogModule
   ],
   providers: [
     AppLoadService,
-   /*  { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }, */
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
     ChromeMessageService,
     DataService,
     LocalStorageDbService,
     PlayerService
   ],
+  entryComponents: [QuoteDialogComponent],
   bootstrap: [AppComponent]
 })
-export class AppModule { 
+export class AppModule {
 }

@@ -1,0 +1,6 @@
+.mat-header-cell, .mat-cell {
+    padding: 0 3px;
+    white-space: nowrap;
+    overflow: hidden;
+  text-overflow: ellipsis;
+}

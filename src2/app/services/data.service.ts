@@ -13,15 +13,22 @@ export class DataService {
     
    }
 
-  currentQuotes: BehaviorSubject<Array<Quote>>; 
+  currentQuotes: BehaviorSubject<Quote[]>; 
+  allQuotes: BehaviorSubject<Quote[]>;
 
   init(dataSource: DataSourceService) {
     this.dataSource = dataSource;
     this.currentQuotes = this.dataSource.currentQuotes; 
+    this.allQuotes = this.dataSource.allQuotes;
   }
 
   saveQuote(quote:Quote) {
     this.dataSource.saveQuote(quote)
+  }
+
+  getQuote(id: number) {
+    return this.allQuotes.getValue()
+    .find((element) => element.id === id)
   }
 
 }

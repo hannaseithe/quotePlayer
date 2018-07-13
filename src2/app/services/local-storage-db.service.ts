@@ -3,7 +3,7 @@
 import { Injectable } from '@angular/core';
 import { DataSourceService } from '../data-model/data-source.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Quote } from '../../../src/app/data-model/quote.model';
+import { Quote } from '../data-model/quote.model';
 
 @Injectable()
 export class LocalStorageDbService implements DataSourceService {
@@ -17,17 +17,20 @@ export class LocalStorageDbService implements DataSourceService {
         {
           "quote": "Schönheit ist nie etwas rein äußerliches",
           "author": "John O'Donohue",
-          "source": "Schönheit"
+          "source": "Schönheit",
+          "id": "1"
         },
         {
           "quote": "Sich die Zeit nehmen, um wirklich dort zu sein, wo man gerade ist",
           "author": "John O'Donohue",
-          "source": "Schönheit"
+          "source": "Schönheit",
+          "id": "2"
         },
         {
           "quote": "Eine ehrfürchtige Annäherung erzeugt Tiefe",
           "author": "John O'Donohue",
-          "source": "Schönheit"
+          "source": "Schönheit",
+          "id": "3"
         }
       ];
 
@@ -39,6 +42,7 @@ export class LocalStorageDbService implements DataSourceService {
       this.lib.commit();
     }
     this.currentQuotes = new BehaviorSubject(this.lib.queryAll('quotes')); 
+    this.allQuotes = new BehaviorSubject(this.lib.queryAll('quotes')); 
   }
 
   
@@ -47,6 +51,7 @@ export class LocalStorageDbService implements DataSourceService {
 
 
   currentQuotes: BehaviorSubject<Array<Quote>>;  
+  allQuotes: BehaviorSubject<Array<Quote>>;  
 
   saveQuote(formElements) {
     var quoteText = formElements.text;
@@ -57,6 +62,7 @@ export class LocalStorageDbService implements DataSourceService {
       this.lib.insert("quotes", { quote: quoteText, author: quoteAuthor, source: quoteSource });
       this.lib.commit();
       this.currentQuotes.next(this.lib.queryAll('quotes'));
+      this.allQuotes.next(this.lib.queryAll('quotes'));
     }
 
   }

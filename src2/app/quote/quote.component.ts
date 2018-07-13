@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data.service';
@@ -10,29 +10,34 @@ import { DataService } from '../services/data.service';
 })
 export class QuoteComponent implements OnInit {
 
+  @Input() quote?: Quote;
+
   quoteForm: FormGroup = new FormGroup({
-    text: new FormControl(),
+    quote: new FormControl(),
     author: new FormControl(),
     source: new FormControl()
   });
 
-  quote: Quote = {
-    id: null,
-    text: '',
-    author: '',
-    source: ''
-  };
-
   constructor(private formbuilder: FormBuilder,
   private data: DataService) {
-    this.quoteForm = this.formbuilder.group({
-      text: ['', Validators.required],
-      author: '',
-      source: ''
-    });
   }
 
   ngOnInit() {
+    if (this.quote) {
+    } else {
+      this.quote = {
+        id: null,
+        quote: '',
+        author: '',
+        source: ''
+      };
+    }
+
+    this.quoteForm = this.formbuilder.group({
+      quote: [this.quote.quote, Validators.required],
+      author: this.quote.author,
+      source: this.quote.source
+    });
   }
 
   onSubmit() {
@@ -44,7 +49,7 @@ export class QuoteComponent implements OnInit {
     const formModel = this.quoteForm.value;
     return {
       id: this.quote.id,
-      text: formModel.text as string,
+      quote: formModel.quote as string,
       author: formModel.author as string,
       source: formModel.soruce as string
     }

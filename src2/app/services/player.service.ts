@@ -14,48 +14,46 @@ export class PlayerService {
   state = {
     count: 0,
     running: false,
-    minutes: null
+    minutes: 1
   }
 
 
   constructor(private chromeMessage: ChromeMessageService,
     private data: DataService) {
+    let that = this;
     chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
-      if (id === "quote" + this.notificationId) {
+      if (id === "quote" + that.notificationId) {
         if (buttonIndex === 0) {
           chrome.notifications.clear(id);
         } else if (buttonIndex === 1) {
-          this.stopInterval();
-          chrome.runtime.sendMessage({
-            msg: "togglePlayStop"
-          });
+          that.stopInterval();
         }
       }
     });
 
     chrome.notifications.onClosed.addListener(function (id) {
-      if (id === "quote" + this.notificationId) {
-        this.startTimer(this.state.minutes);
+      if (id === "quote" + that.notificationId) {
+        that.startTimer(that.state.minutes);
       }
     });
 
     chrome.runtime.onMessage.addListener(
       function (request, sender, sendResponse) {
-          switch (request.msg) {
-              case "getState":
-                  sendResponse(this.state);
-                  break;
-              case "startTimer":
-                  this.startInterval(request.minutes);
-                  sendResponse(this.state);
-                  break;
-              case "stopTimer":
-                  this.stopInterval();
-                  sendResponse(this.state);
-                  break;
-              default:
-                  console.log("background.js: Unidentified Message received ");
-          }
+        switch (request.msg) {
+          case "getState":
+            sendResponse(that.state);
+            break;
+          case "startTimer":
+            that.startInterval(request.minutes);
+            sendResponse(that.state);
+            break;
+          case "stopTimer":
+            that.stopInterval();
+            sendResponse(that.state);
+            break;
+          default:
+            console.log("background.js: Unidentified Message received ");
+        }
       });
 
     this.data.currentQuotes.subscribe(x => this.quotes = x)
@@ -81,7 +79,7 @@ export class PlayerService {
   }
 
   private startTimer(minutes) {
-    this.timeoutId = window.setTimeout(function () {
+    this.timeoutId = setTimeout(() => {
       var options = {
         type: "basic",
         title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
@@ -92,12 +90,11 @@ export class PlayerService {
           { title: "stop" }
         ],
         requireInteraction: true,
-        iconUrl: "icon.png"
+        iconUrl: "../icon.png"
       };
       chrome.notifications.create("quote" + this.notificationId, options);
       this.state.count++;
 
     }, minutes * 6000);
   }
-
 }

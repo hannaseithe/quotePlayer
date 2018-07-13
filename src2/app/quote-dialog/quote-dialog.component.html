@@ -1,0 +1,8 @@
+
+<div mat-dialog-content>
+    <app-quote [quote]="data?.element"></app-quote>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button [mat-dialog-close]="" cdkFocusInitial>Ok</button>
+</div>
