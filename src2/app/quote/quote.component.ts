@@ -13,12 +13,7 @@ export class QuoteComponent implements OnInit {
   @Input() quote?: Quote;
   @Output() close = new EventEmitter<boolean>();
 
-  quoteForm: FormGroup = new FormGroup({
-    quote: new FormControl(),
-    author: new FormControl(),
-    source: new FormControl()
-  });
-
+  quoteForm: FormGroup;
   constructor(private formbuilder: FormBuilder,
   private data: DataService) {
   }

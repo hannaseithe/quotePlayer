@@ -1,19 +1,22 @@
 import { TestBed, inject } from '@angular/core/testing';
-import chrome from 'sinon-chrome'; // from 'sinon-chrome'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 import { PlayerService } from './player.service';
 import { DataService } from '../services/data.service';
 import { ChromeMessageService } from '../services/chrome-message.service';
 
-
-class MockDataService { };
+class MockDataService {
+  currentQuotes = new BehaviorSubject([])
+ };
 class MockChromeMessageService { };
+
+const chrome = require('sinon-chrome');
 
 describe('PlayerService', () => {
 
   beforeAll(function () {
-    (global as any)['chrome'] = chrome;
+    Object.assign((global as any).chrome, chrome)
   });
 
   beforeEach(() => {
