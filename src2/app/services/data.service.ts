@@ -22,11 +22,11 @@ export class DataService {
     this.allQuotes = this.dataSource.allQuotes;
   }
 
-  saveOrUpdateQuote(quote:Quote) {
+  saveOrUpdateQuote(quote:Quote):Promise<any> {
     if (quote.ID) {
-      this.dataSource.updateQuote(quote)
+      return this.dataSource.updateQuote(quote)
     } else {
-      this.dataSource.saveQuote(quote)
+      return this.dataSource.saveQuote(quote)
     }
   }
 
@@ -35,8 +35,8 @@ export class DataService {
     .find((element) => element.ID === id)
   }
 
-  deleteQuote(quote:Quote) {
-    this.dataSource.deleteQuote(quote)
+  deleteQuote(quote:Quote):Promise<any> {
+    return this.dataSource.deleteQuote(quote)
   }
 
 }

@@ -12,7 +12,8 @@
         "assets",
         "favicon.ico",
         "manifest.json",
-        "icon.png"
+        "icong.png",
+        "iconk.png"
       ],
       "index": "index.html",
       "main": "main.ts",
@@ -48,7 +49,8 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "custom-theme.scss"
       ],
       "scripts": ["../node_modules/localstoragedb/localstoragedb.js", "../node_modules/hammerjs/hammer.min.js"],
       "environmentSource": "environments/environment.ts",

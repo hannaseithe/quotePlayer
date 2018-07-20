@@ -4,7 +4,7 @@
     "description": "An extension that let's you save and show favourite quotes",
     "version": "1.0",
     "browser_action": {
-        "default_icon": "icon.png",
+        "default_icon": "iconk.png",
         "default_popup": "index.html#/popup"
     },
     "permissions": ["notifications","tabs"],

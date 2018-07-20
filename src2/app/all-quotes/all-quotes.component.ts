@@ -5,6 +5,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
+import { PlayerService } from '../services/player.service';
 
 @Component({
   selector: 'app-all-quotes',
@@ -18,7 +19,8 @@ export class AllQuotesComponent implements OnInit {
   displayedColumns = ['quote', 'author', 'source', 'edit'];
 
   constructor(private data: DataService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private player: PlayerService) {
     this.dataSource = data.allQuotes;
     this.dataSource.subscribe(x => console.log(x));
   }

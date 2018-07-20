@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ChromeMessageService } from './chrome-message.service';
 import { DataService } from './data.service';
 import { Observable } from 'rxjs/Observable';
 import { Quote } from '../data-model/quote.model';
@@ -11,16 +10,16 @@ export class PlayerService {
   private notificationId = 0;
   private quotes: Array<Quote> = [];
 
-  state = {
+  private state = {
     count: 0,
     running: false,
     minutes: 1
   }
 
 
-  constructor(private chromeMessage: ChromeMessageService,
-    private data: DataService) {
+  constructor(private data: DataService) {
     let that = this;
+    console.log('constructor Player');
     chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
       if (id === "quote" + that.notificationId) {
         if (buttonIndex === 0) {
@@ -36,6 +35,7 @@ export class PlayerService {
         that.startTimer(that.state.minutes);
       }
     });
+
 
     chrome.runtime.onMessage.addListener(
       function (request, sender, sendResponse) {
@@ -56,26 +56,25 @@ export class PlayerService {
         }
       });
 
+
+  }
+
+  init() {
     this.data.currentQuotes.subscribe(x => this.quotes = x)
   }
 
   stopInterval = function () {
-    chrome.notifications.clear("quote" + this.notificationId);
+    try { chrome.notifications.clear("quote" + this.notificationId) }
+    catch (error) { console.log('Could not clear notification: ' + error) }
     this.notificationId++;
-    window.clearTimeout(this.timeoutId);
-    this.updateState({ running: false });
+    clearTimeout(this.timeoutId);
+    this.state.running = false;
   }
 
   startInterval = function (duration) {
     this.state.running = true;
     this.state.minutes = duration || 1;
     this.startTimer(this.state.minutes);
-
-  }
-
-  updateState(newState) {
-    Object.assign(this.state, newState);
-    this.chromeMessage.sendMessage("updateState", this.state);
   }
 
   private startTimer(minutes) {
@@ -90,11 +89,12 @@ export class PlayerService {
           { title: "stop" }
         ],
         requireInteraction: true,
-        iconUrl: "../icon.png"
+        iconUrl: "../icong.png"
       };
-      chrome.notifications.create("quote" + this.notificationId, options);
+      try { chrome.notifications.create("quote" + this.notificationId, options) }
+      catch (error) { console.log('Could not create notification: ' + error) }
       this.state.count++;
 
-    }, minutes * 6000);
+    }, minutes * 60000);
   }
 }

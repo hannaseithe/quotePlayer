@@ -41,56 +41,69 @@ export class LocalStorageDbService implements DataSourceService {
       // all create/drop/insert/update/delete operations should be committed
       this.lib.commit();
     }
-    this.currentQuotes = new BehaviorSubject(this.lib.queryAll('quotes')); 
-    this.allQuotes = new BehaviorSubject(this.lib.queryAll('quotes')); 
+    this.currentQuotes = new BehaviorSubject(this.lib.queryAll('quotes'));
+    this.allQuotes = new BehaviorSubject(this.lib.queryAll('quotes'));
   }
 
-  
+
 
   // Check if the database was just created. Useful for initial database setup
 
 
-  currentQuotes: BehaviorSubject<Array<Quote>>;  
-  allQuotes: BehaviorSubject<Array<Quote>>;  
+  currentQuotes: BehaviorSubject<Array<Quote>>;
+  allQuotes: BehaviorSubject<Array<Quote>>;
 
-  saveQuote(formElements) {
+  saveQuote(formElements): Promise<any> {
     var quoteText = formElements.quote;
     var quoteAuthor = formElements.author;
     var quoteSource = formElements.source;
 
-    if (quoteText) {
-      this.lib.insert("quotes", { quote: quoteText, author: quoteAuthor, source: quoteSource });
-      this.lib.commit();
+    return new Promise((resolve, reject) => {
+      if (quoteText) {
+        const newID = this.lib.insert("quotes", { quote: quoteText, author: quoteAuthor, source: quoteSource });
+        const result = this.lib.commit();
+        this.currentQuotes.next(this.lib.queryAll('quotes'));
+        this.allQuotes.next(this.lib.queryAll('quotes'));
+        result ? resolve({ ID: newID }) : reject({ msg: 'Failed to save quote' });
+      } else {
+        reject('Could not save Quote, no quoteText provided')
+      }
+    })
+
+
+
+  }
+
+  updateQuote(formElements): Promise<any> {
+    return new Promise((resolve, reject) => {
+      if (formElements.quote) {
+        this.lib.update("quotes", { ID: formElements.ID }, function (row) {
+          row.quote = formElements.quote;
+          row.author = formElements.author;
+          row.source = formElements.source;
+          return row;
+        });
+        const result = this.lib.commit();
+        this.currentQuotes.next(this.lib.queryAll('quotes'));
+        this.allQuotes.next(this.lib.queryAll('quotes'));
+        result ? resolve({ ID: formElements.ID }) : reject({ msg: "Failed to update quote with ID: " + formElements.ID });
+      } else {
+        reject({ msg: "Could not update, no Quotetext provided" });
+      }
+    });
+
+
+  }
+
+  deleteQuote(quote): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.lib.deleteRows("quotes", { ID: quote.ID });
+      const result = this.lib.commit();
       this.currentQuotes.next(this.lib.queryAll('quotes'));
       this.allQuotes.next(this.lib.queryAll('quotes'));
-    }
-
-  }
-
-  updateQuote(formElements) {
-
-    if (formElements.quote) {
-      this.lib.update("quotes", {ID: formElements.ID }, function(row) {
-        row.quote = formElements.quote;
-        row.author = formElements.author;
-        row.source = formElements.source;
-        return row;
-      });
-      this.lib.commit();
-      this.currentQuotes.next(this.lib.queryAll('quotes'));
-      this.allQuotes.next(this.lib.queryAll('quotes'));
-    }
-  }
-
-  deleteQuote(quote) {
-    this.lib.deleteRows("quotes", {ID: quote.ID});
-    this.lib.commit();
-    this.currentQuotes.next(this.lib.queryAll('quotes'));
-    this.allQuotes.next(this.lib.queryAll('quotes'));
-  }
-
-  getCurrentQuotes() {
-    return this.lib.queryAll('quotes')
+      result ? resolve({ ID: quote.ID }) : reject({ msg: "Failed to delet quote with ID: " + quote.ID });
+    
+    })
   }
 
 }
