@@ -8,13 +8,18 @@
       </section>
       <section>
         <mat-form-field>
-          <input matInput type="text"  formControlName="author" placeholder="Author">
+          <input matInput type="text" formControlName="author" placeholder="Author">
         </mat-form-field>
       </section>
       <section>
         <mat-form-field>
-          <input matInput type="text"  formControlName="source" placeholder="Source">
+          <input matInput type="text" formControlName="source" placeholder="Source">
         </mat-form-field>
+      </section>
+      <section>
+
+        <tag-input formControlName="tags"></tag-input>
+
       </section>
 
       <button mat-button [disabled]="quoteForm.pristine" type="reset">

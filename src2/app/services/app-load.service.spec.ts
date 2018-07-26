@@ -1,8 +1,8 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { AppLoadService } from './app-load.service';
-import { DataService } from '../services/data.service';
-import { LocalStorageDbService } from '../services/local-storage-db.service';
+import { DataService } from './data.service';
+import { LocalStorageDbService } from './local-storage-db.service';
 import { PlayerService } from './player.service';
 
 

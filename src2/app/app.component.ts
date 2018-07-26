@@ -15,13 +15,5 @@ export class AppComponent {
   }
 
   
-  openDialog(): void {
-    let dialogRef = this.dialog.open(QuoteDialogComponent, {
-      width: '500px'
-    });
 
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 }

@@ -7,41 +7,37 @@ import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
 import { PlayerService } from '../services/player.service';
 import { Observable } from '../../../node_modules/rxjs/Observable';
+import { PlaylistDialogComponent } from '../playlist-dialog/playlist-dialog.component';
+import { Playlist } from '../data-model/playlist.model';
 
 @Component({
-  selector: 'app-all-quotes',
-  templateUrl: './all-quotes.component.html',
-  styleUrls: ['./all-quotes.component.css']
+  selector: 'app-all-playlists',
+  templateUrl: './all-playlists.component.html',
+  styleUrls: ['./all-playlists.component.css']
 })
-export class AllQuotesComponent implements OnInit {
+export class AllPlaylistsComponent implements OnInit {
 
-  dataSource: Quote[] = [];
-  authors: any[]= [];
+  dataSource: Playlist[] = [];
 
-  displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
+  displayedColumns = ['ID', 'edit'];
 
   constructor(private data: DataService,
     public dialog: MatDialog,
     private player: PlayerService) {
-    data.allQuotes.subscribe(x => this.dataSource = x);
-    data.allAuthors.subscribe(x => this.authors = x);
+    data.allPlaylists.subscribe(x => this.dataSource = x);
   }
 
   ngOnInit() {
   }
 
   openDialog(): void {
-    let dialogRef = this.dialog.open(QuoteDialogComponent, {
+    let dialogRef = this.dialog.open(PlaylistDialogComponent, {
       width: '500px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
-  }
-
-  getAuthors(): void {
-    
   }
 
 
@@ -70,4 +66,5 @@ export class AllQuotesComponent implements OnInit {
       console.log('The dialog was closed');
     });
   }
+
 }

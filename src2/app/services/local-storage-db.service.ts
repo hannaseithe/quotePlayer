@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { DataSourceService } from '../data-model/data-source.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Quote } from '../data-model/quote.model';
+import { Playlist } from '../data-model/playlist.model';
 
 @Injectable()
 export class LocalStorageDbService implements DataSourceService {
@@ -52,6 +53,8 @@ export class LocalStorageDbService implements DataSourceService {
 
   currentQuotes: BehaviorSubject<Array<Quote>>;
   allQuotes: BehaviorSubject<Array<Quote>>;
+  allAuthors: BehaviorSubject<Array<any>>;
+  allPlaylists: BehaviorSubject<Array<Playlist>>;
 
   saveQuote(formElements): Promise<any> {
     var quoteText = formElements.quote;

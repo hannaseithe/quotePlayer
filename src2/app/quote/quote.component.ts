@@ -25,14 +25,18 @@ export class QuoteComponent implements OnInit {
         ID: null,
         quote: '',
         author: '',
-        source: ''
+        source: '',
+        tags: [],
+        playlists: []
       };
     }
 
     this.quoteForm = this.formbuilder.group({
       quote: [this.quote.quote, Validators.required],
       author: this.quote.author,
-      source: this.quote.source
+      source: this.quote.source,
+      tags: [this.quote.tags,[]],
+      playlists: this.quote.playlists
     });
     
   }
@@ -49,7 +53,9 @@ export class QuoteComponent implements OnInit {
       ID: this.quote.ID,
       quote: formModel.quote as string,
       author: formModel.author as string,
-      source: formModel.source as string
+      source: formModel.source as string,
+      tags: formModel.tags ? formModel.tags.map((tag) => tag.value ? tag.value : tag) as string[] : [],
+      playlists: this.quote.playlists
     }
   };
 }

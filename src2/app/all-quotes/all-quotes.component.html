@@ -1,3 +1,10 @@
+<button mat-button (click)="openDialog()">
+  Add a new Quote
+</button>
+<div *ngFor="let author of authors; let i = index">
+  {{i}}. {{author._id}}:
+  <span *ngFor="let source of author.sources">{{source}}, </span>
+</div>
 <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="quote">
@@ -13,6 +20,18 @@
   <ng-container matColumnDef="source">
     <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.source}} </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="tags">
+    <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
+    <mat-cell *matCellDef="let element"> 
+      <mat-chip-list *ngFor="let tag of element.tags"><mat-chip>{{tag}}</mat-chip></mat-chip-list>
+    </mat-cell>
+  </ng-container>
+
+  <ng-container matColumnDef="playlists">
+    <mat-header-cell *matHeaderCellDef> Playlist </mat-header-cell>
+    <mat-cell *matCellDef="let element"> <span *ngFor="let playlist of element.playlists">{{playlist}} </span></mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="edit">

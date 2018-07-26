@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 import { PlayerService } from './player.service';
-import { DataService } from '../services/data.service';
+import { DataService } from './data.service';
 
 class MockDataService {
   currentQuotes = new BehaviorSubject([testQuote1])

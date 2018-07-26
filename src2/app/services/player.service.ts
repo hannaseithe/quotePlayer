@@ -60,7 +60,7 @@ export class PlayerService {
   }
 
   init() {
-    this.data.currentQuotes.subscribe(x => this.quotes = x)
+    /* this.data.currentQuotes.subscribe(x => this.quotes = x) */
   }
 
   stopInterval = function () {

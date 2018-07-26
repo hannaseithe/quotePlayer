@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { DataSourceService } from '../data-model/data-source.model';
 import { Quote } from '../data-model/quote.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Playlist } from '../data-model/playlist.model';
 
 @Injectable()
 export class DataService {
@@ -15,11 +16,15 @@ export class DataService {
 
   currentQuotes: BehaviorSubject<Quote[]>; 
   allQuotes: BehaviorSubject<Quote[]>;
+  allAuthors: BehaviorSubject<any[]>;
+  allPlaylists: BehaviorSubject<Playlist[]>;
 
   init(dataSource: DataSourceService) {
     this.dataSource = dataSource;
     this.currentQuotes = this.dataSource.currentQuotes; 
     this.allQuotes = this.dataSource.allQuotes;
+    this.allAuthors = this.dataSource.allAuthors;
+    this.allPlaylists = this.dataSource.allPlaylists;
   }
 
   saveOrUpdateQuote(quote:Quote):Promise<any> {

@@ -41,7 +41,7 @@
         "favicon.ico"
       ],
       "index": "index.html",
-      "baseHref" : "/app2/",
+      "baseHref" : "/app2/index.html#",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",

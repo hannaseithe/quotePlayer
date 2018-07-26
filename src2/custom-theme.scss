@@ -42,15 +42,34 @@ $my-dark-theme-foreground: (
   slider-off-active: rgba(white, 0.3),
 );
 
+@function create-smooth-foreground($primary, $accent) {
+    @return (
+        base:              black,
+        divider:           $dark-dividers,
+        dividers:          $dark-dividers,
+        disabled:          $dark-disabled-text,
+        disabled-button:   rgba(black, 0.26),
+        disabled-text:     $dark-disabled-text,
+        hint-text:         $dark-disabled-text,
+        secondary-text:    $dark-secondary-text,
+        icon:              rgba(black, 0.54),
+        icons:             rgba(black, 0.54),
+        text:              rgba(black, 0.87),
+        slider-min:        rgba(black, 0.87),
+        slider-off:        rgba(black, 0.26),
+        slider-off-active: rgba(black, 0.38),
+    );
+  }
+
 @function create-smooth-background($primary, $accent) {
     @return (
         status-bar: map_get($mat-grey, 300),
-        app-bar:    map_get($mat-grey, 100),
-        background: map_get($primary,200),
+        app-bar:    map_get($primary, 900),
+        background: map_get($accent, 200),
         hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
-        card:       map_get($primary,50),
-        dialog:     map_get($primary,100),
-        disabled-button: rgba(map_get($primary,900), 0.12),
+        card:       map_get($primary, 50),
+        dialog:     map_get($primary, 100),
+        disabled-button: rgba(map_get($primary,200), 0.12),
         raised-button: white,
         focused-button: $dark-focused,
         selected-button: map_get($mat-grey, 300),
@@ -64,11 +83,11 @@ $my-dark-theme-foreground: (
 // instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
 @function create-smooth-theme($primary, $accent, $warn) {
   @return (
-    primary: $primary,
-    accent: $accent,
+    primary: mat-palette($primary),
+    accent: mat-palette($accent),
     warn: $warn,
     is-dark: false,
-    foreground: $mat-light-theme-foreground,
+    foreground: create-smooth-foreground($primary, $accent),
     background: create-smooth-background($primary, $accent),
   );
 }
@@ -86,7 +105,7 @@ $candy-app-background: mat-palette($mat-cyan);
 
 
 // Create the theme object (a Sass map containing all of the palettes).
-$candy-app-theme: create-wonky-theme($candy-app-primary, $candy-app-accent, $candy-app-warn);
+$candy-app-theme: create-smooth-theme($mat-indigo, $mat-lime, $candy-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component

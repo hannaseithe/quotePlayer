@@ -1,8 +1,9 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TagInputModule } from 'ngx-chips';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -16,6 +17,13 @@ import { AllQuotesComponent } from './all-quotes/all-quotes.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { QuoteDialogComponent } from './quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from './check-delete-dialog/check-delete-dialog.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { BackgroundComponent } from './background/background.component';
+import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
+import { PouchDbService } from './services/pouch-db.service';
+import { PlaylistComponent } from './playlist/playlist.component';
+import { PlaylistDialogComponent } from './playlist-dialog/playlist-dialog.component';
 
 export function init_app(appLoadService: AppLoadService) {
   return () => appLoadService.init();
@@ -27,7 +35,12 @@ export function init_app(appLoadService: AppLoadService) {
     QuoteComponent,
     AllQuotesComponent,
     QuoteDialogComponent,
-    CheckDeleteDialogComponent
+    CheckDeleteDialogComponent,
+    NavbarComponent,
+    BackgroundComponent,
+    AllPlaylistsComponent,
+    PlaylistComponent,
+    PlaylistDialogComponent
   ],
   imports: [
     CdkTableModule,
@@ -42,9 +55,13 @@ export function init_app(appLoadService: AppLoadService) {
     MatButtonModule,
     MatTableModule,
     MatDialogModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatChipsModule,
+    TagInputModule
   ],
   providers: [
+    PouchDbService,
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
     AppLoadService,
     { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
     DataService,
