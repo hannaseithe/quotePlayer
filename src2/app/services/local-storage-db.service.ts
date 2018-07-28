@@ -56,7 +56,7 @@ export class LocalStorageDbService implements DataSourceService {
   allAuthors: BehaviorSubject<Array<any>>;
   allPlaylists: BehaviorSubject<Array<Playlist>>;
 
-  saveQuote(formElements): Promise<any> {
+  saveQuoteWithAuthor(formElements): Promise<any> {
     var quoteText = formElements.quote;
     var quoteAuthor = formElements.author;
     var quoteSource = formElements.source;
@@ -77,7 +77,7 @@ export class LocalStorageDbService implements DataSourceService {
 
   }
 
-  updateQuote(formElements): Promise<any> {
+  updateQuoteWithAuthor(formElements): Promise<any> {
     return new Promise((resolve, reject) => {
       if (formElements.quote) {
         this.lib.update("quotes", { ID: formElements.ID }, function (row) {
@@ -108,5 +108,9 @@ export class LocalStorageDbService implements DataSourceService {
     
     })
   }
+
+  updatePlaylist(){}
+  savePlaylist() {}
+  deletePlaylist() {}
 
 }

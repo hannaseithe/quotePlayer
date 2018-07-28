@@ -7,8 +7,8 @@ import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
 import { PlayerService } from '../services/player.service';
 import { Observable } from '../../../node_modules/rxjs/Observable';
-import { PlaylistDialogComponent } from '../playlist-dialog/playlist-dialog.component';
 import { Playlist } from '../data-model/playlist.model';
+import { FormControl, FormBuilder } from '../../../node_modules/@angular/forms';
 
 @Component({
   selector: 'app-all-playlists',
@@ -18,27 +18,47 @@ import { Playlist } from '../data-model/playlist.model';
 export class AllPlaylistsComponent implements OnInit {
 
   dataSource: Playlist[] = [];
+  selectedPlaylist: Playlist;
+  allQuotes: Quote[];
 
-  displayedColumns = ['ID', 'edit'];
+  displayedColumns = ['name', 'edit'];
+  displayedColumns2 = ['quote', 'author', 'source', 'tags'];
+
+  newQuoteForm = this.formbuilder.group({
+    quote: ''
+  });
+  displayFn = (q) => q.quote;
 
   constructor(private data: DataService,
     public dialog: MatDialog,
-    private player: PlayerService) {
-    data.allPlaylists.subscribe(x => this.dataSource = x);
+    private player: PlayerService,
+    private formbuilder: FormBuilder) {
+    data.allPlaylists.subscribe(x => {
+      this.dataSource = x;
+      if (this.selectedPlaylist) {
+        this.selectedPlaylist = x.filter((x) => x.ID === this.selectedPlaylist.ID)[0]
+      }  
+    });
+    data.allQuotes.subscribe(x => this.allQuotes = x);
   }
 
   ngOnInit() {
   }
 
-  openDialog(): void {
-    let dialogRef = this.dialog.open(PlaylistDialogComponent, {
-      width: '500px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+  selectRow(row) {
+    this.selectedPlaylist = row;
   }
+
+  onSubmit() {
+    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist());
+  }
+
+  prepareSubmitSelectedPlaylist() {
+    const formModel = this.newQuoteForm.value;
+    this.selectedPlaylist.quoteDocs.push(formModel.quote);
+    this.selectedPlaylist.quotes = this.selectedPlaylist.quoteDocs.map(q => q.ID)
+    return this.selectedPlaylist;
+  };
 
 
   edit(element): void {

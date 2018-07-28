@@ -1,4 +1,6 @@
 export interface Playlist {
-    ID?: number;
-    quotes: string[]
+    ID?: string;
+    name: string;
+    quotes: string[];
+    quoteDocs?: any[]
 }

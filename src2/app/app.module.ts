@@ -1,8 +1,9 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule } from '@angular/material';
+import { MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,7 +24,6 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
 import { PouchDbService } from './services/pouch-db.service';
 import { PlaylistComponent } from './playlist/playlist.component';
-import { PlaylistDialogComponent } from './playlist-dialog/playlist-dialog.component';
 
 export function init_app(appLoadService: AppLoadService) {
   return () => appLoadService.init();
@@ -39,12 +39,12 @@ export function init_app(appLoadService: AppLoadService) {
     NavbarComponent,
     BackgroundComponent,
     AllPlaylistsComponent,
-    PlaylistComponent,
-    PlaylistDialogComponent
+    PlaylistComponent
   ],
   imports: [
     CdkTableModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     AppRoutingModule,
     ReactiveFormsModule,
     MatSliderModule,
@@ -57,6 +57,7 @@ export function init_app(appLoadService: AppLoadService) {
     MatDialogModule,
     MatToolbarModule,
     MatChipsModule,
+    MatAutocompleteModule,
     TagInputModule
   ],
   providers: [

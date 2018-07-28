@@ -1,26 +1,78 @@
-<button mat-button (click)="openDialog()">
-    Add a new Playlist
-</button>
-  <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
-  
-    <ng-container matColumnDef="ID">
-      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.ID}} </mat-cell>
-    </ng-container>
-  
-    <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-button (click)="edit(element)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-button (click)="delete(element)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </mat-cell>
-    </ng-container>
-  
-  
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-  </mat-table>
+<div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="35%">
+    <app-playlist></app-playlist>
+    <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <mat-header-cell *matHeaderCellDef></mat-header-cell>
+        <mat-cell *matCellDef="let element">
+          <button mat-button (click)="edit(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-button (click)="delete(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></mat-row>
+    </mat-table>
+  </div>
+  <div class="item item-1" fxFlex="65%">
+    <div *ngIf="selectedPlaylist">
+      <mat-card>
+        <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
+        <mat-card-content>
+          <form [formGroup]="newQuoteForm" (ngSubmit)="onSubmit()">
+            <section>
+              <mat-form-field class="example-full-width">
+                <input type="text" placeholder="Select a new Quote" aria-label="Number" matInput formControlName="quote" [matAutocomplete]="auto">
+                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let quote of allQuotes" [value]="quote">
+                    {{quote.quote}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </section>
+          </form>
+        </mat-card-content>
+      </mat-card>
+      <mat-table #table [dataSource]="selectedPlaylist?.quoteDocs" class="mat-elevation-z8">
+
+        <ng-container matColumnDef="quote">
+          <mat-header-cell *matHeaderCellDef> Quote </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.quote}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+          <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="source">
+          <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.source}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tags">
+          <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-chip-list *ngFor="let tag of element.tags">
+              <mat-chip>{{tag}}</mat-chip>
+            </mat-chip-list>
+          </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+      </mat-table>
+    </div>
+  </div>
+</div>

@@ -1,6 +1,4 @@
-<button mat-button (click)="openDialog()">
-  Add a new Quote
-</button>
+<app-quote></app-quote>
 <div *ngFor="let author of authors; let i = index">
   {{i}}. {{author._id}}:
   <span *ngFor="let source of author.sources">{{source}}, </span>

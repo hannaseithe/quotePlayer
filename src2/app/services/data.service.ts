@@ -29,19 +29,31 @@ export class DataService {
 
   saveOrUpdateQuote(quote:Quote):Promise<any> {
     if (quote.ID) {
-      return this.dataSource.updateQuote(quote)
+      return this.dataSource.updateQuoteWithAuthor(quote)
     } else {
-      return this.dataSource.saveQuote(quote)
+      return this.dataSource.saveQuoteWithAuthor(quote)
     }
   }
 
-  getQuote(id: number) {
+  saveOrUpdatePlaylist(playlist: Playlist):Promise<any> {
+    if (playlist.ID) {
+      return this.dataSource.updatePlaylist(playlist)
+    } else {
+      return this.dataSource.savePlaylist(playlist)
+    }
+  }
+
+  getQuote(id: string) {
     return this.allQuotes.getValue()
     .find((element) => element.ID === id)
   }
 
   deleteQuote(quote:Quote):Promise<any> {
     return this.dataSource.deleteQuote(quote)
+  }
+
+  deletePlaylist(playlist:Playlist):Promise<any> {
+    return this.dataSource.deletePlaylist(playlist)
   }
 
 }
