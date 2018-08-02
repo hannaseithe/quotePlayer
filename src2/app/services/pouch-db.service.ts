@@ -6,6 +6,8 @@ import PouchDB from "pouchdb";
 import plugin from "pouchdb-find";
 import { Playlist } from '../data-model/playlist.model';
 
+
+
 declare global {
   interface StorageEstimate {
     quota: number;
@@ -45,19 +47,27 @@ export class PouchDbService implements DataSourceService {
           live: true,
           include_docs: true
         }).on('change', (change) => {
-          switch (change.doc.type) {
-            case 'quote':
-              this.getAllQuotes()
-              break;
-            case 'author':
-              this.getAllAuthors()
-              break;
-            case 'playlist':
-              this.getAllPlaylists()
-              break;
-            default:
-
+          if (change.doc.type) {
+            switch (change.doc.type) {
+              case 'quote':
+                this.getAllQuotes();
+                this.getAllPlaylists();
+                break;
+              case 'author':
+                this.getAllAuthors()
+                break;
+              case 'playlist':
+                this.getAllPlaylists();
+                this.getAllQuotes();
+                break;
+              default:
+            }
+          } else {
+            this.getAllQuotes();
+            this.getAllAuthors();
+            this.getAllPlaylists()
           }
+
         }).on('error', function (err) {
           console.log(err)
         })
@@ -291,8 +301,9 @@ export class PouchDbService implements DataSourceService {
   }
 
   deleteQuote(quote) {
-    return this.db.get(quote.ID)
-      .then((result) => this.db.remove(result));
+    return this.deleteQuoteFromPlaylists(quote)
+      .then(() => this.db.get(quote.ID))
+      .then((result) => this.db.remove(result))
   }
 
 
@@ -333,6 +344,57 @@ export class PouchDbService implements DataSourceService {
   deletePlaylist(playlist) {
     return this.db.get(playlist.ID)
       .then((result) => this.db.remove(result));
+  }
+
+  private removeFromArray(array, element) {
+    let ax;
+    while ((ax = array.indexOf(element)) !== -1) {
+      array.splice(ax, 1);
+    }
+    return array;
+  }
+
+  deleteQuoteFromPlaylist(playlist, index) {
+    playlist.quotes.splice(index,1);
+    return this.updatePlaylist(this.mapDoc(playlist))
+  }
+
+  private deleteQuoteFromPlaylists(quote: any) {
+    var ddoc = {
+      _id: '_design/getAllPlaylistsThatContainQuote',
+      views: {
+        index: {
+          map: function (doc) {
+            if (doc.type == 'playlist') {
+              for (let i in doc.quotes) {
+                emit(doc.quotes[i], null);
+                break;
+              }
+            }
+          }.toString()
+        }
+      }
+    }
+
+    // save the design doc
+    return this.db.put(ddoc).catch(function (err) {
+      if (err.name !== 'conflict') {
+        throw err;
+      }
+      // ignore if doc already exists
+    }).then(() => {
+      return this.db.query('getAllPlaylistsThatContainQuote/index', {
+        key: quote.ID,
+        include_docs: true
+      });
+    }).then((result) => {
+      let promiseArray = [];
+      result.rows.forEach(element => {
+        element.doc.quotes = this.removeFromArray(element.doc.quotes, quote.ID);
+        promiseArray.push(this.updatePlaylist(this.mapDoc(element.doc)));
+      });
+      return Promise.all(promiseArray)
+    })
   }
 
 }

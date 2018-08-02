@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data.service';
@@ -15,7 +15,8 @@ export class QuoteComponent implements OnInit {
 
   quoteForm: FormGroup;
   constructor(private formbuilder: FormBuilder,
-  private data: DataService) {
+  private data: DataService,
+  private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -41,9 +42,32 @@ export class QuoteComponent implements OnInit {
     
   }
 
+  ngOnChanges(changes) {
+    if(this.quote) {
+      this.quoteForm = this.formbuilder.group({
+        quote: [this.quote.quote, Validators.required],
+        author: this.quote.author,
+        source: this.quote.source,
+        tags: [this.quote.tags,[]],
+        playlists: [this.quote.playlists,[]]
+      });
+      this.cd.detectChanges();
+    }
+    
+  }
+
   onSubmit() {
-    this.quote = this.prepareSubmitQuote();
-    this.data.saveOrUpdateQuote(this.quote);
+    
+    this.data.saveOrUpdateQuote(this.prepareSubmitQuote());
+    this.quoteForm.reset();
+    this.quote = {
+      ID: null,
+      quote: '',
+      author: '',
+      source: '',
+      tags: [],
+      playlists: []
+    };
     this.close.emit(true);
   }
 

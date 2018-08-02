@@ -11,6 +11,7 @@ export interface DataSourceService {
     saveQuoteWithAuthor: Function;
     updateQuoteWithAuthor: Function;
     deleteQuote: Function;
+    deleteQuoteFromPlaylist: Function;
     savePlaylist: Function;
     updatePlaylist: Function;
     deletePlaylist: Function;

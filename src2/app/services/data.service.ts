@@ -56,4 +56,8 @@ export class DataService {
     return this.dataSource.deletePlaylist(playlist)
   }
 
+  deleteQuoteFromPlaylist(playlist, index) {
+    return this.dataSource.deleteQuoteFromPlaylist(playlist,index)
+  }
+
 }

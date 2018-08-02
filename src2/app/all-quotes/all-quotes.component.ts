@@ -17,6 +17,13 @@ export class AllQuotesComponent implements OnInit {
 
   dataSource: Quote[] = [];
   authors: any[]= [];
+  editElement: Quote; /* = {
+    quote: '',
+    author: '',
+    source: '',
+    tags:[],
+    playlists: []
+  }; */
 
   displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
 
@@ -30,15 +37,6 @@ export class AllQuotesComponent implements OnInit {
   ngOnInit() {
   }
 
-  openDialog(): void {
-    let dialogRef = this.dialog.open(QuoteDialogComponent, {
-      width: '500px'
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
-  }
 
   getAuthors(): void {
     
@@ -46,14 +44,7 @@ export class AllQuotesComponent implements OnInit {
 
 
   edit(element): void {
-    let dialogRef = this.dialog.open(QuoteDialogComponent, {
-      width: '500px',
-      data: { element: element }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    this.editElement = element;
   }
 
   delete(element): void {

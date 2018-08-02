@@ -112,5 +112,6 @@ export class LocalStorageDbService implements DataSourceService {
   updatePlaylist(){}
   savePlaylist() {}
   deletePlaylist() {}
+  deleteQuoteFromPlaylist() {}
 
 }

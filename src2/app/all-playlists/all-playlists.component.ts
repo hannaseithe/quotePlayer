@@ -20,9 +20,10 @@ export class AllPlaylistsComponent implements OnInit {
   dataSource: Playlist[] = [];
   selectedPlaylist: Playlist;
   allQuotes: Quote[];
+  editElement: Playlist;
 
   displayedColumns = ['name', 'edit'];
-  displayedColumns2 = ['quote', 'author', 'source', 'tags'];
+  displayedColumns2 = ['quote', 'author', 'source', 'tags', 'edit'];
 
   newQuoteForm = this.formbuilder.group({
     quote: ''
@@ -37,7 +38,7 @@ export class AllPlaylistsComponent implements OnInit {
       this.dataSource = x;
       if (this.selectedPlaylist) {
         this.selectedPlaylist = x.filter((x) => x.ID === this.selectedPlaylist.ID)[0]
-      }  
+      }
     });
     data.allQuotes.subscribe(x => this.allQuotes = x);
   }
@@ -62,14 +63,7 @@ export class AllPlaylistsComponent implements OnInit {
 
 
   edit(element): void {
-    let dialogRef = this.dialog.open(QuoteDialogComponent, {
-      width: '500px',
-      data: { element: element }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
+    this.editElement = element;
   }
 
   delete(element): void {
@@ -85,6 +79,9 @@ export class AllPlaylistsComponent implements OnInit {
 
       console.log('The dialog was closed');
     });
+  }
+  deleteQuote(element, index) {
+    this.data.deleteQuoteFromPlaylist(this.selectedPlaylist, index)
   }
 
 }

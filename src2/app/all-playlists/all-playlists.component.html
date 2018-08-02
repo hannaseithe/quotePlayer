@@ -1,6 +1,6 @@
 <div class="container" fxLayout fxLayout.xs="column" fxLayoutAlign="center" fxLayoutGap="10px" fxLayoutGap.xs="0">
   <div class="item item-1" fxFlex="35%">
-    <app-playlist></app-playlist>
+    <app-playlist  [playlist]="editElement"></app-playlist>
     <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
 
       <ng-container matColumnDef="name">
@@ -22,7 +22,8 @@
 
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"></mat-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)"
+      [ngClass]="{'highlight': selectedPlaylist?.ID == row.ID}"></mat-row>
     </mat-table>
   </div>
   <div class="item item-1" fxFlex="65%">
@@ -70,8 +71,22 @@
           </mat-cell>
         </ng-container>
 
+        <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef></mat-header-cell>
+            <mat-cell *matCellDef="let element">
+              
+              <button mat-button (click)="deleteQuote(element,index)">
+                <mat-icon>delete</mat-icon>
+              </button>
+              <button mat-button (click)="sort(element)">
+                  <mat-icon>list</mat-icon>
+                </button>
+            </mat-cell>
+          </ng-container>
+
         <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns2;"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns2;let i = index" 
+        ></mat-row>
       </mat-table>
     </div>
   </div>

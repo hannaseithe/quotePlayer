@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from '../services/data.service';
 import { Playlist } from '../data-model/playlist.model';
@@ -14,7 +14,8 @@ export class PlaylistComponent implements OnInit {
 
   playlistForm: FormGroup;
   constructor(private formbuilder: FormBuilder,
-  private data: DataService) {
+  private data: DataService,
+  private cd: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -33,9 +34,25 @@ export class PlaylistComponent implements OnInit {
     
   }
 
+  ngOnChanges(changes) {
+    if(this.playlist) {
+      this.playlistForm = this.formbuilder.group({
+        name: this.playlist.name
+      });
+      this.cd.detectChanges();
+    }
+    
+  }
+
   onSubmit() {
-    this.playlist = this.prepareSubmitPlaylist();
-    this.data.saveOrUpdatePlaylist(this.playlist);
+    this.data.saveOrUpdatePlaylist(this.prepareSubmitPlaylist());
+
+    this.playlistForm.reset();
+    this.playlist = {
+      ID : null,
+      name: '',
+      quotes: []
+    };
   }
 
   prepareSubmitPlaylist() {
