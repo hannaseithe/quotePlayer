@@ -1,33 +1,19 @@
 <mat-card>
   <mat-card-content>
-<!--     <form [formGroup]="quoteForm" (ngSubmit)="onSubmit()">
-      <section>
-        <mat-form-field>
-          <textarea matInput type="text" formControlName="text" placeholder="Quote"></textarea>
-        </mat-form-field>
-      </section>
-      <section>
-        <mat-form-field>
-          <input matInput type="text"  formControlName="author" placeholder="Author">
-        </mat-form-field>
-      </section>
-      <section>
-        <mat-form-field>
-          <input matInput type="text"  formControlName="source" placeholder="Source">
-        </mat-form-field>
-      </section>
 
-      <button mat-button [disabled]="quoteForm.pristine" type="reset">
-        <mat-icon>cancel</mat-icon>
-      </button>
-      <button mat-button [disabled]="quoteForm.pristine" type="submit">
-        <mat-icon>send</mat-icon>
-      </button>
-
-    </form> -->
     <button mat-stroked-button (click)="openBackground()">
       Edit Quotes
     </button>
+    <form [formGroup]="playlistForm">
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Select Playlist" aria-label="Assignee" matInput formControlName="playlist" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let playlist of playlists" [value]="playlist">
+            {{playlist.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
   </mat-card-content>
   <mat-card-footer class="popup-footer">
     <mat-slider thumbLabel step="1" max="30" (change)="update($event.value)" [value]=state.minutes [disabled]="state.running" ></mat-slider>

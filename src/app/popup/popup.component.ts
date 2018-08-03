@@ -19,6 +19,11 @@ export class PopupComponent implements OnInit {
         running: false,
         minutes: 1
     }   
+    playlists;
+
+    playlistForm = this.formbuilder.group({
+        playlist: null
+      });
 
     update(value) {
         this.state.minutes = value;
@@ -27,8 +32,15 @@ export class PopupComponent implements OnInit {
     getState() {
         let that = this;
         chrome.runtime.sendMessage({ msg: "getState" }, function (response) {
+            console.log(that);
+            console.log("response", response);
             that.state.running = response.running;
             that.state.minutes = response.minutes;
+            that.playlists = response.playlists;
+            if (!that.playlistForm.value.playlist) {
+                that.playlistForm.value.playlist = that.playlists[0]
+            }
+            
             console.log(that.state);
             that.ref.detectChanges();
         });
@@ -36,7 +48,8 @@ export class PopupComponent implements OnInit {
     
     startTimer() {
         let that = this;
-        chrome.runtime.sendMessage({ msg: "startTimer", minutes: this.state.minutes }, function (response) {
+        chrome.runtime.sendMessage({ msg: "startTimer", 
+        minutes: this.state.minutes, playlist: this.playlistForm.value.playlist }, function (response) {
             that.state.running = response.running;
             that.ref.detectChanges();
         });
@@ -70,6 +83,8 @@ export class PopupComponent implements OnInit {
     ngOnInit() {
         this.getState();
     }
+
+    displayFn = (q) => q ? q.name : undefined;
 
     openBackground() {
         chrome.tabs.create({url: chrome.extension.getURL('app2/index.html')});

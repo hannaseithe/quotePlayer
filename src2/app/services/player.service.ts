@@ -13,13 +13,15 @@ export class PlayerService {
   private state = {
     count: 0,
     running: false,
-    minutes: 1
+    minutes: 1,
+    playlists: []
   }
 
 
   constructor(private data: DataService) {
     let that = this;
     console.log('constructor Player');
+
     chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
       if (id === "quote" + that.notificationId) {
         if (buttonIndex === 0) {
@@ -44,8 +46,9 @@ export class PlayerService {
             sendResponse(that.state);
             break;
           case "startTimer":
-            that.startInterval(request.minutes);
-            sendResponse(that.state);
+            if (that.startInterval(request.minutes, request.playlist)) {
+              sendResponse(that.state)
+            };
             break;
           case "stopTimer":
             that.stopInterval();
@@ -60,6 +63,7 @@ export class PlayerService {
   }
 
   init() {
+    this.data.allPlaylists.subscribe(x => this.state.playlists = x);
     /* this.data.currentQuotes.subscribe(x => this.quotes = x) */
   }
 
@@ -71,14 +75,25 @@ export class PlayerService {
     this.state.running = false;
   }
 
-  startInterval = function (duration) {
+  startInterval = function (duration, playlist) {
     this.state.running = true;
     this.state.minutes = duration || 1;
-    this.startTimer(this.state.minutes);
+    this.state.playlist = playlist;
+    this.quotes = playlist.quoteDocs;
+    return this.startTimer(this.state.minutes);
   }
 
   private startTimer(minutes) {
-    this.timeoutId = setTimeout(() => {
+    if (this.quotes.length === 0) {
+      chrome.notifications.create("emptyPlaylist", {
+        type: "basic",
+        title: "Your selected Playlist is empty",
+        message: "Please select a different playlist that contains quotes",
+        iconUrl: "../icong.png"
+      });
+      return false;
+    } else {
+      this.timeoutId = setTimeout(() => {
       var options = {
         type: "basic",
         title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
@@ -96,5 +111,8 @@ export class PlayerService {
       this.state.count++;
 
     }, minutes * 60000);
+    return true
+    }
+    
   }
 }

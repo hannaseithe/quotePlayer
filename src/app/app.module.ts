@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule } from '@angular/core';
-import { MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { MatAutocompleteModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 
 
@@ -26,7 +26,8 @@ import { PopupComponent } from './popup/popup.component';
     MatFormFieldModule,
     MatCardModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -5,6 +5,7 @@ import { MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule,
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
+import { DragulaModule } from 'ng2-dragula';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -58,7 +59,8 @@ export function init_app(appLoadService: AppLoadService) {
     MatToolbarModule,
     MatChipsModule,
     MatAutocompleteModule,
-    TagInputModule
+    TagInputModule,
+    DragulaModule.forRoot()
   ],
   providers: [
     PouchDbService,

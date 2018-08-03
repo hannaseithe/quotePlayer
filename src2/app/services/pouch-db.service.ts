@@ -190,7 +190,7 @@ export class PouchDbService implements DataSourceService {
             if (doc.type == 'playlist') {
               emit([doc._id, 0], null);
               for (var i in doc.quotes) {
-                emit([doc._id, 1], { _id: doc.quotes[i] });
+                emit([doc._id, i + 1], { _id: doc.quotes[i] });
               }
             }
           }.toString()
