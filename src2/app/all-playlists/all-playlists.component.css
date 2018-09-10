@@ -4,7 +4,12 @@
 
   .mat-header-cell > div, .mat-cell > div{
     white-space: nowrap;
-    overflow: hidden;
+    overflow-x: hidden;
     text-overflow: ellipsis;
     display: block;
+    padding-left:11px;
+}
+
+.quotes-in-playlist mat-cell:first-child {
+  padding-left: 0px;
 }
