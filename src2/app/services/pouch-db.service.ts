@@ -4,6 +4,7 @@ import { BehaviorSubject } from '../../../node_modules/rxjs/BehaviorSubject';
 import { Quote } from '../data-model/quote.model';
 import PouchDB from "pouchdb";
 import plugin from "pouchdb-find";
+import debugPlugin from "pouchdb-debug";
 import { Playlist } from '../data-model/playlist.model';
 
 
@@ -42,6 +43,8 @@ export class PouchDbService implements DataSourceService {
       .then(() => {
         this.db = new PouchDB('quote_database');
         PouchDB.plugin(plugin);
+        PouchDB.plugin(debugPlugin);
+        PouchDB.debug.enable('*');
         this.db.changes({
           since: 'now',
           live: true,
@@ -63,9 +66,9 @@ export class PouchDbService implements DataSourceService {
               default:
             }
           } else {
-            this.getAllQuotes();
+            /* this.getAllQuotes();
             this.getAllAuthors();
-            this.getAllPlaylists()
+            this.getAllPlaylists() */
           }
 
         }).on('error', function (err) {
@@ -359,16 +362,19 @@ export class PouchDbService implements DataSourceService {
     return this.updatePlaylist(this.mapDoc(playlist))
   }
 
+ 
+
   private deleteQuoteFromPlaylists(quote: any) {
+
     var ddoc = {
       _id: '_design/getAllPlaylistsThatContainQuote',
       views: {
         index: {
           map: function (doc) {
+            console.log();
             if (doc.type == 'playlist') {
               for (let i in doc.quotes) {
                 emit(doc.quotes[i], null);
-                break;
               }
             }
           }.toString()
@@ -394,7 +400,9 @@ export class PouchDbService implements DataSourceService {
         promiseArray.push(this.updatePlaylist(this.mapDoc(element.doc)));
       });
       return Promise.all(promiseArray)
-    })
+    }).catch(function (err) {
+      console.log("ERROR in deleteQuoteFromPlaylists", err);
+    });
   }
 
 }

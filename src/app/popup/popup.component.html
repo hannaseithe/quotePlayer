@@ -1,30 +1,32 @@
-<mat-card>
+<mat-card class="player">
   <mat-card-content>
+    <mat-slider thumbLabel step="1" max="30" (change)="update($event.value)" aria-label="Assignee" [value]=state.minutes [disabled]="state.running"></mat-slider>
+    <span class="slider-label">Speed: {{state.minutes}} minutes</span>
 
-    <button mat-stroked-button (click)="openBackground()">
-      Edit Quotes
-    </button>
+
     <form [formGroup]="playlistForm">
       <mat-form-field class="example-full-width">
         <input type="text" placeholder="Select Playlist" aria-label="Assignee" matInput formControlName="playlist" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-autocomplete color="accent" #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let playlist of playlists" [value]="playlist">
             {{playlist.name}}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
     </form>
-  </mat-card-content>
-  <mat-card-footer class="popup-footer">
-    <mat-slider thumbLabel step="1" max="30" (change)="update($event.value)" [value]=state.minutes [disabled]="state.running" ></mat-slider>
-    <mat-card-subtitle>Speed: {{state.minutes}} minutes</mat-card-subtitle>
-    <button mat-button id="play" (click)="startTimer()" [disabled]="state.running" matTooltip="Start showing Quotes">
+    <button mat-button color="accent" id="play" (click)="startTimer()" [disabled]="state.running" matTooltip="Start showing Quotes">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button mat-button id="stop" (click)="stopTimer()" [disabled]="!state.running">
+    <button mat-button color="accent" id="stop" (click)="stopTimer()" [disabled]="!state.running">
       <mat-icon>stop</mat-icon>
     </button>
 
-  </mat-card-footer>
+  </mat-card-content>
+  <mat-card-content class="popup-footer">
+    <button mat-button color="primary" (click)="openBackground()">
+      Edit Playlists
+    </button>
+
+  </mat-card-content>
 
 </mat-card>

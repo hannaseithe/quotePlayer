@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule } from '@angular/material';
+import { MatTooltipModule, MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
@@ -15,7 +15,7 @@ import { DataService } from './services/data.service';
 import { LocalStorageDbService } from './services/local-storage-db.service';
 import { PlayerService } from './services/player.service';
 import { AppLoadService } from './services/app-load.service';
-import { AllQuotesComponent } from './all-quotes/all-quotes.component';
+import { AllQuotesComponent, DatasourceFilterPipe } from './all-quotes/all-quotes.component';
 import { CdkTableModule } from '@angular/cdk/table';
 import { QuoteDialogComponent } from './quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from './check-delete-dialog/check-delete-dialog.component';
@@ -40,7 +40,8 @@ export function init_app(appLoadService: AppLoadService) {
     NavbarComponent,
     BackgroundComponent,
     AllPlaylistsComponent,
-    PlaylistComponent
+    PlaylistComponent,
+    DatasourceFilterPipe
   ],
   imports: [
     CdkTableModule,
@@ -59,6 +60,7 @@ export function init_app(appLoadService: AppLoadService) {
     MatToolbarModule,
     MatChipsModule,
     MatAutocompleteModule,
+    MatTooltipModule,
     TagInputModule,
     DragulaModule.forRoot()
   ],

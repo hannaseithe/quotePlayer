@@ -49,7 +49,7 @@
 
         <ng-container matColumnDef="quote">
           <mat-header-cell *matHeaderCellDef> Quote </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.quote}} </mat-cell>
+          <mat-cell *matCellDef="let element" [matTooltip]="element.quote" matTooltipPosition="right" matTooltipShowDelay="1000"> <div>{{element.quote}}</div> </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="author">

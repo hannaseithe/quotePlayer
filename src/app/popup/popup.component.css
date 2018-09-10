@@ -1,5 +1,25 @@
 .popup-footer {
     text-align: center;
-    border-top: 1px solid lightgrey;
-    background: #f4f4f4;
+    border-top: 1px solid rgb(134, 150, 202);
+}
+
+.popup-footer button {
+    width: 100%;
+}
+
+.mat-slider-horizontal {
+    width: 100%;
+}
+
+.player {
+    background: linear-gradient(rgb(226, 232, 250) 20%,rgb(188, 204, 255));
+    border: 3px solid rgb(134, 150, 202)
+}
+
+.slider-label {
+    font-size: 70%;
+    color: grey;
+    position: absolute;
+    right: 0;
+    top: 32px;
 }

@@ -1,3 +1,10 @@
 .highlight{
     background: lightblue;
   }
+
+  .mat-header-cell > div, .mat-cell > div{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}

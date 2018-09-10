@@ -1,6 +1,10 @@
-.mat-header-cell, .mat-cell {
-    padding: 0 3px;
+.mat-header-cell > div, .mat-cell > div{
     white-space: nowrap;
     overflow: hidden;
-  text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+.mat-header-cell:not(:last-child), .mat-cell:not(:last-child) {
+  padding-right: 6px;
 }

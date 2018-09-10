@@ -8,6 +8,30 @@ import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-
 import { PlayerService } from '../services/player.service';
 import { Observable } from '../../../node_modules/rxjs/Observable';
 
+import { Pipe, PipeTransform } from '@angular/core';
+
+@Pipe({
+  name: 'datasourceFilter',
+  pure: false
+})
+export class DatasourceFilterPipe implements PipeTransform {
+  transform(items: any[], filter: any): any {
+    if (!items || (Object.keys(filter).length === 0 && filter.constructor === Object)) {
+      return items;
+    }
+
+
+    return items.filter(item => {
+      for (let filterKey in filter) {
+        if (item[filterKey].toString().indexOf(filter[filterKey].value) === -1) {
+          return false
+        }
+      }
+      return true
+    });
+  }
+}
+
 @Component({
   selector: 'app-all-quotes',
   templateUrl: './all-quotes.component.html',
@@ -16,7 +40,7 @@ import { Observable } from '../../../node_modules/rxjs/Observable';
 export class AllQuotesComponent implements OnInit {
 
   dataSource: Quote[] = [];
-  authors: any[]= [];
+  authors: any[] = [];
   editElement: Quote; /* = {
     quote: '',
     author: '',
@@ -24,6 +48,7 @@ export class AllQuotesComponent implements OnInit {
     tags:[],
     playlists: []
   }; */
+  filterArgs = {};
 
   displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
 
@@ -39,7 +64,7 @@ export class AllQuotesComponent implements OnInit {
 
 
   getAuthors(): void {
-    
+
   }
 
 
@@ -60,5 +85,12 @@ export class AllQuotesComponent implements OnInit {
 
       console.log('The dialog was closed');
     });
+  }
+
+  applyFilter(field: string, value: string) {
+    this.filterArgs[field] = {
+      value: value.trim(),
+      field: field
+    }
   }
 }

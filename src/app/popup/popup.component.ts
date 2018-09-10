@@ -38,7 +38,9 @@ export class PopupComponent implements OnInit {
             that.state.minutes = response.minutes;
             that.playlists = response.playlists;
             if (!that.playlistForm.value.playlist) {
-                that.playlistForm.value.playlist = that.playlists[0]
+                that.playlistForm.patchValue({
+                    playlist: that.playlists[0]
+                })
             }
             
             console.log(that.state);

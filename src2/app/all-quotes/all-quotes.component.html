@@ -1,32 +1,60 @@
 <app-quote [quote]="editElement"></app-quote>
 
-<mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">
+<mat-table #table [dataSource]="dataSource | datasourceFilter:filterArgs" class="mat-elevation-z8">
 
   <ng-container matColumnDef="quote">
-    <mat-header-cell *matHeaderCellDef> Quote </mat-header-cell>
-    <mat-cell *matCellDef="let element"> {{element.quote}} </mat-cell>
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter('quote', $event.target.value)" placeholder="Filter Quotes">
+      </mat-form-field>
+
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element" [matTooltip]="element.quote" matTooltipPosition="right" matTooltipShowDelay="1000">
+      <div>{{element.quote}}</div>
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="author">
-    <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter('author', $event.target.value)" placeholder="Filter Authors">
+      </mat-form-field>
+    </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="source">
-    <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter('source', $event.target.value)" placeholder="Filter Sources">
+      </mat-form-field>
+    </mat-header-cell>
     <mat-cell *matCellDef="let element"> {{element.source}} </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="tags">
-    <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
-    <mat-cell *matCellDef="let element"> 
-      <mat-chip-list *ngFor="let tag of element.tags"><mat-chip>{{tag}}</mat-chip></mat-chip-list>
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
+        <input matInput (keyup)="applyFilter('tags', $event.target.value)" placeholder="Filter Tags">
+      </mat-form-field>
+    </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-chip-list *ngFor="let tag of element.tags">
+        <mat-chip color="accent">{{tag}}</mat-chip>
+      </mat-chip-list>
     </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="playlists">
-    <mat-header-cell *matHeaderCellDef> Playlist </mat-header-cell>
-    <mat-cell *matCellDef="let element"> <span *ngFor="let playlist of element.playlists">{{playlist}} </span></mat-cell>
+    <mat-header-cell *matHeaderCellDef> <mat-form-field>
+        <input matInput (keyup)="applyFilter('playlists', $event.target.value)" placeholder="Filter Playlists">
+      </mat-form-field> </mat-header-cell>
+    <mat-cell *matCellDef="let element">
+      <mat-chip-list *ngFor="let playlist of element.playlists">
+        <mat-chip color="primary" selected>{{playlist}}</mat-chip>
+      </mat-chip-list>
+
+    </mat-cell>
   </ng-container>
 
   <ng-container matColumnDef="edit">
@@ -47,6 +75,6 @@
 </mat-table>
 
 <div *ngFor="let author of authors; let i = index">
-    {{i}}. {{author._id}}:
-    <span *ngFor="let source of author.sources">{{source}}, </span>
-  </div>
+  {{i}}. {{author._id}}:
+  <span *ngFor="let source of author.sources">{{source}}, </span>
+</div>

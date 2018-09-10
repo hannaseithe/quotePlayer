@@ -31,6 +31,7 @@
     "ng2-dragula": "^2.0.2",
     "ngx-chips": "^1.9.2",
     "pouchdb": "^7.0.0",
+    "pouchdb-debug": "^7.0.0",
     "pouchdb-find": "^7.0.0",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",

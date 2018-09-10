@@ -1,2 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+.mat-slider-horizontal .mat-slider-wrapper {
+    left: 0px;
+    right: 0px;
+}
+body {
+    margin:0px;
+}

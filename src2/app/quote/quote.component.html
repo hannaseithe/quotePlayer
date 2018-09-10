@@ -5,7 +5,7 @@
 
       <div fxFlex="16%" fxLayout fxLayout.xs="row" fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.xs="0">
         <mat-form-field fxFlex="100% 0" fxFlexAlign="end">
-          <textarea matInput type="text" formControlName="quote" placeholder="Quote" matTextareaAutosize></textarea>
+          <textarea matInput type="text" formControlName="quote" placeholder="Enter a new Quote" matTextareaAutosize></textarea>
         </mat-form-field>
       </div>
 
@@ -22,19 +22,33 @@
       </div>
 
       <div fxFlex="16%" fxLayout fxLayout.xs="row" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
-        <tag-input formControlName="tags" fxFlex="100% 0" fxFlexAlign="end" class="mat-form-field-wrapper tag-input"></tag-input>
+        <mat-form-field fxFlex="100% 0" fxFlexAlign="end">
+          <mat-chip-list #chipList>
+            <!-- formControlName="tags" [formControl]="quoteForm.controls.tags" -->
+            <mat-chip *ngFor="let tag of tags; let i = index" [selectable]="selectable" [removable]="removable" (removed)="removeTag(i)">
+              {{tag}}
+              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="New tag" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+              (matChipInputTokenEnd)="addTag($event)">
+          </mat-chip-list>
+        </mat-form-field>
+        <!-- <tag-input formControlName="tags" fxFlex="100% 0" fxFlexAlign="end" class="mat-form-field-wrapper tag-input"></tag-input> -->
+      </div>
+      <div fxFlex="16%" fxLayout fxLayout.xs="row" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
       </div>
 
 
-      <div fxFlex="16%" fxLayout fxLayout.xs="row" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0"></div>
       <div fxFlex="16%" fxLayout fxLayout.xs="row" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
         <div fxFlex="100% 0" fxFlexAlign="end" class="mat-form-field-wrapper">
-          <button mat-button [disabled]="quoteForm.pristine" type="reset">
+          <button mat-button [disabled]="!quoteForm.touched" type="reset" (click)="extraReset()">
             <mat-icon>cancel</mat-icon>
           </button>
-          <button mat-button [disabled]="quoteForm.pristine" type="submit">
+          <!-- <button mat-button [disabled]="!quoteForm.touched" type="submit">
+
             <mat-icon>send</mat-icon>
-          </button>
+          </button> -->
+          <button (click)="submitForm()" type="button" mat-button [disabled]="!quoteForm.touched"> <mat-icon>send</mat-icon></button>
         </div>
 
       </div>
