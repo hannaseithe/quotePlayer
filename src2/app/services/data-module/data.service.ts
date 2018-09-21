@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { DataSourceService } from '../data-model/data-source.model';
-import { Quote } from '../data-model/quote.model';
+import { DataSourceService } from '../../data-model/data-source.model';
+import { Quote } from '../../data-model/quote.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Playlist } from '../data-model/playlist.model';
+import { Playlist } from '../../data-model/playlist.model';
 
 @Injectable()
 export class DataService {

@@ -9,7 +9,7 @@
     },
     "permissions": ["notifications","tabs"],
     "background": {
-        "page": "app2/index.html#/background",
+        "page": "app3/index.html",
         "persistent": true
     },
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",

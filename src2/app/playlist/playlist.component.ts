@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { DataService } from '../services/data.service';
+import { DataService } from '../services/data-module/data.service';
 import { Playlist } from '../data-model/playlist.model';
 
 @Component({

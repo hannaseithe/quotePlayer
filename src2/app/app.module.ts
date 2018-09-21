@@ -6,13 +6,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
 import { DragulaModule } from 'ng2-dragula';
+import { DataModule } from './services/data-module/data.module';
 
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { QuoteComponent } from './quote/quote.component';
-import { DataService } from './services/data.service';
-import { LocalStorageDbService } from './services/local-storage-db.service';
+import { DataService } from './services/data-module/data.service';
+import { LocalStorageDbService } from './services/data-module/local-storage-db.service';
 import { PlayerService } from './services/player.service';
 import { AppLoadService } from './services/app-load.service';
 import { AllQuotesComponent, DatasourceFilterPipe } from './all-quotes/all-quotes.component';
@@ -23,7 +24,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { BackgroundComponent } from './background/background.component';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
-import { PouchDbService } from './services/pouch-db.service';
+import { PouchDbService } from './services/data-module/pouch-db.service';
 import { PlaylistComponent } from './playlist/playlist.component';
 
 export function init_app(appLoadService: AppLoadService) {
@@ -65,16 +66,13 @@ export function init_app(appLoadService: AppLoadService) {
     MatGridListModule,
     MatCheckboxModule,
     TagInputModule,
-    DragulaModule.forRoot()
+    DragulaModule.forRoot(),
+    DataModule.forRoot(),
   ],
   providers: [
-    PouchDbService,
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     AppLoadService,
-    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
-    DataService,
-    LocalStorageDbService,
-    PlayerService
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
   ],
   entryComponents: [QuoteDialogComponent, CheckDeleteDialogComponent],
   bootstrap: [AppComponent]

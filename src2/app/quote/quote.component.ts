@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Quote } from '../data-model/quote.model';
-import { DataService } from '../services/data.service';
-import { MatChipInputEvent } from '../../../node_modules/@angular/material';
+import { DataService } from '../services/data-module/data.service';
+import { MatChipInputEvent } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 @Component({

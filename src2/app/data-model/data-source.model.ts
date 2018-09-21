@@ -1,6 +1,6 @@
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Quote } from "./quote.model";
-import { Observable } from "../../../node_modules/rxjs/Observable";
+import { Observable } from "rxjs/Observable";
 import { Playlist } from "./playlist.model";
 
 export interface DataSourceService {

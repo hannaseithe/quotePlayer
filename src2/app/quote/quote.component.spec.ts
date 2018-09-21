@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { QuoteComponent } from './quote.component';
 import { MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule } from '@angular/material';
 import { FormBuilder, ReactiveFormsModule, FormGroup } from '@angular/forms';
-import { DataService } from '../services/data.service';
+import { DataService } from '../services/data-module/data.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 class MockDataService {

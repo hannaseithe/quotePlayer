@@ -1,10 +1,10 @@
 /// <reference types="../localstoragedb/localStorageDB"/>
 
 import { Injectable } from '@angular/core';
-import { DataSourceService } from '../data-model/data-source.model';
+import { DataSourceService } from '../../data-model/data-source.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Quote } from '../data-model/quote.model';
-import { Playlist } from '../data-model/playlist.model';
+import { Quote } from '../../data-model/quote.model';
+import { Playlist } from '../../data-model/playlist.model';
 
 @Injectable()
 export class LocalStorageDbService implements DataSourceService {

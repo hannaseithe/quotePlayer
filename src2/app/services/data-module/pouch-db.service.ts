@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { DataSourceService } from '../data-model/data-source.model';
-import { BehaviorSubject } from '../../../node_modules/rxjs/BehaviorSubject';
-import { Quote } from '../data-model/quote.model';
+import { DataSourceService } from '../../data-model/data-source.model';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Quote } from '../../data-model/quote.model';
 import PouchDB from "pouchdb";
 import plugin from "pouchdb-find";
 import debugPlugin from "pouchdb-debug";
-import { Playlist } from '../data-model/playlist.model';
+import { Playlist } from '../../data-model/playlist.model';
 
 
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject, PipeTransform, Pipe } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import { Quote } from '../data-model/quote.model';
-import { DataService } from '../services/data.service';
+import { DataService } from '../services/data-module/data.service';
 import { PlayerService } from '../services/player.service';
 import { SelectionModel } from '@angular/cdk/collections';
 

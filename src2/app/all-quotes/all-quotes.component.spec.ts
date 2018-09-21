@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import { AllQuotesComponent } from './all-quotes.component';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
-import { DataService } from '../services/data.service';
+import { DataService } from '../services/data-module/data.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTableModule, MatIconModule, MatDialogModule } from '@angular/material';

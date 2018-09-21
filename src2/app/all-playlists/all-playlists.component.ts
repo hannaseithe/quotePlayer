@@ -1,15 +1,14 @@
 import { Component, OnInit, ChangeDetectorRef, Pipe, PipeTransform } from '@angular/core';
 import { Quote } from '../data-model/quote.model';
-import { DataService } from '../services/data.service';
+import { DataService } from '../services/data-module/data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { MatTableDataSource, MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
-import { PlayerService } from '../services/player.service';
-import { Observable } from '../../../node_modules/rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 import { map, startWith } from 'rxjs/operators';
 import { Playlist } from '../data-model/playlist.model';
-import { FormControl, FormBuilder } from '../../../node_modules/@angular/forms';
+import { FormControl, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
 
@@ -42,8 +41,6 @@ export class AllPlaylistsComponent implements OnInit {
 
   constructor(private data: DataService,
     public dialog: MatDialog,
-    private player: PlayerService,
-    private formbuilder: FormBuilder,
     private dragulaService: DragulaService,
     private cd: ChangeDetectorRef) {
 

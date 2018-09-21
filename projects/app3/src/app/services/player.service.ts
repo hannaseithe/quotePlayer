@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { DataService } from './data-module/data.service';
+import { DataService } from '../../../../../src2/app/services/data-module/data.service';
 import { Observable } from 'rxjs/Observable';
-import { Quote } from '../data-model/quote.model';
+import { Quote } from '../../../../../src2/app/data-model/quote.model';
+import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
 
 @Injectable()
 export class PlayerService {
@@ -21,8 +22,14 @@ export class PlayerService {
   }
 
 
-  constructor(private data: DataService) {
+  constructor(private data: DataService,private pouchDb:PouchDbService) {
     let that = this;
+
+    this.pouchDb.init()
+      .then(() => {
+        this.data.init(this.pouchDb);
+        this.data.allPlaylists.subscribe(x => this.state.playlists = x);
+      })
 
     chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
       if (id === "quote" + that.notificationId) {
@@ -62,7 +69,7 @@ export class PlayerService {
         }
       });
 
-      this.data.allPlaylists.subscribe(x => this.state.playlists = x);
+      
 
   }
 
