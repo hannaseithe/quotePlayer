@@ -17,7 +17,10 @@ export class PopupComponent implements OnInit {
 
     public state = {
         running: false,
-        minutes: 1
+        minutes: 1,
+        playlist: null,
+        playlists: [],
+        count: 0
     }   
     playlists;
 
@@ -34,12 +37,11 @@ export class PopupComponent implements OnInit {
         chrome.runtime.sendMessage({ msg: "getState" }, function (response) {
             console.log(that);
             console.log("response", response);
-            that.state.running = response.running;
-            that.state.minutes = response.minutes;
+            that.state = response;
             that.playlists = response.playlists;
             if (!that.playlistForm.value.playlist) {
                 that.playlistForm.patchValue({
-                    playlist: that.playlists[0]
+                    playlist: that.state.playlist ? that.state.playlist : that.state.playlists[0]
                 })
             }
             

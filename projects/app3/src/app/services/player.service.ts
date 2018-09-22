@@ -18,11 +18,12 @@ export class PlayerService {
     count: 0,
     running: false,
     minutes: 1,
-    playlists: []
+    playlists: [],
+    playlist: null
   }
 
 
-  constructor(private data: DataService,private pouchDb:PouchDbService) {
+  constructor(private data: DataService, private pouchDb: PouchDbService) {
     let that = this;
 
     this.pouchDb.init()
@@ -69,7 +70,7 @@ export class PlayerService {
         }
       });
 
-      
+
 
   }
 
@@ -79,6 +80,8 @@ export class PlayerService {
     this.notificationId++;
     clearTimeout(this.timeoutId);
     this.state.running = false;
+    chrome.runtime.sendMessage({ msg: "updateState", data: this.state }, function (response) {
+    });
   }
 
   startInterval = function (duration, playlist) {
@@ -94,8 +97,8 @@ export class PlayerService {
     var line = '';
     let point, lineHeight;
 
-    point = Math.ceil(300/(words.length + 4))+ 12;
-    context.font = point +"pt Calibri";
+    point = Math.ceil(300 / (words.length + 4)) + 12;
+    context.font = point + "pt Calibri";
     context.fillStyle = 'white';
     lineHeight = point + 10;
     for (var n = 0; n < words.length; n++) {
@@ -106,7 +109,7 @@ export class PlayerService {
         y += lineHeight;
         context.fillText(line, x, y);
         line = words[n] + ' ';
-        
+
       }
       else {
         line = testLine;
@@ -124,8 +127,8 @@ export class PlayerService {
       var maxWidth = 440;
       var x = (canvas.width - maxWidth) / 2;
       var y = 15;
-  
-      this.wrapText(context,text,x,y,maxWidth); 
+
+      this.wrapText(context, text, x, y, maxWidth);
     }
 
     if (!this.quotes) {
@@ -160,9 +163,8 @@ export class PlayerService {
         var options = {
           type: "image",
           title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
-          message: this.quotes[this.state.count % this.quotes.length].quote.substring(0,25)+' ...',
-          contextMessage: "Source: " + this.quotes[this.state.count % this.quotes.length].source ? 
-          this.quotes[this.state.count % this.quotes.length].source : 'Unknown',
+          message: this.quotes[this.state.count % this.quotes.length].quote.substring(0, 25) + ' ...',
+          contextMessage: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
           imageUrl: canvas.toDataURL('image/png'),
           buttons: [
             { title: "Next Quote" },
