@@ -35,6 +35,10 @@ export class DataService {
     }
   }
 
+  saveQuotes(quotes: Quote[]):Promise<any> {
+    return this.dataSource.saveQuotes(quotes);
+  }
+
   saveOrUpdatePlaylist(playlist: Playlist):Promise<any> {
     if (playlist.ID) {
       return this.dataSource.updatePlaylist(playlist)

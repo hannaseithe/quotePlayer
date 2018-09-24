@@ -309,6 +309,15 @@ export class PouchDbService implements DataSourceService {
       .then((result) => this.db.remove(result))
   }
 
+  saveQuotes(quotes) {
+    let mappedQuotes = quotes.map(x => {
+      x.type = "quote";
+      return x
+    });
+
+    this.db.bulkDocs(mappedQuotes);
+  }
+
 
   private saveAndUpdateAuthorWithSource(author, source) {
     author.type = "author";

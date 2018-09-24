@@ -141,9 +141,14 @@ export class AllQuotesComponent implements OnInit {
 			const ws: XLSX.WorkSheet = workbook.Sheets[wsname];
 
 			/* save data */
-      that.wbData = (XLSX.utils.sheet_to_json(ws, {header: 1}));
-      console.log(that.wbData)
-      
+      let wbData = (XLSX.utils.sheet_to_json(ws, {defval: null}));
+      let parsedData = wbData.map((x:any) => {
+        x.tags = x.tags.split(", ");
+        return x 
+      })
+
+      that.data.saveQuotes(parsedData as any);
+
     }
 
     req.send();

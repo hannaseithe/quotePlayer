@@ -9,6 +9,7 @@ export interface DataSourceService {
     allAuthors: BehaviorSubject<any[]>;
     allPlaylists: BehaviorSubject<Playlist[]>;
     saveQuoteWithAuthor: Function;
+    saveQuotes: Function;
     updateQuoteWithAuthor: Function;
     deleteQuote: Function;
     deleteQuoteFromPlaylist: Function;
