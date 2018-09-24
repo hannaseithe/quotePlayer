@@ -22,7 +22,7 @@ export class DatasourceFilterPipe implements PipeTransform {
 
     return items.filter(item => {
       for (let filterKey in filter) {
-        if (item[filterKey].toString().indexOf(filter[filterKey].value) === -1) {
+        if ((item[filterKey] || "").toString().indexOf(filter[filterKey].value) === -1) {
           return false
         }
       }
@@ -39,6 +39,7 @@ export class DatasourceFilterPipe implements PipeTransform {
 export class AllQuotesComponent implements OnInit {
 
   dataSource: Quote[] = [];
+  paginatedDatasource: Quote[];
   authors: any[] = [];
   editElement: Quote; /* = {
     quote: '',
@@ -48,12 +49,22 @@ export class AllQuotesComponent implements OnInit {
     playlists: []
   }; */
   filterArgs = {};
+  dsPipe = new DatasourceFilterPipe;
+  pageEvent = {
+    length: 0,
+    pageIndex: 0,
+    pageSize: 5,
+    previousPageIndex: 0
+  };
 
   displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
 
   constructor(private data: DataService,
     public dialog: MatDialog) {
-    data.allQuotes.subscribe(x => this.dataSource = x);
+    data.allQuotes.subscribe(x => {
+      this.dataSource = x;
+      this.updateDatasource();
+    });
     data.allAuthors.subscribe(x => this.authors = x);
   }
 
@@ -65,7 +76,17 @@ export class AllQuotesComponent implements OnInit {
 
   }
 
+  handlePageEvent(event) {
+    this.pageEvent = event;
+    this.updateDatasource();
+  }
 
+  updateDatasource() {
+    this.paginatedDatasource = this.dsPipe
+      .transform(this.dataSource, this.filterArgs)
+      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+    console.log(event);
+  }
   edit(element): void {
     this.editElement = element;
   }
@@ -90,5 +111,9 @@ export class AllQuotesComponent implements OnInit {
       value: value.trim(),
       field: field
     }
+    this.paginatedDatasource = this.dsPipe
+    .transform(this.dataSource, this.filterArgs)
+    .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+
   }
 }

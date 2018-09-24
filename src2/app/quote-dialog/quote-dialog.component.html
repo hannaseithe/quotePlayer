@@ -1,5 +1,5 @@
 <div mat-dialog-content>
-    <mat-table #table [dataSource]="dataSource | datasourceFilter:filterArgs" class="mat-elevation-z8">
+    <mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
 
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -64,5 +64,7 @@
         <mat-footer-row *matFooterRowDef="['quote']; sticky: true">
         </mat-footer-row>
     </mat-table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length" showFirstLastButtons (page)="handlePageEvent($event)"></mat-paginator>
+
 
 </div>

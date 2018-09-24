@@ -18,7 +18,7 @@ export class DatasourceFilterPipe implements PipeTransform {
 
     return items.filter(item => {
       for (let filterKey in filter) {
-        if (item[filterKey].toString().indexOf(filter[filterKey].value) === -1) {
+        if ((item[filterKey] || "").toString().indexOf(filter[filterKey].value) === -1) {
           return false
         }
       }
@@ -35,9 +35,18 @@ export class DatasourceFilterPipe implements PipeTransform {
 export class QuoteDialogComponent implements OnInit {
 
   dataSource: Quote[] = [];
+  paginatedDatasource: Quote[];
   authors: any[] = [];
   editElement: Quote;
   filterArgs = {};
+
+  dsPipe = new DatasourceFilterPipe;
+  pageEvent = {
+    length: 0,
+    pageIndex: 0,
+    pageSize: 5,
+    previousPageIndex: 0
+  };
 
   selection = new SelectionModel<Quote>(true, []);
 
@@ -48,7 +57,10 @@ export class QuoteDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dataService: DataService,
     public dialog: MatDialog) {
-    dataService.allQuotes.subscribe(x => this.dataSource = x);
+    dataService.allQuotes.subscribe(x => { 
+      this.dataSource = x;
+      this.updateDatasource();
+    });
     dataService.allAuthors.subscribe(x => this.authors = x);
   }
 
@@ -64,11 +76,28 @@ export class QuoteDialogComponent implements OnInit {
     this.dialogRef.close(this.selection.selected);
   }
 
+  handlePageEvent(event) {
+    this.pageEvent = event;
+    this.updateDatasource();
+  }
+
+  updateDatasource() {
+    this.paginatedDatasource = this.dsPipe
+      .transform(this.dataSource, this.filterArgs)
+      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+    console.log(event);
+  }
+
   applyFilter(field: string, value: string) {
     this.filterArgs[field] = {
       value: value.trim(),
       field: field
     }
+
+    this.paginatedDatasource = this.dsPipe
+    .transform(this.dataSource, this.filterArgs)
+    .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+
   }
 
   isAllSelected() {

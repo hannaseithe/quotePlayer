@@ -1,6 +1,6 @@
 <app-quote [quote]="editElement"></app-quote>
 
-<mat-table #table [dataSource]="dataSource | datasourceFilter:filterArgs" class="mat-elevation-z8">
+<mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="quote">
     <mat-header-cell *matHeaderCellDef>
@@ -73,6 +73,7 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length" showFirstLastButtons (page)="handlePageEvent($event)"></mat-paginator>
 
 <div *ngFor="let author of authors; let i = index">
   {{i}}. {{author._id}}:
