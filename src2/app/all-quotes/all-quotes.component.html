@@ -1,5 +1,7 @@
 <app-quote [quote]="editElement"></app-quote>
 
+<button mat-button (click)='importExcel()'>Add Quotes</button>
+
 <mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="quote">

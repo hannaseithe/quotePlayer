@@ -1,3 +1,4 @@
+'use strict';
 import { Component, OnInit } from '@angular/core';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
@@ -8,6 +9,8 @@ import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-
 
 
 import { Pipe, PipeTransform } from '@angular/core';
+
+import * as XLSX from 'xlsx';
 
 @Pipe({
   name: 'datasourceFilter',
@@ -50,6 +53,8 @@ export class AllQuotesComponent implements OnInit {
   }; */
   filterArgs = {};
   dsPipe = new DatasourceFilterPipe;
+
+
   pageEvent = {
     length: 0,
     pageIndex: 0,
@@ -58,6 +63,8 @@ export class AllQuotesComponent implements OnInit {
   };
 
   displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
+
+  wbData = [ [1, 2], [3, 4] ];
 
   constructor(private data: DataService,
     public dialog: MatDialog) {
@@ -112,8 +119,33 @@ export class AllQuotesComponent implements OnInit {
       field: field
     }
     this.paginatedDatasource = this.dsPipe
-    .transform(this.dataSource, this.filterArgs)
-    .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+      .transform(this.dataSource, this.filterArgs)
+      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
 
+  }
+
+  importExcel() {
+
+    var that = this;
+    var req = new XMLHttpRequest();
+    req.open("GET", "test.xlsx", true);
+    req.responseType = "arraybuffer";
+
+    req.onload = function (e) {
+      var data = new Uint8Array(req.response);
+      var workbook = XLSX.read(data, { type: "array" });
+
+      console.log(workbook)
+
+      const wsname: string = workbook.SheetNames[0];
+			const ws: XLSX.WorkSheet = workbook.Sheets[wsname];
+
+			/* save data */
+      that.wbData = (XLSX.utils.sheet_to_json(ws, {header: 1}));
+      console.log(that.wbData)
+      
+    }
+
+    req.send();
   }
 }

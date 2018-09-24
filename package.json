@@ -25,7 +25,9 @@
     "@angular/platform-browser-dynamic": "6.1.0",
     "@angular/router": "6.1.0",
     "@types/chrome": "0.0.65",
+    "convert-excel-to-json": "^1.4.1",
     "core-js": "^2.5.7",
+    "excel-couchdb-import": "^4.0.0",
     "hammerjs": "^2.0.8",
     "localstoragedb": "^2.3.1",
     "ng2-dragula": "^2.0.2",
@@ -35,6 +37,7 @@
     "pouchdb-find": "^7.0.0",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
+    "xlsx": "^0.14.0",
     "zone.js": "^0.8.26"
   },
   "devDependencies": {

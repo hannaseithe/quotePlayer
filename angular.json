@@ -140,7 +140,8 @@
             "polyfills": "src2/polyfills.ts",
             "assets": [
               "src2/assets",
-              "src2/favicon.ico"
+              "src2/favicon.ico",
+              "src2/test.xlsx"
             ],
             "styles": [
               "src2/styles.css",
