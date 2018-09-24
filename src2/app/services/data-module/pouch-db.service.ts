@@ -223,7 +223,7 @@ export class PouchDbService implements DataSourceService {
             return row
           } else {
             if (index > -1) {
-              rows[index].doc.quoteDocs.push(this.mapDoc(row.doc))
+              rows[index].doc.quoteDocs[rows[index].doc.quotes.indexOf(row.doc._id)] = (this.mapDoc(row.doc))
             }
             return row
           }
