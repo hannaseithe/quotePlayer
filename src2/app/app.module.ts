@@ -14,7 +14,6 @@ import { AppComponent } from './app.component';
 import { QuoteComponent } from './quote/quote.component';
 import { DataService } from './services/data-module/data.service';
 import { LocalStorageDbService } from './services/data-module/local-storage-db.service';
-import { PlayerService } from './services/player.service';
 import { AppLoadService } from './services/app-load.service';
 import { AllQuotesComponent, DatasourceFilterPipe } from './all-quotes/all-quotes.component';
 import { CdkTableModule } from '@angular/cdk/table';

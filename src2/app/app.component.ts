@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { PlayerService } from './services/player.service';
 import { MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from './quote-dialog/quote-dialog.component';
 

@@ -2,7 +2,6 @@ import { Component, OnInit, Inject, PipeTransform, Pipe } from '@angular/core';
 import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
-import { PlayerService } from '../services/player.service';
 import { SelectionModel } from '@angular/cdk/collections';
 
 
@@ -48,8 +47,7 @@ export class QuoteDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<QuoteDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dataService: DataService,
-    public dialog: MatDialog,
-    private player: PlayerService) {
+    public dialog: MatDialog) {
     dataService.allQuotes.subscribe(x => this.dataSource = x);
     dataService.allAuthors.subscribe(x => this.authors = x);
   }

@@ -3,7 +3,6 @@ import { TestBed, inject } from '@angular/core/testing';
 import { AppLoadService } from './app-load.service';
 import { DataService } from './data-module/data.service';
 import { LocalStorageDbService } from './data-module/local-storage-db.service';
-import { PlayerService } from './player.service';
 
 
 class MockDataService {
@@ -11,12 +10,10 @@ class MockDataService {
 };
 class MockLocalStorageDBService { };
 
-class MockPlayerService { };
-
 const chrome = require('sinon-chrome');
 
 describe('AppLoadServiceService', () => {
-  let dataService, localStorageDbService, service, playerService;
+  let dataService, localStorageDbService, service;
 
 
 
@@ -28,7 +25,6 @@ describe('AppLoadServiceService', () => {
 
     TestBed.configureTestingModule({
       providers: [AppLoadService,
-        { provide: PlayerService, useClass: MockPlayerService },
         { provide: DataService, useClass: MockDataService },
         { provide: LocalStorageDbService, useClass: MockLocalStorageDBService }]
     });
