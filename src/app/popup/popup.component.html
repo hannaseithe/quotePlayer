@@ -1,12 +1,16 @@
 <mat-card class="player">
   <mat-card-content>
-    <mat-slider thumbLabel step="1" max="30" (change)="update($event.value)" aria-label="Assignee" [value]=state.minutes [disabled]="state.running"></mat-slider>
-    <span class="slider-label">Speed: {{state.minutes}} minutes</span>
+
 
 
     <form [formGroup]="playlistForm">
       <mat-form-field class="example-full-width">
-        <input type="text" placeholder="Select Playlist" aria-label="Assignee" matInput formControlName="playlist" [matAutocomplete]="auto">
+        <input matInput placeholder="Time between Quotes" formControlName="speed" [disableControl]="state.running"
+          type="time" step="1">
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <input type="text" placeholder="Select Playlist" aria-label="Assignee" matInput formControlName="playlist" [matAutocomplete]="auto" [disableControl]="state.running">
         <mat-autocomplete color="accent" #auto="matAutocomplete" [displayWith]="displayFn">
           <mat-option *ngFor="let playlist of state.playlists" [value]="playlist">
             {{playlist.name}}

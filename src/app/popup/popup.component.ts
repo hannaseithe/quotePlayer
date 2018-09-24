@@ -1,10 +1,27 @@
 /// <reference types="chrome/chrome-app"/>
 
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, Directive, Input } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 declare global {
     interface Window { saveQuote: any; }
+}
+
+import { NgControl } from '@angular/forms';
+
+@Directive({
+    selector: '[disableControl]'
+})
+export class DisableControlDirective {
+
+    @Input() set disableControl(condition: boolean) {
+        const action = condition ? 'disable' : 'enable';
+        this.ngControl.control[action]();
+    }
+
+    constructor(private ngControl: NgControl) {
+    }
+
 }
 
 @Component({
@@ -14,46 +31,51 @@ declare global {
 })
 export class PopupComponent implements OnInit {
 
-
     public state = {
         running: false,
-        minutes: 1,
+        time: null,
         playlist: null,
         playlists: [],
         count: 0
-    }   
+    }
     playlists;
 
     playlistForm = this.formbuilder.group({
-        playlist: null
-      });
+        playlist: null,
+        speed: null
+    });
 
-    update(value) {
-        this.state.minutes = value;
-    }  
+
 
     getState() {
         let that = this;
         chrome.runtime.sendMessage({ msg: "getState" }, function (response) {
-            console.log(that);
-            console.log("response", response);
-            that.state = response;
-            that.playlists = response.playlists;
+
+            that.state.running = response.running;
+            that.state.playlist = response.playlist;
+            that.state.playlists = response.playlists;
+            const timeDate = new Date(response.time);
+            that.state.time = timeDate.toUTCString().match(/((\d{2}:){2}\d{2})/g)[0];
+
             if (!that.playlistForm.value.playlist) {
                 that.playlistForm.patchValue({
-                    playlist: that.state.playlist ? that.state.playlist : that.state.playlists[0]
+                    playlist: that.state.playlist ? that.state.playlist : that.state.playlists[0],
+                    speed: that.state.time
                 })
             }
-            
-            console.log(that.state);
+
             that.ref.detectChanges();
         });
     }
-    
+
     startTimer() {
         let that = this;
-        chrome.runtime.sendMessage({ msg: "startTimer", 
-        minutes: this.state.minutes, playlist: this.playlistForm.value.playlist }, function (response) {
+        const timeArray = this.playlistForm.value.speed.match(/(\d{2}):(\d{2}):(\d{2})/);
+        chrome.runtime.sendMessage({
+            msg: "startTimer",
+            time: Number(timeArray[1]) * 3600000 + Number(timeArray[2]) * 60000 + Number(timeArray[3]) * 1000,
+            playlist: this.playlistForm.value.playlist
+        }, function (response) {
             that.state.running = response.running;
             that.ref.detectChanges();
         });
@@ -61,7 +83,7 @@ export class PopupComponent implements OnInit {
 
     stopTimer() {
         let that = this;
-        chrome.runtime.sendMessage({ msg: "stopTimer"}, function (response) {
+        chrome.runtime.sendMessage({ msg: "stopTimer" }, function (response) {
             that.state.running = response.running;
             that.ref.detectChanges();
         });
@@ -91,7 +113,7 @@ export class PopupComponent implements OnInit {
     displayFn = (q) => q ? q.name : undefined;
 
     openBackground() {
-        chrome.tabs.create({url: chrome.extension.getURL('app2/index.html')});
+        chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html') });
     }
-    
+
 }

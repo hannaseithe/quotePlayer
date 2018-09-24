@@ -9,13 +9,14 @@ import { AppRoutingModule } from './app-routing.module';
 
 
 import { AppComponent } from './app.component';
-import { PopupComponent } from './popup/popup.component';
+import { PopupComponent, DisableControlDirective } from './popup/popup.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    PopupComponent
+    PopupComponent,
+    DisableControlDirective
   ],
   imports: [
     BrowserAnimationsModule,

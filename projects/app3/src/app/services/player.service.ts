@@ -17,7 +17,7 @@ export class PlayerService {
   private state = {
     count: 0,
     running: false,
-    minutes: 1,
+    time: 60000,
     playlists: [],
     playlist: null
   }
@@ -36,7 +36,7 @@ export class PlayerService {
       if (id === "quote" + that.notificationId) {
         if (buttonIndex === 0) {
           chrome.notifications.clear(id);
-          that.startTimer(that.state.minutes);
+          that.startTimer(that.state.time);
         } else if (buttonIndex === 1) {
           that.stopInterval();
         }
@@ -45,7 +45,7 @@ export class PlayerService {
 
     chrome.notifications.onClosed.addListener(function (id) {
       if (id === "quote" + that.notificationId) {
-        that.startTimer(that.state.minutes);
+        that.startTimer(that.state.time);
       }
     });
 
@@ -57,7 +57,7 @@ export class PlayerService {
             sendResponse(that.state);
             break;
           case "startTimer":
-            if (that.startInterval(request.minutes, request.playlist)) {
+            if (that.startInterval(request.time, request.playlist)) {
               sendResponse(that.state)
             };
             break;
@@ -86,10 +86,10 @@ export class PlayerService {
 
   startInterval = function (duration, playlist) {
     this.state.running = true;
-    this.state.minutes = duration || 1;
+    this.state.time = duration || 60000;
     this.state.playlist = playlist;
     this.quotes = playlist.quoteDocs;
-    return this.startTimer(this.state.minutes);
+    return this.startTimer(this.state.time);
   }
 
   private wrapText(context, text, x, y, maxWidth) {
@@ -119,7 +119,7 @@ export class PlayerService {
     context.fillText(line, x, y);
   }
 
-  private startTimer(minutes) {
+  private startTimer(time) {
     let canvas, radius, text;
 
     let animate = () => {
@@ -177,7 +177,7 @@ export class PlayerService {
         catch (error) { console.log('Could not create notification: ' + error) }
         this.state.count++;
 
-      }, minutes * 6000);
+      }, time);
       return true
     }
 
