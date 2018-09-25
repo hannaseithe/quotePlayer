@@ -1,16 +1,31 @@
-<mat-card>
-  <mat-card-content>
+<mat-accordion>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Add a new Quote
+      </mat-panel-title>
+    </mat-expansion-panel-header>
     <app-quote [quote]="editElement"></app-quote>
-  </mat-card-content>
-  <mat-divider></mat-divider>
-  <mat-card-content id="import-container">
+  </mat-expansion-panel>
+
+  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Import Quotes from Excel File
+      </mat-panel-title>
+      <mat-panel-description>
+        Help Here
+      </mat-panel-description>
+    </mat-expansion-panel-header>
     <mat-form-field>
       <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
     </mat-form-field>
     <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import Quotes from Excel</button>
-  </mat-card-content>
-</mat-card>
+  </mat-expansion-panel>
+
+</mat-accordion>
 
 
 
