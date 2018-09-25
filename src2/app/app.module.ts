@@ -1,11 +1,12 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { MatTooltipModule, MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule, MatBadgeModule, MatGridListModule, MatCheckboxModule, MatPaginatorModule } from '@angular/material';
+import { MatTooltipModule, MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule, MatBadgeModule, MatGridListModule, MatCheckboxModule, MatPaginatorModule, MatDividerModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
 import { DragulaModule } from 'ng2-dragula';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { DataModule } from './services/data-module/data.module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -65,6 +66,8 @@ export function init_app(appLoadService: AppLoadService) {
     MatGridListModule,
     MatCheckboxModule,
     MatPaginatorModule,
+    MatDividerModule,
+    MaterialFileInputModule,
     TagInputModule,
     DragulaModule.forRoot(),
     DataModule.forRoot(),

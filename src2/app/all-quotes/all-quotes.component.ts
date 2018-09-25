@@ -11,6 +11,7 @@ import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-
 import { Pipe, PipeTransform } from '@angular/core';
 
 import * as XLSX from 'xlsx';
+import { FormControl, Validators } from '../../../node_modules/@angular/forms';
 
 @Pipe({
   name: 'datasourceFilter',
@@ -64,7 +65,9 @@ export class AllQuotesComponent implements OnInit {
 
   displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
 
-  wbData = [ [1, 2], [3, 4] ];
+  wbData = [[1, 2], [3, 4]];
+
+  excelFile = new FormControl(null, [Validators.required]);
 
   constructor(private data: DataService,
     public dialog: MatDialog) {
@@ -125,32 +128,58 @@ export class AllQuotesComponent implements OnInit {
   }
 
   importExcel() {
+    console.log();
+    if (this.excelFile.value.files && this.excelFile.value.files[0]) {
+      var that = this;
+      var req = new XMLHttpRequest();
+      let file = this.excelFile.value.files[0];
+      var reader = new FileReader();
 
-    var that = this;
-    var req = new XMLHttpRequest();
-    req.open("GET", "test.xlsx", true);
-    req.responseType = "arraybuffer";
+      reader.onload = function (e) {
+        let url = e.target.result;
 
-    req.onload = function (e) {
-      var data = new Uint8Array(req.response);
-      var workbook = XLSX.read(data, { type: "array" });
+        req.open("GET", url, true);
+        req.responseType = "arraybuffer";
 
-      console.log(workbook)
+        req.onload = function (e) {
+          var data = new Uint8Array(req.response);
+          var workbook = XLSX.read(data, { type: "array" });
 
-      const wsname: string = workbook.SheetNames[0];
-			const ws: XLSX.WorkSheet = workbook.Sheets[wsname];
+          console.log(workbook)
 
-			/* save data */
-      let wbData = (XLSX.utils.sheet_to_json(ws, {defval: null}));
-      let parsedData = wbData.map((x:any) => {
-        x.tags = x.tags.split(", ");
-        return x 
-      })
+          const wsname: string = workbook.SheetNames[0];
+          const ws: XLSX.WorkSheet = workbook.Sheets[wsname];
 
-      that.data.saveQuotes(parsedData as any);
+          let wbData = (XLSX.utils.sheet_to_json(ws, { defval: null }));
+          let parsedData = wbData.map((x: any) => {
+            x.tags = x.tags ? x.tags.split(", ") : null;
+            return x
+          })
 
+          try{
+            if (Object.keys(parsedData[0]).length > 4) { throw 'The table contains more than 4 columns'};
+            if (Object.keys(parsedData[0]).length < 4) { throw 'The table contains less than 4 columns'};
+            if (!parsedData[0].hasOwnProperty('quote')) { throw 'The table is missing the column >quote<'};
+            if (!parsedData[0].hasOwnProperty('author')) { throw 'The table is missing the column >author<'};
+            if (!parsedData[0].hasOwnProperty('source')) { throw 'The table is missing the column >source<'};
+            if (!parsedData[0].hasOwnProperty('tags')) { throw 'The table is missing the column >tags<'};
+
+            that.data.saveQuotes(parsedData as any);
+          }
+          catch(error){
+            console.error(error)
+          }
+
+        }
+
+        req.send();
+
+      }
+
+      reader.readAsDataURL(file);
     }
 
-    req.send();
+
+
   }
 }

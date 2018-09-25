@@ -1,6 +1,16 @@
-<app-quote [quote]="editElement"></app-quote>
+<mat-card>
+  <mat-card-content>
+    <app-quote [quote]="editElement"></app-quote>
+    <mat-divider></mat-divider>
+    <mat-form-field>
+      <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
+      <mat-icon matSuffix>folder</mat-icon>
+    </mat-form-field>
+    <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid" >Import Quotes from Excel</button>
+  </mat-card-content>
+</mat-card>
 
-<button mat-button (click)='importExcel()'>Add Quotes</button>
+
 
 <mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
 
@@ -48,9 +58,11 @@
   </ng-container>
 
   <ng-container matColumnDef="playlists">
-    <mat-header-cell *matHeaderCellDef> <mat-form-field>
+    <mat-header-cell *matHeaderCellDef>
+      <mat-form-field>
         <input matInput (keyup)="applyFilter('playlists', $event.target.value)" placeholder="Filter Playlists">
-      </mat-form-field> </mat-header-cell>
+      </mat-form-field>
+    </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <mat-chip-list *ngFor="let playlist of element.playlists">
         <mat-chip color="primary" selected>{{playlist}}</mat-chip>
@@ -75,7 +87,8 @@
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
   <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 </mat-table>
-<mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length" showFirstLastButtons (page)="handlePageEvent($event)"></mat-paginator>
+<mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length" showFirstLastButtons
+  (page)="handlePageEvent($event)"></mat-paginator>
 
 <div *ngFor="let author of authors; let i = index">
   {{i}}. {{author._id}}:
