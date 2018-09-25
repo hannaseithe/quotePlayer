@@ -8,3 +8,7 @@
 .mat-header-cell:not(:last-child), .mat-cell:not(:last-child) {
   padding-right: 6px;
 }
+
+#import-container {
+  padding-top: 16px;
+}

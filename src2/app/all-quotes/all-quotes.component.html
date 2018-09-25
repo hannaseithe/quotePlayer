@@ -1,12 +1,14 @@
 <mat-card>
   <mat-card-content>
     <app-quote [quote]="editElement"></app-quote>
-    <mat-divider></mat-divider>
+  </mat-card-content>
+  <mat-divider></mat-divider>
+  <mat-card-content id="import-container">
     <mat-form-field>
       <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
     </mat-form-field>
-    <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid" >Import Quotes from Excel</button>
+    <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import Quotes from Excel</button>
   </mat-card-content>
 </mat-card>
 
