@@ -37,14 +37,10 @@
 
   <div fxFlex="16%" fxLayout fxLayout.xs="row" fxLayoutAlign="end" fxLayoutGap="10px" fxLayoutGap.xs="0">
     <div fxFlex="100% 0" fxFlexAlign="end" class="mat-form-field-wrapper">
-      <button mat-button [disabled]="!quoteForm.touched" type="reset" (click)="extraReset()">
+      <button mat-button [disabled]="quoteForm.untouched || quoteForm.invalid" type="reset" (click)="extraReset()">
         <mat-icon>cancel</mat-icon>
       </button>
-      <!-- <button mat-button [disabled]="!quoteForm.touched" type="submit">
-
-            <mat-icon>send</mat-icon>
-          </button> -->
-      <button (click)="submitForm()" type="button" mat-button [disabled]="!quoteForm.touched">
+      <button (click)="submitForm()" type="button" mat-button [disabled]="quoteForm.untouched || quoteForm.invalid">
         <mat-icon>send</mat-icon>
       </button>
     </div>
