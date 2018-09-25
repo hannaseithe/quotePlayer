@@ -293,14 +293,19 @@ export class PouchDbService implements DataSourceService {
 
 
   private saveAndUpdateQuote(quote: Quote) {
-    return this.saveAndUpdateDoc({
-      "_id": quote.ID ? quote.ID : null,
-      "quote": quote.quote,
-      "author": quote.author,
-      "source": quote.source,
-      "tags": quote.tags,
-      "type": "quote"
-    });
+    if (quote.quote) {
+      return this.saveAndUpdateDoc({
+        "_id": quote.ID ? quote.ID : null,
+        "quote": quote.quote,
+        "author": quote.author,
+        "source": quote.source,
+        "tags": quote.tags,
+        "type": "quote"
+      });
+    } else {
+      return Promise.reject('Quote not saved/updated: The Quote Name was empty')
+    }
+
   }
 
   deleteQuote(quote) {
@@ -310,12 +315,18 @@ export class PouchDbService implements DataSourceService {
   }
 
   saveQuotes(quotes) {
+    let error = false;
     let mappedQuotes = quotes.map(x => {
       x.type = "quote";
+      error = x.quote ? error : true;
       return x
     });
-
-    this.db.bulkDocs(mappedQuotes);
+    if (!error) {
+      this.db.bulkDocs(mappedQuotes);
+    } else {
+      return Promise.reject('Quotes not saved: There was at least one row where the column >quote< was not filled in')
+    }
+    
   }
 
 
@@ -333,11 +344,16 @@ export class PouchDbService implements DataSourceService {
   }
 
   savePlaylist(playlist: Playlist) {
-    return this.saveAndUpdateDoc({
-      "name": playlist.name,
-      "quotes": playlist.quotes,
-      "type": "playlist"
-    });
+    if (playlist.name) {
+      return this.saveAndUpdateDoc({
+        "name": playlist.name,
+        "quotes": playlist.quotes,
+        "type": "playlist"
+      });
+    } else {
+      return Promise.reject('Playlist not saved: The Playlist Name was empty')
+    }
+
   }
 
   updatePlaylist(playlist) {
@@ -367,11 +383,11 @@ export class PouchDbService implements DataSourceService {
   }
 
   deleteQuoteFromPlaylist(playlist, index) {
-    playlist.quotes.splice(index,1);
+    playlist.quotes.splice(index, 1);
     return this.updatePlaylist(this.mapDoc(playlist))
   }
 
- 
+
 
   private deleteQuoteFromPlaylists(quote: any) {
 

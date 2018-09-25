@@ -2,6 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } fro
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from '../services/data-module/data.service';
 import { Playlist } from '../data-model/playlist.model';
+import { MatSnackBar } from '../../../node_modules/@angular/material';
 
 @Component({
   selector: 'app-playlist',
@@ -15,7 +16,8 @@ export class PlaylistComponent implements OnInit {
   playlistForm: FormGroup;
   constructor(private formbuilder: FormBuilder,
   private data: DataService,
-  private cd: ChangeDetectorRef) {
+  private cd: ChangeDetectorRef,
+  public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
@@ -45,7 +47,8 @@ export class PlaylistComponent implements OnInit {
   }
 
   onSubmit() {
-    this.data.saveOrUpdatePlaylist(this.prepareSubmitPlaylist());
+    this.data.saveOrUpdatePlaylist(this.prepareSubmitPlaylist())
+    .catch(error => this.snackBar.open(error, "Not Saved", {duration: 2000}));
 
     this.playlistForm.reset();
     this.playlist = {

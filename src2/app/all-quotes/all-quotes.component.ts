@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
 
@@ -69,8 +69,11 @@ export class AllQuotesComponent implements OnInit {
 
   excelFile = new FormControl(null, [Validators.required]);
 
+  panelOpenState = false;
+
   constructor(private data: DataService,
-    public dialog: MatDialog) {
+    public dialog: MatDialog,
+    private snackBar: MatSnackBar) {
     data.allQuotes.subscribe(x => {
       this.dataSource = x;
       this.updateDatasource();
@@ -98,6 +101,7 @@ export class AllQuotesComponent implements OnInit {
     console.log(event);
   }
   edit(element): void {
+    this.panelOpenState = true;
     this.editElement = element;
   }
 
@@ -156,18 +160,22 @@ export class AllQuotesComponent implements OnInit {
             return x
           })
 
-          try{
-            if (Object.keys(parsedData[0]).length > 4) { throw 'The table contains more than 4 columns'};
-            if (Object.keys(parsedData[0]).length < 4) { throw 'The table contains less than 4 columns'};
-            if (!parsedData[0].hasOwnProperty('quote')) { throw 'The table is missing the column >quote<'};
-            if (!parsedData[0].hasOwnProperty('author')) { throw 'The table is missing the column >author<'};
-            if (!parsedData[0].hasOwnProperty('source')) { throw 'The table is missing the column >source<'};
-            if (!parsedData[0].hasOwnProperty('tags')) { throw 'The table is missing the column >tags<'};
+          try {
+            if (Object.keys(parsedData[0]).length > 4) { throw 'The table contains more than 4 columns' };
+            if (Object.keys(parsedData[0]).length < 4) { throw 'The table contains less than 4 columns' };
+            if (!parsedData[0].hasOwnProperty('quote')) { throw 'The table is missing the column >quote<' };
+            if (!parsedData[0].hasOwnProperty('author')) { throw 'The table is missing the column >author<' };
+            if (!parsedData[0].hasOwnProperty('source')) { throw 'The table is missing the column >source<' };
+            if (!parsedData[0].hasOwnProperty('tags')) { throw 'The table is missing the column >tags<' };
+            if (!!parsedData.find(x => {
+              return !x.quote
+            })) { throw 'The table contains at least one row where >quote< is empty!' };
 
-            that.data.saveQuotes(parsedData as any);
+            that.data.saveQuotes(parsedData as any)
+            .catch(error => that.snackBar.open(error, "File not Imported", { duration: 2000 }));
           }
-          catch(error){
-            console.error(error)
+          catch (error) {
+            that.snackBar.open(error, "File not Imported", { duration: 2000 })
           }
 
         }

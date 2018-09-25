@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } fro
 import { FormGroup, FormControl, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
-import { MatChipInputEvent } from '@angular/material';
+import { MatChipInputEvent, MatSnackBar } from '@angular/material';
 import { ENTER, COMMA } from '@angular/cdk/keycodes';
 
 @Component({
@@ -18,7 +18,8 @@ export class QuoteComponent implements OnInit {
   quoteForm: FormGroup;
   constructor(private formbuilder: FormBuilder,
     private data: DataService,
-    private cd: ChangeDetectorRef) {
+    private cd: ChangeDetectorRef,
+    public snackBar: MatSnackBar) {
   }
 
   //chips
@@ -68,7 +69,9 @@ export class QuoteComponent implements OnInit {
 
  submitForm() {
 
-    this.data.saveOrUpdateQuote(this.prepareSubmitQuote());
+    this.data.saveOrUpdateQuote(this.prepareSubmitQuote())
+    .catch(error => this.snackBar.open(error, "Not Saved", {duration: 2000})
+    );
     this.quoteForm.reset();
     this.quote = {
       ID: null,

@@ -1,6 +1,6 @@
 <mat-accordion id="quote-accordion">
 
-  <mat-expansion-panel>
+  <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
       <mat-panel-title>
         Add a new Quote
@@ -9,7 +9,7 @@
     <app-quote [quote]="editElement"></app-quote>
   </mat-expansion-panel>
 
-  <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+  <mat-expansion-panel >
     <mat-expansion-panel-header>
       <mat-panel-title>
         Import Quotes from Excel File
