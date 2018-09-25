@@ -21,7 +21,8 @@
               "src/favicon.ico",
               "src/manifest.json",
               "src/icong.png",
-              "src/iconk.png"
+              "src/iconk.png",
+              "src/iconk-run.png"
             ],
             "styles": [
               "src/styles.css"
@@ -81,7 +82,8 @@
               "src/favicon.ico",
               "src/manifest.json",
               "src/icong.png",
-              "src/iconk.png"
+              "src/iconk.png",
+              "src/iconk-run.png"
             ]
           }
         },

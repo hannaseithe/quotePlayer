@@ -7,7 +7,10 @@
         "default_icon": "iconk.png",
         "default_popup": "index.html#/popup"
     },
-    "permissions": ["notifications","tabs"],
+    "permissions": [
+        "notifications",
+        "tabs"
+    ],
     "background": {
         "page": "app3/index.html",
         "persistent": true

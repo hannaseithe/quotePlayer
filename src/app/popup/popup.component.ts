@@ -77,6 +77,7 @@ export class PopupComponent implements OnInit {
             playlist: this.playlistForm.value.playlist
         }, function (response) {
             that.state.running = response.running;
+            chrome.browserAction.setIcon({path:"iconk-run.png"});
             that.ref.detectChanges();
         });
     }
