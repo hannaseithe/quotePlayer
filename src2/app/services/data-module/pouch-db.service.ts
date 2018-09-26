@@ -66,9 +66,9 @@ export class PouchDbService implements DataSourceService {
               default:
             }
           } else {
-            /* this.getAllQuotes();
+            this.getAllQuotes();
             this.getAllAuthors();
-            this.getAllPlaylists() */
+            this.getAllPlaylists()
           }
 
         }).on('error', function (err) {
