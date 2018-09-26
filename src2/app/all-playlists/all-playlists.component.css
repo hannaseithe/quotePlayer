@@ -13,3 +13,7 @@
 .quotes-in-playlist mat-cell:first-child {
   padding-left: 0px;
 }
+
+.custom-spinner {
+  display:inline-block;
+}

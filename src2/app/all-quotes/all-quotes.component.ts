@@ -70,6 +70,7 @@ export class AllQuotesComponent implements OnInit {
   excelFile = new FormControl(null, [Validators.required]);
 
   panelOpenState = false;
+  importInProgress = false;
 
   constructor(private data: DataService,
     public dialog: MatDialog,
@@ -113,7 +114,13 @@ export class AllQuotesComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.data.deleteQuote(element);
+        element.deleteInProgress = true;
+        this.data.deleteQuote(element)
+        .then(() => element.deleteInProgress = false)
+        .catch((error) => {
+          element.deleteInProgress = false;
+          this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
+        })
       }
 
       console.log('The dialog was closed');
@@ -133,6 +140,7 @@ export class AllQuotesComponent implements OnInit {
 
   importExcel() {
     console.log();
+    this.importInProgress = true;
     if (this.excelFile.value.files && this.excelFile.value.files[0]) {
       var that = this;
       var req = new XMLHttpRequest();
@@ -172,10 +180,20 @@ export class AllQuotesComponent implements OnInit {
             })) { throw 'The table contains at least one row where >quote< is empty!' };
 
             that.data.saveQuotes(parsedData as any)
-            .catch(error => that.snackBar.open(error, "File not Imported", { duration: 2000 }));
+              .then(() => {
+                that.importInProgress = false;
+                that.excelFile.reset();
+              })
+              .catch(error => {
+                that.snackBar.open(error, "File not Imported", { duration: 2000 });
+                that.importInProgress = false;
+                that.excelFile.setErrors({incorrect: true});
+              });
           }
           catch (error) {
-            that.snackBar.open(error, "File not Imported", { duration: 2000 })
+            that.snackBar.open(error, "File not Imported", { duration: 2000 });
+            that.importInProgress = false;
+            that.excelFile.setErrors({incorrect: true});
           }
 
         }

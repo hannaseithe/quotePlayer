@@ -42,7 +42,9 @@
       </button>
       <button (click)="submitForm()" type="button" mat-button [disabled]="quoteForm.untouched || quoteForm.invalid">
         <mat-icon>send</mat-icon>
+        <mat-spinner class="custom-spinner" *ngIf="saveInProgress" [diameter]="25"></mat-spinner>
       </button>
+      
     </div>
 
   </div>

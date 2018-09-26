@@ -13,18 +13,20 @@ export class PlaylistComponent implements OnInit {
 
   @Input() playlist?: Playlist;
 
+  saveInProgress = false;
+
   playlistForm: FormGroup;
   constructor(private formbuilder: FormBuilder,
-  private data: DataService,
-  private cd: ChangeDetectorRef,
-  public snackBar: MatSnackBar) {
+    private data: DataService,
+    private cd: ChangeDetectorRef,
+    public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
     if (this.playlist) {
     } else {
       this.playlist = {
-        ID : null,
+        ID: null,
         name: '',
         quotes: []
       }
@@ -33,26 +35,31 @@ export class PlaylistComponent implements OnInit {
     this.playlistForm = this.formbuilder.group({
       name: this.playlist.name
     });
-    
+
   }
 
   ngOnChanges(changes) {
-    if(this.playlist) {
+    if (this.playlist) {
       this.playlistForm = this.formbuilder.group({
         name: this.playlist.name
       });
       this.cd.detectChanges();
     }
-    
+
   }
 
   onSubmit() {
+    this.saveInProgress = true;
     this.data.saveOrUpdatePlaylist(this.prepareSubmitPlaylist())
-    .catch(error => this.snackBar.open(error, "Not Saved", {duration: 2000}));
+      .then(() => this.saveInProgress = false)
+      .catch(error => {
+        this.snackBar.open(error, "Not Saved", { duration: 2000 })
+        this.saveInProgress = false
+      });
 
     this.playlistForm.reset();
     this.playlist = {
-      ID : null,
+      ID: null,
       name: '',
       quotes: []
     };

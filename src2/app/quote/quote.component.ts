@@ -31,6 +31,7 @@ export class QuoteComponent implements OnInit {
   separatorKeysCodes = [ENTER, COMMA];
 
   tags = [];
+  saveInProgress = false;
 
   ngOnInit() {
     if (this.quote) {
@@ -67,24 +68,30 @@ export class QuoteComponent implements OnInit {
 
   }
 
- submitForm() {
-
+  submitForm() {
+    this.saveInProgress = true;
     this.data.saveOrUpdateQuote(this.prepareSubmitQuote())
-    .catch(error => this.snackBar.open(error, "Not Saved", {duration: 2000})
-    );
-    this.quoteForm.reset();
-    this.quote = {
-      ID: null,
-      quote: '',
-      author: '',
-      source: '',
-      tags: [],
-      playlists: []
-    };
-    this.tags = [];
-    this.close.emit(true);
-    this.quoteForm.markAsUntouched();
-    this.quoteForm.markAsPristine();
+      .then(() => {
+        this.saveInProgress = false;
+        this.quoteForm.reset();
+        this.quote = {
+          ID: null,
+          quote: '',
+          author: '',
+          source: '',
+          tags: [],
+          playlists: []
+        };
+        this.tags = [];
+        this.close.emit(true);
+        this.quoteForm.markAsUntouched();
+        this.quoteForm.markAsPristine();
+      })
+      .catch(error => {
+        this.snackBar.open(error, "Not Saved", { duration: 2000 });
+        this.saveInProgress = false;
+      });
+
   }
 
   prepareSubmitQuote() {
@@ -117,11 +124,11 @@ export class QuoteComponent implements OnInit {
   }
 
   removeTag(index): void {
-  
-     if (index >= 0) {
-         this.tags.splice(index,1);
-     }
-     this.quoteForm.markAsTouched();
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+    this.quoteForm.markAsTouched();
   }
 
   extraReset() {

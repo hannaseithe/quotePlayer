@@ -16,6 +16,7 @@
           </button>
           <button mat-button (click)="delete(element)">
             <mat-icon>delete</mat-icon>
+            <mat-spinner class="custom-spinner" *ngIf="element.deletePLInProgress" [diameter]="25"></mat-spinner>
           </button>
         </mat-cell>
       </ng-container>
@@ -31,7 +32,9 @@
       <mat-card>
         <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
         <mat-card-content>
-          <button mat-button (click)=addQuoteDialog()>Add Quotes</button>
+          <button mat-button (click)=addQuoteDialog()>Add Quotes
+              <mat-spinner class="custom-spinner" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
+          </button>
           
         </mat-card-content>
       </mat-card>
@@ -70,6 +73,7 @@
             <mat-cell *matCellDef="let element; let i = index;">
               <button mat-button (click)="deleteQuote(element,i)">
                 <mat-icon>delete</mat-icon>
+                <mat-spinner class="custom-spinner" *ngIf="element.deleteInProgress" [diameter]="25"></mat-spinner>
               </button>
             </mat-cell>
           </ng-container>

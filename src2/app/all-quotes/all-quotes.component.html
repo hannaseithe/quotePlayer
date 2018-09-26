@@ -22,7 +22,8 @@
       <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
     </mat-form-field>
-    <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import Quotes from Excel</button>
+    <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import Quotes from Excel
+      <mat-spinner class="custom-spinner" *ngIf="importInProgress" [diameter]="25"></mat-spinner></button>
   </mat-expansion-panel>
 
 </mat-accordion>
@@ -96,6 +97,7 @@
       </button>
       <button mat-button (click)="delete(element)">
         <mat-icon>delete</mat-icon>
+        <mat-spinner class="custom-spinner" *ngIf="element.deleteInProgress" [diameter]="25"></mat-spinner>
       </button>
     </mat-cell>
   </ng-container>

@@ -1,7 +1,7 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule, APP_INITIALIZER } from '@angular/core';
-import { MatTooltipModule, MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule, MatBadgeModule, MatGridListModule, MatCheckboxModule, MatPaginatorModule, MatDividerModule, MatExpansionModule, MatSnackBarModule } from '@angular/material';
+import { MatTooltipModule, MatAutocompleteModule, MatDialogModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule, MatTableModule, MatToolbarModule, MatChipsModule, MatBadgeModule, MatGridListModule, MatCheckboxModule, MatPaginatorModule, MatDividerModule, MatExpansionModule, MatSnackBarModule, MatProgressSpinnerModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from "@angular/flex-layout";
 import { TagInputModule } from 'ngx-chips';
@@ -69,6 +69,7 @@ export function init_app(appLoadService: AppLoadService) {
     MatDividerModule,
     MatExpansionModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     MaterialFileInputModule,
     TagInputModule,
     DragulaModule.forRoot(),

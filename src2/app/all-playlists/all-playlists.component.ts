@@ -2,7 +2,7 @@ import { Component, OnInit, ChangeDetectorRef, Pipe, PipeTransform } from '@angu
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { MatTableDataSource, MatDialog } from '@angular/material';
+import { MatTableDataSource, MatDialog, MatSnackBar } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
 import { Observable } from 'rxjs/Observable';
@@ -30,6 +30,8 @@ export class AllPlaylistsComponent implements OnInit {
   displayedColumns2 = ['quote', 'author', 'source', 'tags', 'edit'];
   displayedColumns3 = ['quote', 'author', 'source', 'tags'];
 
+  addQuotesInProgress = false;
+
   displayFn = (q) => q ? q.quote.substr(0, 25) + '...' : undefined;
   subs = new Subscription();
 
@@ -42,7 +44,8 @@ export class AllPlaylistsComponent implements OnInit {
   constructor(private data: DataService,
     public dialog: MatDialog,
     private dragulaService: DragulaService,
-    private cd: ChangeDetectorRef) {
+    private cd: ChangeDetectorRef,
+    private snackBar: MatSnackBar) {
 
     data.allPlaylists.subscribe(x => {
       this.dataSource = x;
@@ -76,7 +79,8 @@ export class AllPlaylistsComponent implements OnInit {
 
   private onDrop(newQuoteDocs) {
     this.selectedPlaylist.quoteDocs = newQuoteDocs;
-    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist());
+    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist())
+      .catch(error => this.snackBar.open(error, "Quote Order not Changed", { duration: 2000 }));
   }
 
   ngOnInit() {
@@ -93,7 +97,13 @@ export class AllPlaylistsComponent implements OnInit {
   }
 
   onSubmit() {
-    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist());
+    this.addQuotesInProgress = true;
+    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist())
+      .then(() => this.addQuotesInProgress = false)
+      .catch((error) => {
+        this.addQuotesInProgress = false;
+        this.snackBar.open(error, "Quotes Not Added to Playlist", { duration: 2000 })
+      })
   }
 
   prepareSubmitSelectedPlaylist() {
@@ -127,14 +137,24 @@ export class AllPlaylistsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.data.deleteQuote(element);
+        element.deletePLInProgress = true;
+        this.data.deleteQuote(element)
+          .then(() => element.deletePLInProgress = false)
+          .catch((error) => {
+            element.deleteInPorgress = false;
+            this.snackBar.open(error, "Playlist Not Deleted", { duration: 2000 });
+          })
       }
-
-      console.log('The dialog was closed');
-    });
+    })
   }
   deleteQuote(element, index) {
+    element.deleteInProgress = true;
     this.data.deleteQuoteFromPlaylist(this.selectedPlaylist, index)
+      .then(() => element.deleteInProgress = false)
+      .catch((error) => {
+        element.deleteInProgress = false;
+        this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
+      })
   }
 
 }

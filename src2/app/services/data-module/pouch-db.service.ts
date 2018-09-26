@@ -322,7 +322,7 @@ export class PouchDbService implements DataSourceService {
       return x
     });
     if (!error) {
-      this.db.bulkDocs(mappedQuotes);
+      return this.db.bulkDocs(mappedQuotes);
     } else {
       return Promise.reject('Quotes not saved: There was at least one row where the column >quote< was not filled in')
     }
