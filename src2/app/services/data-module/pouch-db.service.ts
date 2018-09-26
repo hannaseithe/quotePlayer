@@ -174,8 +174,7 @@ export class PouchDbService implements DataSourceService {
           row.doc.ID = row.doc._id;
           return row.doc
         })
-
-      this.currentQuotes.next(quoteDocs);
+        quoteDocs.sort((a,b) => (a.quote > b.quote) ? 1 : ((b.quote > a.quote) ? -1 : 0)); 
       this.allQuotes.next(quoteDocs);
       return Promise.resolve()
     }).catch(function (err) {
