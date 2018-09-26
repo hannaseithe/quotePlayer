@@ -86,6 +86,7 @@ export class PopupComponent implements OnInit {
         let that = this;
         chrome.runtime.sendMessage({ msg: "stopTimer" }, function (response) {
             that.state.running = response.running;
+            chrome.browserAction.setIcon({path:"iconk.png"});
             that.ref.detectChanges();
         });
     }
@@ -97,10 +98,11 @@ export class PopupComponent implements OnInit {
                 switch (request.msg) {
                     case "updateState":
                         that.state = request.data;
+                        chrome.browserAction.setIcon({path: that.state.running ? "iconk-run.png" : "iconk.png"});
                         ref.detectChanges();
                         break;
                     default:
-                        console.log("Unidentified Message received");
+                        console.error("Unidentified Message received");
                 }
             }
         );
@@ -114,7 +116,14 @@ export class PopupComponent implements OnInit {
     displayFn = (q) => q ? q.name : undefined;
 
     openBackground() {
-        chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html') });
+        chrome.tabs.query({url: 'chrome-extension://*/app2/index.html*'}, tabs => {
+            if (tabs.length > 0) {
+                chrome.tabs.update(tabs[0].id, {active: true})
+            } else {
+                chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html') });
+            }
+        });
+        
     }
 
 }
