@@ -30,10 +30,10 @@
 
 
 
-<mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
+<mat-table #table matSort (matSortChange)="sortingChanged($event)" [dataSource]="paginatedDatasource" class="mat-elevation-z8">
 
   <ng-container matColumnDef="quote">
-    <mat-header-cell *matHeaderCellDef>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
       <mat-form-field>
         <input matInput (keyup)="applyFilter('quote', $event.target.value)" placeholder="Filter Quotes">
       </mat-form-field>
@@ -45,7 +45,7 @@
   </ng-container>
 
   <ng-container matColumnDef="author">
-    <mat-header-cell *matHeaderCellDef>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
       <mat-form-field>
         <input matInput (keyup)="applyFilter('author', $event.target.value)" placeholder="Filter Authors">
       </mat-form-field>
@@ -54,7 +54,7 @@
   </ng-container>
 
   <ng-container matColumnDef="source">
-    <mat-header-cell *matHeaderCellDef>
+    <mat-header-cell *matHeaderCellDef mat-sort-header>
       <mat-form-field>
         <input matInput (keyup)="applyFilter('source', $event.target.value)" placeholder="Filter Sources">
       </mat-form-field>

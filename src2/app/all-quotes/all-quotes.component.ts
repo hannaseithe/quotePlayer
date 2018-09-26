@@ -116,11 +116,11 @@ export class AllQuotesComponent implements OnInit {
       if (result) {
         element.deleteInProgress = true;
         this.data.deleteQuote(element)
-        .then(() => element.deleteInProgress = false)
-        .catch((error) => {
-          element.deleteInProgress = false;
-          this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
-        })
+          .then(() => element.deleteInProgress = false)
+          .catch((error) => {
+            element.deleteInProgress = false;
+            this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
+          })
       }
 
       console.log('The dialog was closed');
@@ -135,6 +135,21 @@ export class AllQuotesComponent implements OnInit {
     this.paginatedDatasource = this.dsPipe
       .transform(this.dataSource, this.filterArgs)
       .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+  }
+
+  sortingChanged(event) {
+    if (event.direction === "asc") {
+      this.paginatedDatasource = this.dsPipe
+        .transform(this.dataSource, this.filterArgs)
+        .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
+        .reverse()
+        .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+    } else {
+      this.paginatedDatasource = this.dsPipe
+      .transform(this.dataSource, this.filterArgs)
+      .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
+      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+    }
 
   }
 
@@ -187,13 +202,13 @@ export class AllQuotesComponent implements OnInit {
               .catch(error => {
                 that.snackBar.open(error, "File not Imported", { duration: 2000 });
                 that.importInProgress = false;
-                that.excelFile.setErrors({incorrect: true});
+                that.excelFile.setErrors({ incorrect: true });
               });
           }
           catch (error) {
             that.snackBar.open(error, "File not Imported", { duration: 2000 });
             that.importInProgress = false;
-            that.excelFile.setErrors({incorrect: true});
+            that.excelFile.setErrors({ incorrect: true });
           }
 
         }
