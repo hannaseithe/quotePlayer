@@ -127,6 +127,12 @@ export class AllQuotesComponent implements OnInit {
     });
   }
 
+  onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
+
+
   applyFilter(field: string, value: string) {
     this.filterArgs[field] = {
       value: value.trim(),
@@ -146,9 +152,9 @@ export class AllQuotesComponent implements OnInit {
         .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
     } else {
       this.paginatedDatasource = this.dsPipe
-      .transform(this.dataSource, this.filterArgs)
-      .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
-      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
+        .transform(this.dataSource, this.filterArgs)
+        .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
+        .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
     }
 
   }

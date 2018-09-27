@@ -23,3 +23,7 @@
     right: 0;
     top: 32px;
 }
+
+.mat-autocomplete-panel.mat-autocomplete-visible {
+    max-height: 130px;
+}

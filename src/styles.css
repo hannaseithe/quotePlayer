@@ -7,3 +7,7 @@
 body {
     margin:0px;
 }
+
+.popup-autocomplete.mat-autocomplete-panel.mat-autocomplete-visible {
+    max-height: 130px;
+}

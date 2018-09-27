@@ -45,8 +45,8 @@ $my-dark-theme-foreground: (
 @function create-smooth-foreground($primary, $accent) {
     @return (
         base:              black,
-        divider:           $dark-dividers,
-        dividers:          $dark-dividers,
+        divider:           map_get($primary, 900),
+        dividers:          map_get($primary, 900),
         disabled:          $dark-disabled-text,
         disabled-button:   rgba(black, 0.26),
         disabled-text:     $dark-disabled-text,
@@ -65,12 +65,12 @@ $my-dark-theme-foreground: (
     @return (
         status-bar: map_get($mat-grey, 300),
         app-bar:    map_get($primary, 900),
-        background: map_get($accent, 200),
+        background: white,
         hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
-        card:       map_get($primary, 50),
+        card:       rgba(map_get($accent, 50), 0.26),
         dialog:     map_get($primary, 100),
         disabled-button: rgba(map_get($primary,200), 0.12),
-        raised-button: white,
+        raised-button: map_get($primary, 50),
         focused-button: $dark-focused,
         selected-button: map_get($mat-grey, 300),
         selected-disabled-button: map_get($mat-grey, 400),
@@ -83,8 +83,8 @@ $my-dark-theme-foreground: (
 // instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
 @function create-smooth-theme($primary, $accent, $warn) {
   @return (
-    primary: mat-palette($primary),
-    accent: mat-palette($accent),
+    primary: mat-palette($primary, 900),
+    accent: mat-palette($mat-amber, 900),
     warn: $warn,
     is-dark: false,
     foreground: create-smooth-foreground($primary, $accent),
@@ -95,7 +95,7 @@ $my-dark-theme-foreground: (
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $candy-app-primary: mat-palette($mat-indigo);
-$candy-app-accent:  mat-palette($mat-lime, A200, A100, A400);
+$candy-app-accent:  mat-palette($mat-amber, 200, 600, 900);
 
 // The warn palette is optional (defaults to red).
 $candy-app-warn:    mat-palette($mat-red);
@@ -105,7 +105,7 @@ $candy-app-background: mat-palette($mat-cyan);
 
 
 // Create the theme object (a Sass map containing all of the palettes).
-$candy-app-theme: create-smooth-theme($mat-indigo, $mat-lime, $candy-app-warn);
+$candy-app-theme: create-smooth-theme($mat-indigo, $mat-amber, $candy-app-warn);
 
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component

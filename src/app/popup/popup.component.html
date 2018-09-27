@@ -11,7 +11,7 @@
 
       <mat-form-field class="example-full-width">
         <input type="text" placeholder="Select Playlist" aria-label="Assignee" matInput formControlName="playlist" [matAutocomplete]="auto" [disableControl]="state.running">
-        <mat-autocomplete color="accent" #auto="matAutocomplete" [displayWith]="displayFn">
+        <mat-autocomplete color="accent" #auto="matAutocomplete" [displayWith]="displayFn" class="popup-autocomplete">
           <mat-option *ngFor="let playlist of state.playlists" [value]="playlist">
             {{playlist.name}}
           </mat-option>

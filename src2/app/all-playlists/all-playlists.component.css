@@ -1,5 +1,5 @@
 .highlight{
-    background: lightblue;
+    background: #C5CAE9;
   }
 
   .mat-header-cell > div, .mat-cell > div{
@@ -17,3 +17,5 @@
 .custom-spinner {
   display:inline-block;
 }
+
+.quotes-in-playlist .mat-row {cursor: -webkit-grab; cursor: grab;}

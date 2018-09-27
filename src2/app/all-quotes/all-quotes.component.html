@@ -3,16 +3,16 @@
   <mat-expansion-panel [expanded]="panelOpenState" (opened)="panelOpenState = true" (closed)="panelOpenState = false">
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Add a new Quote
+        <button mat-stroked-button color="primary">Add a new Quote</button>
       </mat-panel-title>
     </mat-expansion-panel-header>
     <app-quote [quote]="editElement"></app-quote>
   </mat-expansion-panel>
 
-  <mat-expansion-panel >
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Import Quotes from Excel File
+        <button mat-stroked-button color="primary">Import Quotes from Excel File</button>
       </mat-panel-title>
       <mat-panel-description>
         Help Here
@@ -22,15 +22,16 @@
       <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
       <mat-icon matSuffix>folder</mat-icon>
     </mat-form-field>
-    <button mat-button (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import Quotes from Excel
-      <mat-spinner class="custom-spinner" *ngIf="importInProgress" [diameter]="25"></mat-spinner></button>
+    <button class="left-margin" mat-raised-button color="accent" (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import Quotes from Excel
+      <mat-spinner class="custom-spinner" *ngIf="importInProgress" [diameter]="25"></mat-spinner>
+    </button>
   </mat-expansion-panel>
 
 </mat-accordion>
 
 
 
-<mat-table #table matSort (matSortChange)="sortingChanged($event)" [dataSource]="paginatedDatasource" class="mat-elevation-z8">
+<mat-table #table matSort (matSortChange)="sortingChanged($event)" [dataSource]="paginatedDatasource">
 
   <ng-container matColumnDef="quote">
     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -70,7 +71,7 @@
     </mat-header-cell>
     <mat-cell *matCellDef="let element">
       <mat-chip-list *ngFor="let tag of element.tags">
-        <mat-chip color="accent">{{tag}}</mat-chip>
+        <mat-chip color="primary" selected>{{tag}}</mat-chip>
       </mat-chip-list>
     </mat-cell>
   </ng-container>
@@ -82,8 +83,8 @@
       </mat-form-field>
     </mat-header-cell>
     <mat-cell *matCellDef="let element">
-      <mat-chip-list *ngFor="let playlist of element.playlists">
-        <mat-chip color="primary" selected>{{playlist}}</mat-chip>
+      <mat-chip-list *ngFor="let playlist of element.playlists.filter(onlyUnique)">
+        <mat-chip>{{playlist}}</mat-chip>
       </mat-chip-list>
 
     </mat-cell>
@@ -109,7 +110,4 @@
 <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length" showFirstLastButtons
   (page)="handlePageEvent($event)"></mat-paginator>
 
-<div *ngFor="let author of authors; let i = index">
-  {{i}}. {{author._id}}:
-  <span *ngFor="let source of author.sources">{{source}}, </span>
-</div>
+<mat-toolbar color="accent" *ngIf="dataSource.length < 1"> There are no Quotes saved yet. Please add or import new Quote(s)</mat-toolbar>

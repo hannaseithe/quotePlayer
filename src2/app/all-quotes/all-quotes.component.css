@@ -13,9 +13,10 @@
   padding-top: 16px;
 }
 
-#quote-accordion .mat-expansion-panel{
-  background: rgb(240,240,240)
-}
 .custom-spinner {
   display:inline-block;
+}
+
+.left-margin {
+  margin-left: 10px
 }
