@@ -39,6 +39,7 @@ export class PlayerService {
           that.startTimer(that.state.time);
         } else if (buttonIndex === 1) {
           that.stopInterval();
+          chrome.browserAction.setIcon({path:"../iconk.png"});
         }
       }
     });
