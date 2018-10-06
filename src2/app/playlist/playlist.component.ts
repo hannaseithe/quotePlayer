@@ -1,5 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { DataService } from '../services/data-module/data.service';
 import { Playlist } from '../data-model/playlist.model';
 import { MatSnackBar } from '../../../node_modules/@angular/material';

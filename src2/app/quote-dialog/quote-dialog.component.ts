@@ -91,7 +91,6 @@ export class QuoteDialogComponent implements OnInit {
     this.paginatedDatasource = this.dsPipe
       .transform(this.dataSource, this.filterArgs)
       .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
-    console.log(event);
   }
 
   applyFilter(field: string, value: string) {

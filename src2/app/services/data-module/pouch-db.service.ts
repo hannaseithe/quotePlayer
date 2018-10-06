@@ -72,7 +72,7 @@ export class PouchDbService implements DataSourceService {
           }
 
         }).on('error', function (err) {
-          console.log(err)
+          console.error(err)
         })
         return this.db.info()
       })
