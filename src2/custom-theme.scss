@@ -67,7 +67,7 @@ $my-dark-theme-foreground: (
         app-bar:    map_get($primary, 900),
         background: white,
         hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
-        card:       rgba(map_get($accent, 50), 0.26),
+        card:       map_get($accent, 50),
         dialog:     map_get($primary, 100),
         disabled-button: rgba(map_get($primary,200), 0.12),
         raised-button: map_get($primary, 50),
