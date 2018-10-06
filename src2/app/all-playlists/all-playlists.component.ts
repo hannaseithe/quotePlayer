@@ -32,14 +32,7 @@ export class AllPlaylistsComponent implements OnInit {
 
   addQuotesInProgress = false;
 
-  displayFn = (q) => q ? q.quote.substr(0, 25) + '...' : undefined;
   subs = new Subscription();
-
-  private _filter(value: string): Quote[] {
-    const filterValue = value.toLowerCase();
-
-    return this.allQuotes.filter(option => option.quote.toLowerCase().includes(filterValue));
-  }
 
   constructor(private data: DataService,
     public dialog: MatDialog,
@@ -61,9 +54,8 @@ export class AllPlaylistsComponent implements OnInit {
       revertOnSpill: true,
       moves: function (el: any, container: any, handle: any): any {
         if (el.classList.contains('mat-header-row')) {
-          return false; // this will not allow any header to move
+          return false; // this will not allow the header to move
         }
-        // console.log(el, container);
         return true;
       }
     });
@@ -77,11 +69,7 @@ export class AllPlaylistsComponent implements OnInit {
 
   }
 
-  private onDrop(newQuoteDocs) {
-    this.selectedPlaylist.quoteDocs = newQuoteDocs;
-    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist())
-      .catch(error => this.snackBar.open(error, "Quote Order not Changed", { duration: 2000 }));
-  }
+  displayFn = (q) => q ? q.quote.substr(0, 25) + '...' : undefined;
 
   ngOnInit() {
   }
@@ -155,6 +143,12 @@ export class AllPlaylistsComponent implements OnInit {
         element.deleteInProgress = false;
         this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
       })
+  }
+
+  private onDrop(newQuoteDocs) {
+    this.selectedPlaylist.quoteDocs = newQuoteDocs;
+    this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist())
+      .catch(error => this.snackBar.open(error, "Quote Order not Changed", { duration: 2000 }));
   }
 
 }

@@ -2,6 +2,17 @@
     background: #C5CAE9;
   }
 
+  .item.item2 {
+    width: 75%;
+    display: inline-block;
+    vertical-align: top;
+  }
+  .item.item1 {
+    width: 25%;
+    display: inline-block;
+    vertical-align: top;
+  }
+
   .mat-header-cell > div, .mat-cell > div{
     white-space: nowrap;
     overflow-x: hidden;
@@ -19,3 +30,7 @@
 }
 
 .quotes-in-playlist .mat-row {cursor: -webkit-grab; cursor: grab;}
+
+.mat-card {
+  height: 60px;
+}

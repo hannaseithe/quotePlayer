@@ -3,6 +3,11 @@
     "name": "Chrome Quote Extension",
     "description": "An extension that let's you save and show favourite quotes",
     "version": "1.0",
+    "icons": {
+        "16": "iconk.png",
+        "32": "iconm.png",
+        "64": "iconb.png"
+    },
     "browser_action": {
         "default_icon": "iconk.png",
         "default_popup": "index.html#/popup"

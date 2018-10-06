@@ -20,7 +20,8 @@
               "src/assets",
               "src/favicon.ico",
               "src/manifest.json",
-              "src/icong.png",
+              "src/iconb.png",
+              "src/iconm.png",
               "src/iconk.png",
               "src/iconk-run.png"
             ],
@@ -81,7 +82,8 @@
               "src/assets",
               "src/favicon.ico",
               "src/manifest.json",
-              "src/icong.png",
+              "src/iconb.png",
+              "src/iconm.png",
               "src/iconk.png",
               "src/iconk-run.png"
             ]

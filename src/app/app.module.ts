@@ -1,15 +1,13 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NgModule } from '@angular/core';
-import { MatAutocompleteModule, MatSliderModule, MatIconModule, MatFormFieldModule, MatCardModule, MatInputModule, MatButtonModule } from '@angular/material';
 import { ReactiveFormsModule } from '@angular/forms';
-
 
 import { AppRoutingModule } from './app-routing.module';
 
-
 import { AppComponent } from './app.component';
 import { PopupComponent, DisableControlDirective } from './popup/popup.component';
+import { SharedMaterialModule } from './app.shared-material.module';
 
 
 @NgModule({
@@ -22,13 +20,7 @@ import { PopupComponent, DisableControlDirective } from './popup/popup.component
     BrowserAnimationsModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    MatSliderModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatInputModule,
-    MatButtonModule,
-    MatAutocompleteModule
+    SharedMaterialModule
   ],
   providers: [],
   bootstrap: [AppComponent]

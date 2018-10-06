@@ -1,18 +1,14 @@
 import { Injectable } from '@angular/core';
 import { DataService } from '../../../../../src2/app/services/data-module/data.service';
-import { Observable } from 'rxjs/Observable';
 import { Quote } from '../../../../../src2/app/data-model/quote.model';
 import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
 
 @Injectable()
 export class PlayerService {
 
-  private timeoutId;
   private notificationId = 0;
   private quotes: Array<Quote> = [];
-  private canvas;
-  private text;
-  private radius = 0;
+  private timeoutId:number;
 
   private state = {
     count: 0,
@@ -39,7 +35,8 @@ export class PlayerService {
           that.startTimer(that.state.time);
         } else if (buttonIndex === 1) {
           that.stopInterval();
-          chrome.browserAction.setIcon({path:"../iconk.png"});
+          /* Icon muss auch von hier gesetzt werden, da Popup geschlossen sein kann*/
+          chrome.browserAction.setIcon({ path: "../iconk.png" });
         }
       }
     });
@@ -67,7 +64,7 @@ export class PlayerService {
             sendResponse(that.state);
             break;
           default:
-            console.log("background.js: Unidentified Message received ");
+            console.error("background.js: Unidentified Message received ");
         }
       });
 
@@ -76,13 +73,16 @@ export class PlayerService {
   }
 
   stopInterval = function () {
-    try { chrome.notifications.clear("quote" + this.notificationId) }
-    catch (error) { console.log('Could not clear notification: ' + error) }
-    this.notificationId++;
-    clearTimeout(this.timeoutId);
-    this.state.running = false;
-    chrome.runtime.sendMessage({ msg: "updateState", data: this.state }, function (response) {
-    });
+    try {
+      chrome.notifications.clear("quote" + this.notificationId);
+      this.notificationId++;
+      clearTimeout(this.timeoutId);
+      this.state.running = false;
+      chrome.runtime.sendMessage({ msg: "updateState", data: this.state }, function (response) {
+      });
+    }
+    catch (error) { console.error('Could not clear notification: ' + error) }
+
   }
 
   startInterval = function (duration, playlist) {
@@ -110,7 +110,6 @@ export class PlayerService {
         y += lineHeight;
         context.fillText(line, x, y);
         line = words[n] + ' ';
-
       }
       else {
         line = testLine;
@@ -172,7 +171,7 @@ export class PlayerService {
             { title: "Stop" }
           ],
           requireInteraction: true,
-          iconUrl: "../icong.png"
+          iconUrl: "../iconm.png"
         };
         try { chrome.notifications.create("quote" + this.notificationId, options) }
         catch (error) { console.log('Could not create notification: ' + error) }
