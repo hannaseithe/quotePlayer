@@ -1,88 +1,90 @@
-<div class="item item1">
-  <app-playlist [playlist]="editElement"></app-playlist>
-  <mat-table #table [dataSource]="dataSource">
+<div class="app-all-playlists">
+  <div class="item item1">
+    <app-playlist [playlist]="editElement"></app-playlist>
+    <mat-table #table [dataSource]="dataSource">
 
-    <ng-container matColumnDef="name">
-      <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
-      <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="edit">
-      <mat-header-cell *matHeaderCellDef></mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        <button mat-button (click)="edit(element)">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-button (click)="delete(element)">
-          <mat-icon>delete</mat-icon>
-          <mat-spinner class="custom-spinner" *ngIf="element.deletePLInProgress" [diameter]="25"></mat-spinner>
-        </button>
-      </mat-cell>
-    </ng-container>
-
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [ngClass]="{'highlight': selectedPlaylist?.ID == row.ID}"></mat-row>
-  </mat-table>
-  <mat-toolbar color="accent" *ngIf="dataSource.length < 1"> There are no Playlists saved yet.</mat-toolbar>
-
-</div>
-<div class="item item2">
-  <mat-toolbar color="accent" *ngIf="!selectedPlaylist"> You have not selected a Playlist yet. Please select one on the left.</mat-toolbar>
-
-  <div *ngIf="selectedPlaylist">
-    <mat-card>
-      <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
-      <mat-card-content>
-        <button mat-button (click)=addQuoteDialog()>Add Quotes
-          <mat-spinner class="custom-spinner" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
-        </button>
-
-      </mat-card-content>
-    </mat-card>
-    <mat-table #table [dataSource]="selectedPlaylist?.quoteDocs" class="quotes-in-playlist" dragula="QUOTES" [(dragulaModel)]='selectedPlaylist.quoteDocs'>
-
-      <ng-container matColumnDef="quote">
-        <mat-header-cell *matHeaderCellDef> Quote </mat-header-cell>
-        <mat-cell *matCellDef="let element; let i = index" [matTooltip]="element.quote" matTooltipPosition="right" matTooltipShowDelay="1000">
-          <div>
-            <mat-chip color="accent" selected>{{i + 1}}</mat-chip> {{element.quote}}</div>
-        </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="author">
-        <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="source">
-        <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
-        <mat-cell *matCellDef="let element"> {{element.source}} </mat-cell>
-      </ng-container>
-
-      <ng-container matColumnDef="tags">
-        <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <mat-chip-list *ngFor="let tag of element.tags">
-            <mat-chip>{{tag}}</mat-chip>
-          </mat-chip-list>
-        </mat-cell>
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Title </mat-header-cell>
+        <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
       </ng-container>
 
       <ng-container matColumnDef="edit">
         <mat-header-cell *matHeaderCellDef></mat-header-cell>
-        <mat-cell *matCellDef="let element; let i = index;">
-          <button mat-button (click)="deleteQuote(element,i)">
+        <mat-cell *matCellDef="let element">
+          <button mat-button (click)="edit(element)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-button (click)="delete(element)">
             <mat-icon>delete</mat-icon>
-            <mat-spinner class="custom-spinner" *ngIf="element.deleteInProgress" [diameter]="25"></mat-spinner>
+            <mat-spinner class="custom-spinner" *ngIf="element.deletePLInProgress" [diameter]="25"></mat-spinner>
           </button>
         </mat-cell>
       </ng-container>
 
-      <!-- <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row> -->
-      <mat-row *matRowDef="let row; columns: displayedColumns2;let i = index"></mat-row>
-    </mat-table>
-    <mat-toolbar color="accent" *ngIf="selectedPlaylist?.quoteDocs < 1"> There are no Quotes saved for this Playlist yet. Please add new Quote(s)</mat-toolbar>
 
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selectRow(row)" [ngClass]="{'highlight': selectedPlaylist?.ID == row.ID}"></mat-row>
+    </mat-table>
+    <mat-toolbar color="accent" *ngIf="dataSource.length < 1"> There are no Playlists saved yet.</mat-toolbar>
+
+  </div>
+  <div class="item item2">
+    <mat-toolbar color="accent" *ngIf="!selectedPlaylist"> You have not selected a Playlist yet. Please select one on the left.</mat-toolbar>
+
+    <div *ngIf="selectedPlaylist">
+      <mat-card>
+        <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
+        <mat-card-content>
+          <button mat-button (click)=addQuoteDialog()>Add Quotes
+            <mat-spinner class="custom-spinner" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
+          </button>
+
+        </mat-card-content>
+      </mat-card>
+      <mat-table #table [dataSource]="selectedPlaylist?.quoteDocs" class="quotes-in-playlist" dragula="QUOTES" [(dragulaModel)]='selectedPlaylist.quoteDocs'>
+
+        <ng-container matColumnDef="quote">
+          <mat-header-cell *matHeaderCellDef> Quote </mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index" [matTooltip]="element.quote" matTooltipPosition="right" matTooltipShowDelay="1000">
+            <div>
+              <mat-chip color="accent" selected>{{i + 1}}</mat-chip> {{element.quote}}</div>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="author">
+          <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="source">
+          <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
+          <mat-cell *matCellDef="let element"> {{element.source}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tags">
+          <mat-header-cell *matHeaderCellDef> Tag </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <mat-chip-list *ngFor="let tag of element.tags">
+              <mat-chip>{{tag}}</mat-chip>
+            </mat-chip-list>
+          </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="edit">
+          <mat-header-cell *matHeaderCellDef></mat-header-cell>
+          <mat-cell *matCellDef="let element; let i = index;">
+            <button mat-button (click)="deleteQuote(element,i)">
+              <mat-icon>delete</mat-icon>
+              <mat-spinner class="custom-spinner" *ngIf="element.deleteInProgress" [diameter]="25"></mat-spinner>
+            </button>
+          </mat-cell>
+        </ng-container>
+
+        <!-- <mat-header-row *matHeaderRowDef="displayedColumns2"></mat-header-row> -->
+        <mat-row *matRowDef="let row; columns: displayedColumns2;let i = index"></mat-row>
+      </mat-table>
+      <mat-toolbar color="accent" *ngIf="selectedPlaylist?.quoteDocs < 1"> There are no Quotes saved for this Playlist yet. Please add new Quote(s)</mat-toolbar>
+
+    </div>
   </div>
 </div>

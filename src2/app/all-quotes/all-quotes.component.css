@@ -20,3 +20,9 @@
 .left-margin {
   margin-left: 10px
 }
+
+.app-all-quotes {
+  max-height: calc(100vh - 64px);
+  display: block;
+  overflow-y: scroll;
+}
