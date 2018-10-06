@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
+import { Subscription } from '../../../node_modules/rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -9,9 +10,15 @@ import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 })
 export class NavbarComponent implements OnInit {
 
+  subs = new Subscription();
+
   constructor(public dialog: MatDialog) { }
 
   ngOnInit() {
+  }
+
+  ngOnDestroy() {
+    this.subs.unsubscribe()
   }
 
   addQuoteDialog(): void {
@@ -19,8 +26,8 @@ export class NavbarComponent implements OnInit {
       width: '500px'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subs.add(dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-    });
+    }));
   }
 }

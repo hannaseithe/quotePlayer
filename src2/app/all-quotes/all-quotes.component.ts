@@ -12,6 +12,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import * as XLSX from 'xlsx';
 import { FormControl, Validators } from '../../../node_modules/@angular/forms';
+import { Subscription } from '../../../node_modules/rxjs';
 
 @Pipe({
   name: 'datasourceFilter',
@@ -45,16 +46,11 @@ export class AllQuotesComponent implements OnInit {
   dataSource: Quote[] = [];
   paginatedDatasource: Quote[];
   authors: any[] = [];
-  editElement: Quote; /* = {
-    quote: '',
-    author: '',
-    source: '',
-    tags:[],
-    playlists: []
-  }; */
+  editElement: Quote;
   filterArgs = {};
   dsPipe = new DatasourceFilterPipe;
 
+  subs = new Subscription();
 
   pageEvent = {
     length: 0,
@@ -75,19 +71,18 @@ export class AllQuotesComponent implements OnInit {
   constructor(private data: DataService,
     public dialog: MatDialog,
     private snackBar: MatSnackBar) {
-    data.allQuotes.subscribe(x => {
+    this.subs.add(data.allQuotes.subscribe(x => {
       this.dataSource = x;
       this.updateDatasource();
-    });
-    data.allAuthors.subscribe(x => this.authors = x);
+    }));
+    this.subs.add(data.allAuthors.subscribe(x => this.authors = x));
   }
 
   ngOnInit() {
   }
 
-
-  getAuthors(): void {
-
+  ngOnDestroy() {
+    this.subs.unsubscribe();
   }
 
   handlePageEvent(event) {
@@ -112,7 +107,7 @@ export class AllQuotesComponent implements OnInit {
       data: { element: element }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subs.add(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         element.deleteInProgress = true;
         this.data.deleteQuote(element)
@@ -124,7 +119,7 @@ export class AllQuotesComponent implements OnInit {
       }
 
       console.log('The dialog was closed');
-    });
+    }));
   }
 
   onlyUnique(value, index, self) {

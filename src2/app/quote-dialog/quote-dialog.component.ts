@@ -3,6 +3,7 @@ import {MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
 import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Subscription } from '../../../node_modules/rxjs';
 
 
 @Pipe({
@@ -40,6 +41,8 @@ export class QuoteDialogComponent implements OnInit {
   editElement: Quote;
   filterArgs = {};
 
+  subs = new Subscription();
+
   dsPipe = new DatasourceFilterPipe;
   pageEvent = {
     length: 0,
@@ -57,16 +60,19 @@ export class QuoteDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any,
     private dataService: DataService,
     public dialog: MatDialog) {
-    dataService.allQuotes.subscribe(x => { 
+    this.subs.add(dataService.allQuotes.subscribe(x => { 
       this.dataSource = x;
       this.updateDatasource();
-    });
-    dataService.allAuthors.subscribe(x => this.authors = x);
+    }));
+    this.subs.add(dataService.allAuthors.subscribe(x => this.authors = x));
   }
 
   ngOnInit() {
   }
 
+  ngOnDestroy() {
+    this.subs.unsubscribe();
+  }
   
   onNoClick(): void {
     this.dialogRef.close();

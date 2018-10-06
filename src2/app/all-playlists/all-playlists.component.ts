@@ -40,14 +40,16 @@ export class AllPlaylistsComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar) {
 
-    data.allPlaylists.subscribe(x => {
-      this.dataSource = x;
-      if (this.selectedPlaylist) {
-        this.selectedPlaylist = x.filter((x) => x.ID === this.selectedPlaylist.ID)[0]
-      }
-    });
+    this.subs.add(data.allPlaylists
+      .subscribe(x => {
+        this.dataSource = x;
+        if (this.selectedPlaylist) {
+          this.selectedPlaylist = x.filter((x) => x.ID === this.selectedPlaylist.ID)[0]
+        }
+      })
+    );
 
-    data.allQuotes.subscribe(x => this.allQuotes = x);
+    this.subs.add(data.allQuotes.subscribe(x => this.allQuotes = x));
 
     dragulaService.destroy('QUOTES');
     dragulaService.createGroup('QUOTES', {
@@ -104,12 +106,12 @@ export class AllPlaylistsComponent implements OnInit {
       width: '90%'
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subs.add(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.selectedPlaylist.quoteDocs.push(...result);
         this.onSubmit();
       }
-    });
+    }));
   }
 
 
@@ -123,7 +125,7 @@ export class AllPlaylistsComponent implements OnInit {
       data: { element: element }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subs.add(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         element.deletePLInProgress = true;
         this.data.deleteQuote(element)
@@ -133,7 +135,7 @@ export class AllPlaylistsComponent implements OnInit {
             this.snackBar.open(error, "Playlist Not Deleted", { duration: 2000 });
           })
       }
-    })
+    }))
   }
   deleteQuote(element, index) {
     element.deleteInProgress = true;
