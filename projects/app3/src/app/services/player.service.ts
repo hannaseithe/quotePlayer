@@ -1,18 +1,31 @@
+/// <reference types="chrome"/> 
+
 import { Injectable } from '@angular/core';
 import { DataService } from '../../../../../src2/app/services/data-module/data.service';
 import { Quote } from '../../../../../src2/app/data-model/quote.model';
 import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
+
 
 @Injectable()
 export class PlayerService {
 
   private notificationId = 0;
   private quotes: Array<Quote> = [];
-  private timeoutId:number;
+  private timeoutId: number;
 
   private state = {
-    count: 0,
-    running: false,
+    set count(x) {
+      chrome.runtime.sendMessage({ msg: "updateState", data: this });
+      this.c = x
+    },
+    get count() { return this.c },
+    c: 0,
+    set running(x) {
+      chrome.runtime.sendMessage({ msg: "updateState", data: this });
+      this.r = x
+    },
+    get running() { return this.r },
+    r: false,
     time: 60000,
     playlists: [],
     playlist: null
@@ -24,8 +37,12 @@ export class PlayerService {
 
     this.pouchDb.init()
       .then(() => {
+        console.log('inside resolved Promise');
         this.data.init(this.pouchDb);
-        this.data.allPlaylists.subscribe(x => this.state.playlists = x);
+        this.data.allPlaylists.subscribe(x => {
+          this.state.playlists = x;
+          console.log('inside subscribe', x)
+        });
       })
 
     chrome.notifications.onButtonClicked.addListener(function (id, buttonIndex) {
@@ -47,7 +64,6 @@ export class PlayerService {
       }
     });
 
-
     chrome.runtime.onMessage.addListener(
       function (request, sender, sendResponse) {
         switch (request.msg) {
@@ -64,11 +80,9 @@ export class PlayerService {
             sendResponse(that.state);
             break;
           default:
-            console.error("background.js: Unidentified Message received ");
+            console.error("background script: Unidentified Message received ");
         }
       });
-
-
 
   }
 
@@ -78,8 +92,6 @@ export class PlayerService {
       this.notificationId++;
       clearTimeout(this.timeoutId);
       this.state.running = false;
-      chrome.runtime.sendMessage({ msg: "updateState", data: this.state }, function (response) {
-      });
     }
     catch (error) { console.error('Could not clear notification: ' + error) }
 
@@ -93,7 +105,25 @@ export class PlayerService {
     return this.startTimer(this.state.time);
   }
 
+  private drawText(canvas, text) {
+    /*not Unit Tested*/
+
+    let context = canvas.getContext("2d");
+
+    canvas.id = "CursorLayer";
+    canvas.width = 500;
+    canvas.height = 350;
+
+    const maxWidth = 440;
+    const x = (canvas.width - maxWidth) / 2;
+    const y = 15;
+
+    this.wrapText(context, text, x, y, maxWidth);
+    return canvas;
+  }
+
   private wrapText(context, text, x, y, maxWidth) {
+    /*not Unit Tested*/
     var words = text.split(' ');
     var line = '';
     let point, lineHeight;
@@ -120,16 +150,6 @@ export class PlayerService {
   }
 
   private startTimer(time) {
-    let canvas, radius, text;
-
-    let animate = () => {
-      var context = canvas.getContext("2d");
-      var maxWidth = 440;
-      var x = (canvas.width - maxWidth) / 2;
-      var y = 15;
-
-      this.wrapText(context, text, x, y, maxWidth);
-    }
 
     if (!this.quotes) {
       chrome.notifications.create("emptyPlaylist", {
@@ -149,23 +169,17 @@ export class PlayerService {
       return false;
     } else {
       this.timeoutId = setTimeout(() => {
-        console.log((navigator as any).oscpu);
-        canvas = document.createElement('canvas');
-        text = this.quotes[this.state.count % this.quotes.length].quote;
-        radius = 0;
 
-        canvas.id = "CursorLayer";
-        canvas.width = 500;
-        canvas.height = 350;
-
-        animate()
+        let canvas = document.createElement('canvas');
+        const text = this.quotes[this.state.count % this.quotes.length].quote;
+        let paintedCanvas = this.drawText(canvas, text);
 
         var options = {
           type: "image",
           title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
           message: this.quotes[this.state.count % this.quotes.length].quote.substring(0, 25) + ' ...',
           contextMessage: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
-          imageUrl: canvas.toDataURL('image/png'),
+          imageUrl: paintedCanvas.toDataURL('image/png'),
           buttons: [
             { title: "Next Quote" },
             { title: "Stop" }
