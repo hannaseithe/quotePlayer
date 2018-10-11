@@ -39,8 +39,10 @@ export class PouchDbService implements DataSourceService {
   }
 
   init() {
+    console.log('inside poucDb init');
     return navigator.storage.persist()
       .then(() => {
+
         this.db = new PouchDB('quote_database');
         PouchDB.plugin(plugin);
         PouchDB.plugin(debugPlugin);
@@ -49,32 +51,35 @@ export class PouchDbService implements DataSourceService {
           since: 'now',
           live: true,
           include_docs: true
-        }).on('change', (change) => {
-          if (change.doc.type) {
-            switch (change.doc.type) {
-              case 'quote':
-                this.getAllQuotes();
-                this.getAllPlaylists();
-                break;
-              case 'author':
-                this.getAllAuthors()
-                break;
-              case 'playlist':
-                this.getAllPlaylists();
-                this.getAllQuotes();
-                break;
-              default:
-            }
-          } else {
-            this.getAllQuotes();
-            this.getAllAuthors();
-            this.getAllPlaylists()
-          }
-
-        }).on('error', function (err) {
-          console.error(err)
         })
+          .on('change', (change) => {
+            if (change.doc.type) {
+              switch (change.doc.type) {
+                case 'quote':
+                  this.getAllQuotes();
+                  this.getAllPlaylists();
+                  break;
+                case 'author':
+                  this.getAllAuthors()
+                  break;
+                case 'playlist':
+                  this.getAllPlaylists();
+                  this.getAllQuotes();
+                  break;
+                default:
+              }
+            } else {
+              this.getAllQuotes();
+              this.getAllAuthors();
+              this.getAllPlaylists()
+            }
+
+          })
+          .on('error', function (err) {
+            console.error(err)
+          })
         return this.db.info()
+
       })
       .then((details) => {
         if (details.doc_count == 0 && details.update_seq == 0) {
@@ -85,6 +90,8 @@ export class PouchDbService implements DataSourceService {
             .then(() => this.getAllPlaylists())
         }
       })
+
+
 
   }
 
@@ -174,7 +181,7 @@ export class PouchDbService implements DataSourceService {
           row.doc.ID = row.doc._id;
           return row.doc
         })
-        quoteDocs.sort((a,b) => (a.quote > b.quote) ? 1 : ((b.quote > a.quote) ? -1 : 0)); 
+      quoteDocs.sort((a, b) => (a.quote > b.quote) ? 1 : ((b.quote > a.quote) ? -1 : 0));
       this.allQuotes.next(quoteDocs);
       return Promise.resolve()
     }).catch(function (err) {
@@ -223,8 +230,8 @@ export class PouchDbService implements DataSourceService {
           } else {
             if (index > -1) {
               var quoteIndex;
-              for(let i=0; i<rows.length;i++) {
-                  if (rows[index].doc.quotes[i] === row.doc._id && !rows[index].doc.quoteDocs[i])  quoteIndex = i;
+              for (let i = 0; i < rows.length; i++) {
+                if (rows[index].doc.quotes[i] === row.doc._id && !rows[index].doc.quoteDocs[i]) quoteIndex = i;
               }
 
               rows[index].doc.quoteDocs[quoteIndex] = (this.mapDoc(row.doc))
@@ -330,7 +337,7 @@ export class PouchDbService implements DataSourceService {
     } else {
       return Promise.reject('Quotes not saved: There was at least one row where the column >quote< was not filled in')
     }
-    
+
   }
 
 

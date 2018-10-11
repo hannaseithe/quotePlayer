@@ -14,7 +14,8 @@
     },
     "permissions": [
         "notifications",
-        "tabs"
+        "tabs",
+        "unlimitedStorage"
     ],
     "background": {
         "page": "app3/index.html",
