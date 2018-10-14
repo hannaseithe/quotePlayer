@@ -8,20 +8,20 @@ import { Playlist } from '../../data-model/playlist.model';
 @Injectable()
 export class DataService {
 
+  allQuotes: BehaviorSubject<Quote[]>;
+  allAuthors: BehaviorSubject<any[]>;
+  allPlaylists: BehaviorSubject<Playlist[]>;
+
   private dataSource: DataSourceService;
 
   constructor() {
     
    }
 
-  currentQuotes: BehaviorSubject<Quote[]>; 
-  allQuotes: BehaviorSubject<Quote[]>;
-  allAuthors: BehaviorSubject<any[]>;
-  allPlaylists: BehaviorSubject<Playlist[]>;
+
 
   init(dataSource: DataSourceService) {
     this.dataSource = dataSource;
-    this.currentQuotes = this.dataSource.currentQuotes; 
     this.allQuotes = this.dataSource.allQuotes;
     this.allAuthors = this.dataSource.allAuthors;
     this.allPlaylists = this.dataSource.allPlaylists;

@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+/* import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';
 
 import { AllQuotesComponent } from './all-quotes.component';
@@ -108,3 +108,4 @@ describe('AllQuotesComponent', () => {
     expect(dataService.deleteQuote).toHaveBeenCalledWith(testQuote1);
   });
 });
+ */

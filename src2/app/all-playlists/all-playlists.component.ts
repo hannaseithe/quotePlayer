@@ -37,7 +37,6 @@ export class AllPlaylistsComponent implements OnInit {
   constructor(private data: DataService,
     public dialog: MatDialog,
     private dragulaService: DragulaService,
-    private cd: ChangeDetectorRef,
     private snackBar: MatSnackBar) {
 
     this.subs.add(data.allPlaylists
@@ -64,7 +63,6 @@ export class AllPlaylistsComponent implements OnInit {
 
     this.subs.add(this.dragulaService.dropModel("QUOTES")
       .subscribe(({ sourceModel }) => {
-        console.log("name", name);
         this.onDrop(sourceModel);
       })
     );
@@ -83,7 +81,6 @@ export class AllPlaylistsComponent implements OnInit {
 
   selectRow(row) {
     this.selectedPlaylist = row;
-    console.log(row);
   }
 
   onSubmit() {
@@ -152,5 +149,4 @@ export class AllPlaylistsComponent implements OnInit {
     this.data.saveOrUpdatePlaylist(this.prepareSubmitSelectedPlaylist())
       .catch(error => this.snackBar.open(error, "Quote Order not Changed", { duration: 2000 }));
   }
-
 }
