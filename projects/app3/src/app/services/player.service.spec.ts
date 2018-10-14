@@ -7,6 +7,7 @@ import { DataService } from '../../../../../src2/app/services/data-module/data.s
 import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
 import { async } from '../../../../../node_modules/@types/q';
 import { doesNotThrow } from 'assert';
+import { componentFactoryName } from '../../../../../node_modules/@angular/compiler';
 
 class MockPouchDBService {
   init = jasmine.createSpy().and.returnValue(Promise.resolve());
@@ -23,10 +24,10 @@ const testPlaylist1 = { ID: 'TESTID', name: 'TEST PLAYLIST', quotes: [testQuote1
 const mockDataUrl = 'MOCKDATAURL';
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: 2 };
 
-fdescribe('PlayerService', () => {
+describe('PlayerService', () => {
   let service, pouchDb, dataService;
 
-  beforeAll(function () {
+  beforeEach(function () {
     (global as any).chrome = chrome;
     (global as any).chrome.notifications = {
       onButtonClicked: {
@@ -43,6 +44,9 @@ fdescribe('PlayerService', () => {
         addListener: jasmine.createSpy()
       },
       sendMessage: jasmine.createSpy()
+    };
+    (global as any).chrome.browserAction = {
+      setIcon: jasmine.createSpy()
     }
   });
 
@@ -59,23 +63,49 @@ fdescribe('PlayerService', () => {
   }));
 
 
-  fit('should be created', () => {
+  it('should be created', () => {
+    spyOn(service, 'startInterval');
+    spyOn(service, 'startTimer');
+    spyOn(service, 'stopInterval');
     expect(service).toBeTruthy();
     expect(pouchDb).toBeTruthy();
     expect(dataService).toBeTruthy();
 
     expect((global as any).chrome.notifications.onButtonClicked.addListener).toHaveBeenCalled();
-    expect((global as any).chrome.notifications.onClosed.addListener).toHaveBeenCalled();
-    expect((global as any).chrome.runtime.onMessage.addListener).toHaveBeenCalled();
-    expect(pouchDb.init).toHaveBeenCalled();
+    const callBack1 = (global as any).chrome.notifications.onButtonClicked.addListener.calls.argsFor(0)[0];
+    callBack1('quote0',0);
+    expect(chrome.notifications.clear).toHaveBeenCalled();
+    expect(service.startTimer).toHaveBeenCalled();
+    callBack1('quote0',1);
+    expect(chrome.browserAction.setIcon).toHaveBeenCalled();
+    expect(service.stopInterval).toHaveBeenCalled();
 
+    expect((global as any).chrome.notifications.onClosed.addListener).toHaveBeenCalled();
+    const callBack2 = (global as any).chrome.notifications.onClosed.addListener.calls.argsFor(0)[0];
+    callBack2('quote0');
+    expect(service.startTimer).toHaveBeenCalledTimes(2);
+
+    expect((global as any).chrome.runtime.onMessage.addListener).toHaveBeenCalled();
+    const callBack3 = (global as any).chrome.runtime.onMessage.addListener.calls.argsFor(0)[0];
+    const sendResponseSpy = jasmine.createSpy('sendResponse');
+
+    callBack3({msg: 'getState'}, undefined, sendResponseSpy);
+    expect(sendResponseSpy).toHaveBeenCalledTimes(1);
+
+    callBack3({msg: 'startTimer', time: 60000, playlist: testPlaylist1},undefined, sendResponseSpy);
+    expect(service.startInterval).toHaveBeenCalledTimes(1);
+
+    callBack3({msg: 'stopTimer'},undefined, sendResponseSpy);
+    expect(sendResponseSpy).toHaveBeenCalledTimes(2);
+
+    expect(pouchDb.init).toHaveBeenCalled();
     expect(dataService.init).toHaveBeenCalledWith(pouchDb);
     expect(service.state.playlists).toEqual([testPlaylist1]);
 
   });
 
 
-  fit('should startInterval', fakeAsync(() => {
+  it('should startInterval', fakeAsync(() => {
     spyOn(service, 'drawText').and.returnValue({ toDataURL: () => mockDataUrl });
 
     var options = {
@@ -117,12 +147,12 @@ fdescribe('PlayerService', () => {
 
   }));
 
-  fit('should stopInterval', () => {
+  it('should stopInterval', () => {
 
 
     service.stopInterval();
     expect((global as any).chrome.notifications.clear).toHaveBeenCalledWith('quote0');
-    expect((global as any).chrome.runtime.sendMessage.calls.argsFor(2)).toEqual([{
+    expect((global as any).chrome.runtime.sendMessage.calls.argsFor(0)).toEqual([{
       msg: "updateState", data: {
         set count(x) {
           chrome.runtime.sendMessage({ msg: "updateState", data: this });

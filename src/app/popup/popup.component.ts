@@ -91,9 +91,12 @@ export class PopupComponent implements OnInit {
             time: Number(timeArray[1]) * 3600000 + Number(timeArray[2]) * 60000 + Number(timeArray[3]) * 1000,
             playlist: this.playlistForm.value.playlist
         }, function (response) {
-            that.state.running = response.running;
-            chrome.browserAction.setIcon({ path: "iconk-run.png" });
-            that.ref.detectChanges();
+            if (response) {
+                that.state.running = response.running;
+                chrome.browserAction.setIcon({ path: "iconk-run.png" });
+                that.ref.detectChanges();
+            }
+
         });
     }
 

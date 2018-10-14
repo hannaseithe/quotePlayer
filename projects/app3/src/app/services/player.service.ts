@@ -13,14 +13,14 @@ export class PlayerService {
 
   private state = {
     set count(x) {
+      this.c = x;
       chrome.runtime.sendMessage({ msg: "updateState", data: this });
-      this.c = x
     },
     get count() { return this.c },
     c: 0,
     set running(x) {
+      this.r = x;
       chrome.runtime.sendMessage({ msg: "updateState", data: this });
-      this.r = x
     },
     get running() { return this.r },
     r: false,
@@ -66,6 +66,7 @@ export class PlayerService {
       function (request, sender, sendResponse) {
         switch (request.msg) {
           case "getState":
+            console.log('inside getState switch');
             sendResponse(that.state);
             break;
           case "startTimer":
