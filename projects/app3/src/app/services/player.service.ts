@@ -1,5 +1,3 @@
-/// <reference types="chrome"/> 
-
 import { Injectable } from '@angular/core';
 import { DataService } from '../../../../../src2/app/services/data-module/data.service';
 import { Quote } from '../../../../../src2/app/data-model/quote.model';

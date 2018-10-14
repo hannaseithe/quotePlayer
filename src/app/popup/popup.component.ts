@@ -1,7 +1,7 @@
 /// <reference types="chrome/chrome-app"/>
 
 import { Component, OnInit, ChangeDetectorRef, Directive, Input } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder } from '@angular/forms';
 
 declare global {
     interface Window { saveQuote: any; }
@@ -31,7 +31,7 @@ export class DisableControlDirective {
 })
 export class PopupComponent implements OnInit {
 
-    public state = {
+    state = {
         running: false,
         time: null,
         playlist: null,
@@ -45,7 +45,23 @@ export class PopupComponent implements OnInit {
         speed: null
     });
 
+    constructor(private ref: ChangeDetectorRef, private formbuilder: FormBuilder) {
+        var that = this;
+        chrome.runtime.onMessage.addListener(
+            function (request, sender, sendResponse) {
+                switch (request.msg) {
+                    case "updateState":
+                        that.state = request.data;
+                        chrome.browserAction.setIcon({ path: that.state.running ? "iconk-run.png" : "iconk.png" });
+                        ref.detectChanges();
+                        break;
+                    default:
+                        console.error("Unidentified Message received");
+                }
+            }
+        );
 
+    }
 
     getState() {
         let that = this;
@@ -54,17 +70,16 @@ export class PopupComponent implements OnInit {
             that.state.running = response.running;
             that.state.playlist = response.playlist;
             that.state.playlists = response.playlists;
+            that.state.count = response.count;
             const timeDate = new Date(response.time);
             that.state.time = timeDate.toUTCString().match(/((\d{2}:){2}\d{2})/g)[0];
 
-            if (!that.playlistForm.value.playlist) {
-                that.playlistForm.patchValue({
-                    playlist: that.state.playlist ? that.state.playlist : that.state.playlists[0],
-                    speed: that.state.time
-                })
-            }
+            that.playlistForm.patchValue({
+                playlist: that.state.playlist ? that.state.playlist : that.state.playlists[0],
+                speed: that.state.time
+            })
 
-            that.ref.detectChanges();
+            /* that.ref.detectChanges(); */
         });
     }
 
@@ -77,7 +92,7 @@ export class PopupComponent implements OnInit {
             playlist: this.playlistForm.value.playlist
         }, function (response) {
             that.state.running = response.running;
-            chrome.browserAction.setIcon({path:"iconk-run.png"});
+            chrome.browserAction.setIcon({ path: "iconk-run.png" });
             that.ref.detectChanges();
         });
     }
@@ -86,28 +101,11 @@ export class PopupComponent implements OnInit {
         let that = this;
         chrome.runtime.sendMessage({ msg: "stopTimer" }, function (response) {
             that.state.running = response.running;
-            chrome.browserAction.setIcon({path:"iconk.png"});
+            chrome.browserAction.setIcon({ path: "iconk.png" });
             that.ref.detectChanges();
         });
     }
 
-    constructor(private ref: ChangeDetectorRef, private formbuilder: FormBuilder) {
-        var that = this;
-        chrome.runtime.onMessage.addListener(
-            function (request, sender, sendResponse) {
-                switch (request.msg) {
-                    case "updateState":
-                        that.state = request.data;
-                        chrome.browserAction.setIcon({path: that.state.running ? "iconk-run.png" : "iconk.png"});
-                        ref.detectChanges();
-                        break;
-                    default:
-                        console.error("Unidentified Message received");
-                }
-            }
-        );
-
-    }
 
     ngOnInit() {
         this.getState();
@@ -115,15 +113,15 @@ export class PopupComponent implements OnInit {
 
     displayFn = (q) => q ? q.name : undefined;
 
-    openBackground() {
-        chrome.tabs.query({url: 'chrome-extension://*/app2/index.html*'}, tabs => {
+    openEditPage() {
+        chrome.tabs.query({ url: 'chrome-extension://*/app2/index.html*' }, tabs => {
             if (tabs.length > 0) {
-                chrome.tabs.update(tabs[0].id, {active: true})
+                chrome.tabs.update(tabs[0].id, { active: true })
             } else {
                 chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html') });
             }
         });
-        
+
     }
 
 }
