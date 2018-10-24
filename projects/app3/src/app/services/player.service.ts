@@ -8,7 +8,7 @@ import { PouchDbService } from '../../../../../src2/app/services/data-module/pou
 export class PlayerService {
 
   private notificationId = 0;
-  private quotes: Array<Quote> = [];
+  private quotes: Array<Quote> = null;
   private timeoutId: number;
 
   private state = {
@@ -35,11 +35,9 @@ export class PlayerService {
 
     this.pouchDb.init()
       .then(() => {
-        console.log('inside resolved Promise');
         this.data.init(this.pouchDb);
         this.data.allPlaylists.subscribe(x => {
           this.state.playlists = x;
-          console.log('inside subscribe', x)
         });
       })
 
@@ -66,7 +64,6 @@ export class PlayerService {
       function (request, sender, sendResponse) {
         switch (request.msg) {
           case "getState":
-            console.log('inside getState switch');
             sendResponse(that.state);
             break;
           case "startTimer":
@@ -85,7 +82,7 @@ export class PlayerService {
 
   }
 
-  stopInterval = function () {
+  private stopInterval = function () {
     try {
       chrome.notifications.clear("quote" + this.notificationId);
       this.notificationId++;
@@ -96,7 +93,7 @@ export class PlayerService {
 
   }
 
-  startInterval = function (duration, playlist) {
+  private startInterval = function (duration, playlist) {
     this.state.running = true;
     this.state.time = duration || 60000;
     this.state.playlist = playlist;
@@ -150,8 +147,10 @@ export class PlayerService {
 
   private startTimer(time) {
 
+    console.log(this.quotes);
+
     if (!this.quotes) {
-      chrome.notifications.create("emptyPlaylist", {
+      chrome.notifications.create("noPlaylistSelected", {
         type: "basic",
         title: "No Playlist selected",
         message: "Please select a playlist to play",

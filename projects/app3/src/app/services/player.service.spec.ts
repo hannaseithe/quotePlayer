@@ -25,7 +25,7 @@ const mockDataUrl = 'MOCKDATAURL';
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: 2 };
 
 describe('PlayerService', () => {
-  let service, pouchDb, dataService;
+  let service: PlayerService, pouchDb, dataService;
 
   beforeEach(function () {
     (global as any).chrome = chrome;
@@ -64,49 +64,69 @@ describe('PlayerService', () => {
 
 
   it('should be created', () => {
-    spyOn(service, 'startInterval');
-    spyOn(service, 'startTimer');
-    spyOn(service, 'stopInterval');
     expect(service).toBeTruthy();
     expect(pouchDb).toBeTruthy();
     expect(dataService).toBeTruthy();
 
+    expect(pouchDb.init).toHaveBeenCalled();
+    expect(dataService.init).toHaveBeenCalledWith(pouchDb);
+
+  });
+
+  it('should have a listener for notification button[0]', () => {
+
     expect((global as any).chrome.notifications.onButtonClicked.addListener).toHaveBeenCalled();
     const callBack1 = (global as any).chrome.notifications.onButtonClicked.addListener.calls.argsFor(0)[0];
-    callBack1('quote0',0);
+    callBack1('quote0', 0);
     expect(chrome.notifications.clear).toHaveBeenCalled();
-    expect(service.startTimer).toHaveBeenCalled();
-    callBack1('quote0',1);
-    expect(chrome.browserAction.setIcon).toHaveBeenCalled();
-    expect(service.stopInterval).toHaveBeenCalled();
+    var options = {
+      type: "basic",
+      title: "No Playlist selected",
+      message: "Please select a playlist to play",
+      iconUrl: "../icong.png"
+    };
+    expect((global as any).chrome.notifications.create).toHaveBeenCalledWith('noPlaylistSelected', options);
+    expect((global as any).chrome.runtime.sendMessage).not.toHaveBeenCalled();
 
+  });
+
+  it('should have a listener for notification button[1]', () => {
+    const callBack1 = (global as any).chrome.notifications.onButtonClicked.addListener.calls.argsFor(0)[0];
+    callBack1('quote0', 1);
+    expect(chrome.browserAction.setIcon).toHaveBeenCalled();
+    expect((global as any).chrome.notifications.clear).toHaveBeenCalledWith('quote0');
+    expect((global as any).chrome.runtime.sendMessage).toHaveBeenCalled();
+  });
+
+  it('should have a listener for when notification is closed', () => {
     expect((global as any).chrome.notifications.onClosed.addListener).toHaveBeenCalled();
     const callBack2 = (global as any).chrome.notifications.onClosed.addListener.calls.argsFor(0)[0];
     callBack2('quote0');
-    expect(service.startTimer).toHaveBeenCalledTimes(2);
+    var options = {
+      type: "basic",
+      title: "No Playlist selected",
+      message: "Please select a playlist to play",
+      iconUrl: "../icong.png"
+    };
+    expect((global as any).chrome.notifications.create).toHaveBeenCalledWith('noPlaylistSelected', options);
+  })
 
+
+  it('shoudl have a listener when "getState" message is received', () => {
     expect((global as any).chrome.runtime.onMessage.addListener).toHaveBeenCalled();
     const callBack3 = (global as any).chrome.runtime.onMessage.addListener.calls.argsFor(0)[0];
     const sendResponseSpy = jasmine.createSpy('sendResponse');
 
-    callBack3({msg: 'getState'}, undefined, sendResponseSpy);
+    callBack3({ msg: 'getState' }, undefined, sendResponseSpy);
     expect(sendResponseSpy).toHaveBeenCalledTimes(1);
-
-    callBack3({msg: 'startTimer', time: 60000, playlist: testPlaylist1},undefined, sendResponseSpy);
-    expect(service.startInterval).toHaveBeenCalledTimes(1);
-
-    callBack3({msg: 'stopTimer'},undefined, sendResponseSpy);
-    expect(sendResponseSpy).toHaveBeenCalledTimes(2);
-
-    expect(pouchDb.init).toHaveBeenCalled();
-    expect(dataService.init).toHaveBeenCalledWith(pouchDb);
-    expect(service.state.playlists).toEqual([testPlaylist1]);
-
   });
 
+  it('should have a Listener when "startTimer" message is received', fakeAsync(() => {
+    expect((global as any).chrome.runtime.onMessage.addListener).toHaveBeenCalled();
+    const callBack3 = (global as any).chrome.runtime.onMessage.addListener.calls.argsFor(0)[0];
+    const sendResponseSpy = jasmine.createSpy('sendResponse');
 
-  it('should startInterval', fakeAsync(() => {
-    spyOn(service, 'drawText').and.returnValue({ toDataURL: () => mockDataUrl });
+    callBack3({ msg: 'startTimer', time: 60000, playlist: testPlaylist1 }, undefined, sendResponseSpy);
 
     var options = {
       type: "image",
@@ -122,9 +142,17 @@ describe('PlayerService', () => {
       iconUrl: "../iconm.png"
     };
 
-    service.startInterval(1000, testPlaylist1);
     tick(60000 * 3 + 1);
-    expect((global as any).chrome.notifications.create).toHaveBeenCalledWith('quote0', options);
+
+    expect((global as any).chrome.notifications.create).toHaveBeenCalledTimes(1);
+    expect((global as any).chrome.notifications.create.calls.argsFor(0)[0]).toEqual('quote0');
+    const optionsArg = (global as any).chrome.notifications.create.calls.argsFor(0)[1];
+
+    expect(optionsArg.title).toBe("A quote by " + testQuote1.author);
+    expect(optionsArg.message).toBe(testQuote1.quote.substring(0, 25) + ' ...');
+    expect(optionsArg.contextMessage).toBe("Source: " + testQuote1.source);
+
+
     expect((global as any).chrome.runtime.sendMessage.calls.argsFor(1)).toEqual([{
       msg: "updateState", data: {
         set count(x) {
@@ -139,19 +167,24 @@ describe('PlayerService', () => {
         },
         get running() { return this.r },
         r: true,
-        time: 1000,
+        time: 60000,
         playlists: [testPlaylist1],
         playlist: testPlaylist1
       }
     }]);
-
   }));
 
-  it('should stopInterval', () => {
 
+  it('should have a Listener for when "stopTimer" message is received', () => {
+    expect((global as any).chrome.runtime.onMessage.addListener).toHaveBeenCalled();
+    const callBack3 = (global as any).chrome.runtime.onMessage.addListener.calls.argsFor(0)[0];
+    const sendResponseSpy = jasmine.createSpy('sendResponse');
 
-    service.stopInterval();
+    callBack3({ msg: 'stopTimer' }, undefined, sendResponseSpy);
+    expect(sendResponseSpy).toHaveBeenCalledTimes(1);
+
     expect((global as any).chrome.notifications.clear).toHaveBeenCalledWith('quote0');
+
     expect((global as any).chrome.runtime.sendMessage.calls.argsFor(0)).toEqual([{
       msg: "updateState", data: {
         set count(x) {
@@ -171,8 +204,6 @@ describe('PlayerService', () => {
         playlist: null
       }
     }]);
-
-  });
-
+  })
 
 });
