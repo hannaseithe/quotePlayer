@@ -19,7 +19,7 @@ import { DragulaService } from 'ng2-dragula';
 })
 export class AllPlaylistsComponent implements OnInit {
 
-  dataSource: Playlist[] = [];
+  dataSource: any[] = [];
   selectedPlaylist: Playlist;
   selectedQuote: Quote;
   allQuotes: Quote[];
@@ -53,9 +53,9 @@ export class AllPlaylistsComponent implements OnInit {
     dragulaService.destroy('QUOTES');
     dragulaService.createGroup('QUOTES', {
       revertOnSpill: true,
-      moves: function (el: any, container: any, handle: any): any {
-        if (el.classList.contains('mat-header-row')) {
-          return false; // this will not allow the header to move
+      moves: function (el: any): any {
+        if (el.classList.includes('mat-header-row')) {
+          return false; // this will stop the header from moving
         }
         return true;
       }
@@ -69,7 +69,7 @@ export class AllPlaylistsComponent implements OnInit {
 
   }
 
-  displayFn = (q) => q ? q.quote.substr(0, 25) + '...' : undefined;
+  displayFn = (q) => q ? (q.quote.length > 25 ? q.quote.substr(0, 25) + '...' : q.quote) : undefined;
 
   ngOnInit() {
   }
@@ -125,7 +125,7 @@ export class AllPlaylistsComponent implements OnInit {
     this.subs.add(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         element.deletePLInProgress = true;
-        this.data.deleteQuote(element)
+        this.data.deletePlaylist(element)
           .then(() => element.deletePLInProgress = false)
           .catch((error) => {
             element.deleteInPorgress = false;

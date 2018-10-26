@@ -16,7 +16,7 @@
           </button>
           <button mat-button (click)="delete(element)">
             <mat-icon>delete</mat-icon>
-            <mat-spinner class="custom-spinner" *ngIf="element.deletePLInProgress" [diameter]="25"></mat-spinner>
+            <mat-spinner class="custom-spinner-1" *ngIf="element.deletePLInProgress" [diameter]="25"></mat-spinner>
           </button>
         </mat-cell>
       </ng-container>
@@ -31,12 +31,12 @@
   <div class="item item2">
     <mat-toolbar color="accent" *ngIf="!selectedPlaylist"> You have not selected a Playlist yet. Please select one on the left.</mat-toolbar>
 
-    <div *ngIf="selectedPlaylist">
+    <div *ngIf="selectedPlaylist" class="selected-playlist-container">
       <mat-card>
         <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
         <mat-card-content>
           <button mat-button (click)=addQuoteDialog()>Add Quotes
-            <mat-spinner class="custom-spinner" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
+            <mat-spinner class="custom-spinner-2" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
           </button>
 
         </mat-card-content>
@@ -75,7 +75,7 @@
           <mat-cell *matCellDef="let element; let i = index;">
             <button mat-button (click)="deleteQuote(element,i)">
               <mat-icon>delete</mat-icon>
-              <mat-spinner class="custom-spinner" *ngIf="element.deleteInProgress" [diameter]="25"></mat-spinner>
+              <mat-spinner class="custom-spinner-3" *ngIf="element.deleteInProgress" [diameter]="25"></mat-spinner>
             </button>
           </mat-cell>
         </ng-container>
