@@ -11,7 +11,12 @@ import { BrowserAnimationsModule } from '../../../node_modules/@angular/platform
 import { Playlist } from '../data-model/playlist.model';
 import { Quote } from '../data-model/quote.model';
 import { By } from '../../../node_modules/@angular/platform-browser';
+import { Component, Input } from '@angular/core';
 
+@Component({ selector: 'app-playlist', template: '' })
+class PlaylistStubComponent {
+  @Input() playlist?: Playlist;
+}
 
 const testQuote1: Quote = { quote: 'TEST QUOTE', author: 'TEST AUTHOR', source: 'TEST SOURCE', ID: '1' };
 const testPlaylist1: Playlist = { ID: 'TESTID', name: 'TEST PLAYLIST', quotes: [], quoteDocs: [testQuote1] };
@@ -42,7 +47,7 @@ class MockDialog {
   }
 }
 
-fdescribe('AllPlaylistsComponent', () => {
+describe('AllPlaylistsComponent', () => {
   let component: AllPlaylistsComponent;
   let fixture: ComponentFixture<AllPlaylistsComponent>;
   let dragulaService;
@@ -67,7 +72,7 @@ fdescribe('AllPlaylistsComponent', () => {
         MatInputModule,
         DragulaModule.forRoot()],
       declarations: [AllPlaylistsComponent,
-        PlaylistComponent],
+        PlaylistStubComponent],
       providers: [
         { provide: DataService, useClass: MockDataService },
         { provide: MatDialog, useClass: MockDialog },
