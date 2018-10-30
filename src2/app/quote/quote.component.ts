@@ -35,7 +35,7 @@ export class QuoteComponent implements OnInit {
 
   ngOnInit() {
     if (this.quote) {
-      this.tags = this.quote.tags.slice(0);
+      this.tags = this.quote.tags ? this.quote.tags.slice(0) : [];
     } else {
       this.quote = {
         ID: null,
@@ -62,7 +62,9 @@ export class QuoteComponent implements OnInit {
         author: this.quote.author,
         source: this.quote.source
       });
-      this.tags = this.quote.tags.slice(0);
+
+      this.tags = this.quote.tags ? this.quote.tags.slice(0) : [];
+
       this.cd.detectChanges();
     }
 
@@ -110,13 +112,10 @@ export class QuoteComponent implements OnInit {
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
     if ((value || '').trim()) {
       this.tags.push(value.trim());
-
     }
 
-    // Reset the input value
     if (input) {
       input.value = '';
     }

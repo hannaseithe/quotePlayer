@@ -12,16 +12,10 @@ const testPlaylist1 = { ID: 'TESTID', name: 'TEST PLAYLIST', quotes: [], quoteDo
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: '2' };
 
 class MockDataService {
-  /* allQuotes = new BehaviorSubject([testQuote1]);
-  allPlaylists = new BehaviorSubject([testPlaylist1]); */
   saveOrUpdatePlaylist = () => Promise.resolve();
-/*   deletePlaylist = () => {
-    return Promise.resolve()
-      .then(() => this.allPlaylists.next([]))};
-  deleteQuoteFromPlaylist = () => Promise.resolve(); */
 }
 
-fdescribe('PlaylistComponent', () => {
+describe('PlaylistComponent', () => {
   let component: PlaylistComponent;
   let fixture: ComponentFixture<PlaylistComponent>;
 
