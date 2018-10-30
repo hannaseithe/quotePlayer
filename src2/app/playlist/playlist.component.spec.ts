@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
 import { PlaylistComponent } from './playlist.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,6 +11,15 @@ const testQuote1 = { quote: 'TEST QUOTE', author: 'TEST AUTHOR', source: 'TEST S
 const testPlaylist1 = { ID: 'TESTID', name: 'TEST PLAYLIST', quotes: [], quoteDocs: [testQuote1] };
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: '2' };
 
+class MockDataService {
+  /* allQuotes = new BehaviorSubject([testQuote1]);
+  allPlaylists = new BehaviorSubject([testPlaylist1]); */
+  saveOrUpdatePlaylist = () => Promise.resolve();
+/*   deletePlaylist = () => {
+    return Promise.resolve()
+      .then(() => this.allPlaylists.next([]))};
+  deleteQuoteFromPlaylist = () => Promise.resolve(); */
+}
 
 fdescribe('PlaylistComponent', () => {
   let component: PlaylistComponent;
@@ -29,7 +38,7 @@ fdescribe('PlaylistComponent', () => {
         MatProgressSpinnerModule
       ],
       declarations: [ PlaylistComponent ],
-      providers: [DataService,
+      providers: [{provide: DataService, useClass: MockDataService},
       MatSnackBar]
     })
     .compileComponents();
@@ -45,8 +54,7 @@ fdescribe('PlaylistComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should onSubmit()', () => {
-    
+  it('should onSubmit()', fakeAsync(() => {
 
     component.playlist = testPlaylist1;
     component.ngOnChanges({playlist: testPlaylist1});
@@ -56,7 +64,17 @@ fdescribe('PlaylistComponent', () => {
 
     component.onSubmit();
     fixture.detectChanges();
+
     
+    let spinnerEl = fixture.debugElement.query(By.css('.custom-spinner'));
+    expect(spinnerEl).toBeTruthy();
     expect(componentEl.nativeElement.value).not.toEqual(testPlaylist1.name); 
-  })
+
+    tick();
+    fixture.detectChanges();
+
+    spinnerEl = fixture.debugElement.query(By.css('.custom-spinner'));
+    expect(spinnerEl).toBeFalsy();
+    expect(component.playlistForm.value.name).toBeFalsy();
+  }))
 });
