@@ -9,13 +9,14 @@ import { MatDialog, MatDialogRef, MatExpansionModule, MatFormFieldModule, MatPro
 import { CdkTableModule } from '@angular/cdk/table';
 import { MatTableModule, MatIconModule, MatDialogModule } from '@angular/material';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { QuoteComponent } from '../quote/quote.component';
 import { MaterialFileInputModule } from '../../../node_modules/ngx-material-file-input';
 import { FormsModule, ReactiveFormsModule } from '../../../node_modules/@angular/forms';
 import { componentNeedsResolution } from '../../../node_modules/@angular/core/src/metadata/resource_loading';
 import { By } from '@angular/platform-browser';
 import { not } from '@angular/compiler/src/output/output_ast';
+import { getParentRenderElement } from '@angular/core/src/view/util';
 
 const testQuote1 = { quote: 'TEST QUOTE1', author: 'TEST AUTHOR1', source: 'TEST SOURCE1', ID: '1' };
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: '2' };
@@ -79,7 +80,7 @@ describe('AllQuotesComponent', () => {
         MatIconModule,
         MatDialogModule,
         MatExpansionModule,
-        BrowserAnimationsModule,
+        NoopAnimationsModule,
         MaterialFileInputModule,
         MatFormFieldModule,
         MatProgressSpinnerModule,
@@ -147,6 +148,11 @@ describe('AllQuotesComponent', () => {
     component.edit(testQuote1);
     expect(component.editElement).toEqual(testQuote1);
     expect(component.panelOpenState).toBe(true);
+
+    fixture.detectChanges();
+    let extendedPanelEl = fixture.debugElement.query(By.css('.mat-expansion-panel.mat-expanded'));
+    expect(extendedPanelEl).toBeTruthy();
+  
   }));
 
   it('should attempt to open check delete Dialog', fakeAsync(() => {

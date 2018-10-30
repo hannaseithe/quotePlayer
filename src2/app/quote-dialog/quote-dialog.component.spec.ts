@@ -4,10 +4,22 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { QuoteDialogComponent } from './quote-dialog.component';
 
 
-import { MatDialogModule, MatButtonModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogModule, MatButtonModule, MatDialogRef, MAT_DIALOG_DATA, MatTableModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatTooltipModule, MatChipsModule, MatPaginatorModule, MatToolbarModule } from '@angular/material';
+import { DatasourceFilterPipe } from '../all-quotes/all-quotes.component';
+import { DataService } from '../services/data-module/data.service';
+import { BehaviorSubject } from 'rxjs';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 class MockMatDialogRef { };
 class MockMAT_DIALOG_DATA { };
+
+const testQuote1 = { quote: 'TEST QUOTE1', author: 'TEST AUTHOR1', source: 'TEST SOURCE1', ID: '1' };
+const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: '2' };
+const parsedQuote = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', tags: [] }
+
+class MockDataService {
+  allQuotes = new BehaviorSubject([testQuote1]);
+};
 
 @Component({selector: 'app-quote', template: ''})
 class QuoteStubComponent {
@@ -21,9 +33,21 @@ describe('QuoteDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuoteDialogComponent, QuoteStubComponent ],
-      imports: [  MatDialogModule, MatButtonModule ],
+      declarations: [ QuoteDialogComponent, QuoteStubComponent, DatasourceFilterPipe ],
+      imports: [  
+        NoopAnimationsModule,
+        MatDialogModule, 
+        MatTableModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTooltipModule,
+        MatChipsModule,
+        MatPaginatorModule,
+        MatToolbarModule,
+        MatButtonModule ],
       providers: [
+        { provide: DataService, useClass: MockDataService },
         { provide: MatDialogRef, useClass: MockMatDialogRef },
         { provide: MAT_DIALOG_DATA, useClass: MockMAT_DIALOG_DATA }
       ]
@@ -40,5 +64,26 @@ describe('QuoteDialogComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should updateDatasource()', () => {
+    component.dataSource = [testQuote1, testQuote2, testQuote1, testQuote2, testQuote1, testQuote2];
+    component.updateDatasource();
+    expect(component.paginatedDatasource).toEqual([testQuote1, testQuote2, testQuote1, testQuote2, testQuote1]);
+
+    component.pageEvent.pageIndex = 1;
+    component.dataSource = [testQuote1, testQuote2, testQuote1, testQuote2, testQuote1, testQuote2];
+    component.updateDatasource();
+    expect(component.paginatedDatasource).toEqual([testQuote2]);
+
+  });
+
+  it('should applyFilter()', () => {
+    component.dataSource = [testQuote1, testQuote2, testQuote1, testQuote2, testQuote1, testQuote2];
+    component.applyFilter('source', testQuote2.source);
+    expect(component.paginatedDatasource).toEqual([testQuote2, testQuote2, testQuote2]);
+
+    component.applyFilter('source', 'lksjf');
+    expect(component.paginatedDatasource).toEqual([]);
   });
 });

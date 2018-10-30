@@ -4,29 +4,7 @@ import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Subscription } from '../../../node_modules/rxjs';
-
-
-@Pipe({
-  name: 'datasourceFilter',
-  pure: false
-})
-export class DatasourceFilterPipe implements PipeTransform {
-  transform(items: any[], filter: any): any {
-    if (!items || (Object.keys(filter).length === 0 && filter.constructor === Object)) {
-      return items;
-    }
-
-
-    return items.filter(item => {
-      for (let filterKey in filter) {
-        if ((item[filterKey] || "").toString().indexOf(filter[filterKey].value) === -1) {
-          return false
-        }
-      }
-      return true
-    });
-  }
-}
+import {DatasourceFilterPipe} from '../all-quotes/all-quotes.component';
 
 @Component({
   selector: 'app-quote-dialog',
@@ -64,7 +42,6 @@ export class QuoteDialogComponent implements OnInit {
       this.dataSource = x;
       this.updateDatasource();
     }));
-    this.subs.add(dataService.allAuthors.subscribe(x => this.authors = x));
   }
 
   ngOnInit() {

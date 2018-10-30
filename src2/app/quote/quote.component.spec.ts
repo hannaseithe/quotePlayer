@@ -10,7 +10,7 @@ class MockDataService {
   saveOrUpdateQuote = () => Promise.resolve();
 };
 
-fdescribe('QuoteComponent', () => {
+describe('QuoteComponent', () => {
   let component: QuoteComponent;
   let fixture: ComponentFixture<QuoteComponent>;
   let dataService;
