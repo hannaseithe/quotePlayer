@@ -20,6 +20,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { SharedMaterialModule } from './app.shared-material.module';
+import { QuotesTableComponent } from './quotes-table/quotes-table.component';
 
 export function init_app(appLoadService: AppLoadService) {
   return () => appLoadService.init();
@@ -35,7 +36,8 @@ export function init_app(appLoadService: AppLoadService) {
     NavbarComponent,
     AllPlaylistsComponent,
     PlaylistComponent,
-    DatasourceFilterPipe
+    DatasourceFilterPipe,
+    QuotesTableComponent
   ],
   imports: [
     CdkTableModule,

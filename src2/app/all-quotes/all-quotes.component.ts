@@ -38,25 +38,9 @@ export class DatasourceFilterPipe implements PipeTransform {
 })
 export class AllQuotesComponent implements OnInit {
 
-  dataSource: any[] = [];
-  paginatedDatasource: Quote[];
-  authors: any[] = [];
   editElement: Quote;
-  filterArgs = {};
-  dsPipe = new DatasourceFilterPipe;
 
   subs = new Subscription();
-
-  pageEvent = {
-    length: 0,
-    pageIndex: 0,
-    pageSize: 5,
-    previousPageIndex: 0
-  };
-
-  displayedColumns = ['quote', 'author', 'source', 'tags', 'playlists', 'edit'];
-
-  wbData = [[1, 2], [3, 4]];
 
   excelFile = new FormControl(null, [Validators.required]);
 
@@ -64,13 +48,7 @@ export class AllQuotesComponent implements OnInit {
   importInProgress = false;
 
   constructor(private data: DataService,
-    public dialog: MatDialog,
     private snackBar: MatSnackBar) {
-
-    this.subs.add(data.allQuotes.subscribe(x => {
-      this.dataSource = x;
-      this.updateDatasource();
-    }));
   }
 
   ngOnInit() {
@@ -80,72 +58,9 @@ export class AllQuotesComponent implements OnInit {
     this.subs.unsubscribe();
   }
 
-  handlePageEvent(event) {
-    this.pageEvent = event;
-    this.updateDatasource();
-  }
-
-  updateDatasource() {
-    this.paginatedDatasource = this.dsPipe
-      .transform(this.dataSource, this.filterArgs)
-      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex),
-        this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
-  }
-  edit(element): void {
+  setEditQuote(event) {
     this.panelOpenState = true;
-    this.editElement = element;
-  }
-
-  delete(element): void {
-    let dialogRef = this.dialog.open(CheckDeleteDialogComponent, {
-      width: '500px',
-      data: { element: element }
-    });
-
-    this.subs.add(dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        element.deleteInProgress = true;
-        this.data.deleteQuote(element)
-          .then(() => element.deleteInProgress = false)
-          .catch((error) => {
-            element.deleteInProgress = false;
-            this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
-          })
-      }
-
-      console.log('The dialog was closed');
-    }));
-  }
-
-  onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
-
-
-  applyFilter(field: string, value: string) {
-    this.filterArgs[field] = {
-      value: value.trim(),
-      field: field
-    }
-    this.paginatedDatasource = this.dsPipe
-      .transform(this.dataSource, this.filterArgs)
-      .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
-  }
-
-  sortingChanged(event) {
-    if (event.direction === "asc") {
-      this.paginatedDatasource = this.dsPipe
-        .transform(this.dataSource, this.filterArgs)
-        .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
-        .reverse()
-        .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
-    } else {
-      this.paginatedDatasource = this.dsPipe
-        .transform(this.dataSource, this.filterArgs)
-        .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
-        .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
-    }
+    this.editElement = event;
   }
 
   checkAndSaveParsedData(parsedData) {
@@ -162,7 +77,6 @@ export class AllQuotesComponent implements OnInit {
 
       this.data.saveQuotes(parsedData as any)
         .then(() => {
-          console.log(this);
           this.importInProgress = false;
           this.excelFile.reset();
         })
