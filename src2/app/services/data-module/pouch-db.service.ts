@@ -10,18 +10,15 @@ import { Playlist } from '../../data-model/playlist.model';
 
 
 declare global {
-  interface StorageEstimate {
-    quota: number;
-    usage: number;
-  }
   interface Navigator {
     storage: {
-      estimate: () => Promise<StorageEstimate>;
+      estimate: () => Promise<any>;
       persist: () => Promise<boolean>;
       persisted: () => boolean;
     };
   }
 }
+
 
 declare function emit(key: any): void; declare function emit(key: any, value: any): void;
 
@@ -29,24 +26,30 @@ declare function emit(key: any): void; declare function emit(key: any, value: an
 export class PouchDbService implements DataSourceService {
 
   private db: any;
+  PouchDB;
   currentQuotes: BehaviorSubject<Quote[]> = new BehaviorSubject([]);
   allQuotes: BehaviorSubject<Quote[]> = new BehaviorSubject([]);
   allAuthors: BehaviorSubject<any[]> = new BehaviorSubject([]);
   allPlaylists: BehaviorSubject<Playlist[]> = new BehaviorSubject([]);
 
   constructor() {
+    this.PouchDB = PouchDB;
+  }
 
+  mock(pouchDB, findPlugin, debugPlugin) {
+    this.PouchDB = pouchDB || PouchDB;
   }
 
   init() {
-    console.log('inside poucDb init');
+    console.log('inside init');
+    console.log('PouchDB', this.PouchDB);
     return navigator.storage.persist()
       .then(() => {
-
-        this.db = new PouchDB('quote_database');
-        PouchDB.plugin(plugin);
-        PouchDB.plugin(debugPlugin);
-        PouchDB.debug.enable('*');
+        console.log('inside Promise');
+        this.db = new this.PouchDB('quote_database');
+        this.PouchDB.plugin(plugin);
+        this.PouchDB.plugin(debugPlugin);
+        this.PouchDB.debug.enable('*');
         this.db.changes({
           since: 'now',
           live: true,
@@ -84,7 +87,10 @@ export class PouchDbService implements DataSourceService {
       .then((details) => {
         if (details.doc_count == 0 && details.update_seq == 0) {
           return this.addFirstQuote()
-            .then((result) => this.addFirstPlaylist(result.id))
+            .then((result) => {
+              console.log('Here?', result);
+              return this.addFirstPlaylist(result.id)
+            })
         } else {
           return this.getAllQuotes()
             .then(() => this.getAllPlaylists())
@@ -95,12 +101,80 @@ export class PouchDbService implements DataSourceService {
 
   }
 
-  private mapDoc(doc) {
-    if (!doc.ID) {
-      doc.ID = doc._id ? doc._id : doc.id;
-    }
-    return doc;
+  saveQuoteWithAuthor(quote: Quote) {
+    let result;
+    return this.saveAndUpdateAuthorWithSource({ "_id": quote.author }, quote.source)
+      .then(() => {
+        return this.saveAndUpdateQuote(quote)
+      })
   }
+
+  updateQuoteWithAuthor(quote: Quote) {
+    let result;
+    return this.saveAndUpdateAuthorWithSource({ "_id": quote.author }, quote.source)
+      .then(() => {
+        return this.saveAndUpdateQuote(quote)
+      })
+  }
+
+  deleteQuote(quote) {
+    return this.deleteQuoteFromPlaylists(quote)
+      .then(() => this.db.get(quote.ID))
+      .then((result) => this.db.remove(result))
+  }
+
+  saveQuotes(quotes) {
+    let error = false;
+    console.log(quotes);
+    let mappedQuotes = quotes.map(x => {
+      x.type = "quote";
+      error = x.quote ? error : true;
+      return x
+    });
+    if (!error) {
+      return this.db.bulkDocs(mappedQuotes);
+    } else {
+      return Promise.reject('Quotes not saved: There was at least one row where the column >quote< was not filled in')
+    }
+
+  }
+
+  savePlaylist(playlist: Playlist) {
+    if (playlist.name) {
+      return this.saveAndUpdateDoc({
+        "name": playlist.name,
+        "quotes": playlist.quotes,
+        "type": "playlist"
+      });
+    } else {
+      return Promise.reject('Playlist not saved: The Playlist Name was empty')
+    }
+
+  }
+
+  updatePlaylist(playlist) {
+    return this.db.get(playlist.ID)
+      .then((result) => {
+        return this.saveAndUpdateDoc({
+          "_id": playlist.ID,
+          "_rev": result._rev,
+          "name": playlist.name,
+          "quotes": playlist.quotes,
+          "type": "playlist"
+        })
+      })
+  }
+
+  deletePlaylist(playlist) {
+    return this.db.get(playlist.ID)
+      .then((result) => this.db.remove(result));
+  }
+
+  deleteQuoteFromPlaylist(playlist, index) {
+    playlist.quotes.splice(index, 1);
+    return this.updatePlaylist(this.mapDoc(playlist))
+  }
+
 
   private addFirstPlaylist(quoteID) {
 
@@ -145,6 +219,7 @@ export class PouchDbService implements DataSourceService {
         }
       }
     }
+    console.log('inside getAllQuotes');
 
     // save the design doc
     return this.db.put(ddoc).catch(function (err) {
@@ -153,44 +228,42 @@ export class PouchDbService implements DataSourceService {
       }
       // ignore if doc already exists
     }).then(() => {
-      // find docs where title === 'Lisa Says'
       return this.db.query('getAllQuotes/index', {
         include_docs: true
       });
     }).then((result) => {
-
-      let index = -1;
-      let quoteDocs = result.rows
-        .map((row, i, rows) => {
-          row = this.mapDoc(row);
-          if (row.key[1] === 0) {
-            index = i;
-            row.doc.playlists = [];
-            return row
-          } else {
-            if (index > -1) {
-              rows[index].doc.playlists.push(row.doc.name)
-            }
-            return row
-          }
-        })
-        .filter(row => {
-          return row.key[1] === 0
-        })
-        .map(row => {
-          row.doc.ID = row.doc._id;
-          return row.doc
-        })
-      quoteDocs.sort((a, b) => (a.quote > b.quote) ? 1 : ((b.quote > a.quote) ? -1 : 0));
-      this.allQuotes.next(quoteDocs);
+      this.allQuotes.next(this.structureQuotes(result));
       return Promise.resolve()
     }).catch(function (err) {
       console.log("ERROR in getAllQuotes", err);
     });
   }
 
+  structureQuotes(result) {
+    let index = -1;
+    let quoteDocs = result.rows
+      .map((row, i, rows) => {
+        row.doc = this.mapDoc(row.doc);
+        if (row.key[1] === 0) {
+          index = i;
+          row.doc.playlists = [];
+          return row
+        } else {
+          rows[index].doc.playlists.push(row.doc.name)
+          return row
+        }
+      })
+      .filter(row => {
+        return row.key[1] === 0
+      })
+      .map(row => {
+        return row.doc
+      })
+    quoteDocs.sort((a, b) => (a.quote > b.quote) ? 1 : ((b.quote > a.quote) ? -1 : 0));
+    return quoteDocs
+  }
+
   private getAllPlaylists() {
-    // create a design doc
     var ddoc = {
       _id: '_design/getAllPlaylists',
       views: {
@@ -219,39 +292,41 @@ export class PouchDbService implements DataSourceService {
       });
     }).then((result) => {
 
-      let index = -1;
-      let playlistDocs = result.rows
-        .map((row, i, rows) => {
-          row = this.mapDoc(row);
-          if (row.key[1] === 0) {
-            index = i;
-            row.doc.quoteDocs = [];
-            return row
-          } else {
-            if (index > -1) {
-              var quoteIndex;
-              for (let i = 0; i < rows.length; i++) {
-                if (rows[index].doc.quotes[i] === row.doc._id && !rows[index].doc.quoteDocs[i]) quoteIndex = i;
-              }
-
-              rows[index].doc.quoteDocs[quoteIndex] = (this.mapDoc(row.doc))
-            }
-            return row
-          }
-        })
-        .filter(row => {
-          return row.key[1] === 0
-        })
-        .map(row => {
-          row.doc.ID = row.doc._id;
-          return row.doc
-        })
-
-      this.allPlaylists.next(playlistDocs);
+      this.allPlaylists.next(this.structurePlaylists(result));
       return Promise.resolve()
     }).catch(function (err) {
       console.log("ERROR in getAllPlaylists", err);
     });
+  }
+
+  structurePlaylists(result) {
+    let index = -1;
+    let playlistDocs = result.rows
+      .map((row, i, rows) => {
+        row.doc = this.mapDoc(row.doc);
+        if (row.key[1] === 0) {
+          index = i;
+          row.doc.quoteDocs = [];
+          return row
+        } else {
+          if (index > -1) {
+            var quoteIndex;
+            for (let i = 0; i < rows.length; i++) {
+              if (rows[index].doc.quotes[i] === row.doc._id && !rows[index].doc.quoteDocs[i]) quoteIndex = i;
+            }
+
+            rows[index].doc.quoteDocs[quoteIndex] = (this.mapDoc(row.doc))
+          }
+          return row
+        }
+      })
+      .filter(row => {
+        return row.key[1] === 0
+      })
+      .map(row => {
+        return row.doc
+      })
+      return playlistDocs
   }
 
   private getAllAuthors() {
@@ -272,37 +347,6 @@ export class PouchDbService implements DataSourceService {
       })
   }
 
-  private saveAndUpdateDoc(doc) {
-    if (!doc._id) {
-      doc._id = new Date().toISOString();
-      return this.db.put(doc);
-    } else {
-      return this.db.get(doc._id)
-        .then((result) => {
-          doc._rev = result._rev;
-          return this.db.put(doc)
-        })
-        .catch((err) => this.db.put(doc))
-    }
-  }
-
-  saveQuoteWithAuthor(quote: Quote) {
-    let result;
-    return this.saveAndUpdateAuthorWithSource({ "_id": quote.author }, quote.source)
-      .then(() => {
-        return this.saveAndUpdateQuote(quote)
-      })
-  }
-
-  updateQuoteWithAuthor(quote: Quote) {
-    let result;
-    return this.saveAndUpdateAuthorWithSource({ "_id": quote.author }, quote.source)
-      .then(() => {
-        return this.saveAndUpdateQuote(quote)
-      })
-  }
-
-
   private saveAndUpdateQuote(quote: Quote) {
     if (quote.quote) {
       return this.saveAndUpdateDoc({
@@ -319,28 +363,6 @@ export class PouchDbService implements DataSourceService {
 
   }
 
-  deleteQuote(quote) {
-    return this.deleteQuoteFromPlaylists(quote)
-      .then(() => this.db.get(quote.ID))
-      .then((result) => this.db.remove(result))
-  }
-
-  saveQuotes(quotes) {
-    let error = false;
-    let mappedQuotes = quotes.map(x => {
-      x.type = "quote";
-      error = x.quote ? error : true;
-      return x
-    });
-    if (!error) {
-      return this.db.bulkDocs(mappedQuotes);
-    } else {
-      return Promise.reject('Quotes not saved: There was at least one row where the column >quote< was not filled in')
-    }
-
-  }
-
-
   private saveAndUpdateAuthorWithSource(author, source) {
     author.type = "author";
     author.sources = [source];
@@ -353,52 +375,6 @@ export class PouchDbService implements DataSourceService {
         return this.saveAndUpdateDoc(author)
       })
   }
-
-  savePlaylist(playlist: Playlist) {
-    if (playlist.name) {
-      return this.saveAndUpdateDoc({
-        "name": playlist.name,
-        "quotes": playlist.quotes,
-        "type": "playlist"
-      });
-    } else {
-      return Promise.reject('Playlist not saved: The Playlist Name was empty')
-    }
-
-  }
-
-  updatePlaylist(playlist) {
-    return this.db.get(playlist.ID)
-      .then((result) => {
-        return this.saveAndUpdateDoc({
-          "_id": playlist.ID,
-          "_rev": result._rev,
-          "name": playlist.name,
-          "quotes": playlist.quotes,
-          "type": "playlist"
-        })
-      })
-  }
-
-  deletePlaylist(playlist) {
-    return this.db.get(playlist.ID)
-      .then((result) => this.db.remove(result));
-  }
-
-  private removeFromArray(array, element) {
-    let ax;
-    while ((ax = array.indexOf(element)) !== -1) {
-      array.splice(ax, 1);
-    }
-    return array;
-  }
-
-  deleteQuoteFromPlaylist(playlist, index) {
-    playlist.quotes.splice(index, 1);
-    return this.updatePlaylist(this.mapDoc(playlist))
-  }
-
-
 
   private deleteQuoteFromPlaylists(quote: any) {
 
@@ -439,6 +415,36 @@ export class PouchDbService implements DataSourceService {
     }).catch(function (err) {
       console.log("ERROR in deleteQuoteFromPlaylists", err);
     });
+  }
+
+  private mapDoc(doc) {
+    if (!doc.ID) {
+      doc.ID = doc._id ? doc._id : doc.id;
+    }
+    return doc;
+  }
+
+  private removeFromArray(array, element) {
+    let ax;
+    while ((ax = array.indexOf(element)) !== -1) {
+      array.splice(ax, 1);
+    }
+    return array;
+  }
+
+
+  private saveAndUpdateDoc(doc) {
+    if (!doc._id) {
+      doc._id = new Date().toISOString();
+      return this.db.put(doc);
+    } else {
+      return this.db.get(doc._id)
+        .then((result) => {
+          doc._rev = result._rev;
+          return this.db.put(doc)
+        })
+        .catch((err) => this.db.put(doc))
+    }
   }
 
 }
