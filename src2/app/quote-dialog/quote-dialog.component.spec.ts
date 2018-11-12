@@ -65,25 +65,4 @@ describe('QuoteDialogComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
-  it('should updateDatasource()', () => {
-    component.dataSource = [testQuote1, testQuote2, testQuote1, testQuote2, testQuote1, testQuote2];
-    component.updateDatasource();
-    expect(component.paginatedDatasource).toEqual([testQuote1, testQuote2, testQuote1, testQuote2, testQuote1]);
-
-    component.pageEvent.pageIndex = 1;
-    component.dataSource = [testQuote1, testQuote2, testQuote1, testQuote2, testQuote1, testQuote2];
-    component.updateDatasource();
-    expect(component.paginatedDatasource).toEqual([testQuote2]);
-
-  });
-
-  it('should applyFilter()', () => {
-    component.dataSource = [testQuote1, testQuote2, testQuote1, testQuote2, testQuote1, testQuote2];
-    component.applyFilter('source', testQuote2.source);
-    expect(component.paginatedDatasource).toEqual([testQuote2, testQuote2, testQuote2]);
-
-    component.applyFilter('source', 'lksjf');
-    expect(component.paginatedDatasource).toEqual([]);
-  });
 });

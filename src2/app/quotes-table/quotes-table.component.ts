@@ -9,6 +9,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 import { FormControl, Validators } from '../../../node_modules/@angular/forms';
 import { Subscription } from '../../../node_modules/rxjs';
+import { SelectionModel } from '@angular/cdk/collections';
 
 @Pipe({
   name: 'datasourceFilter',
@@ -38,7 +39,9 @@ export class DatasourceFilterPipe implements PipeTransform {
 export class QuotesTableComponent implements OnInit {
 
   @Input() editColumn: boolean;
+  @Input() selectQuotes: boolean;
   @Output() editQuote = new EventEmitter<Quote>();
+  @Output() selectedQuotes = new EventEmitter<Quote[]>();
 
   dataSource: any[] = [];
   paginatedDatasource: Quote[];
@@ -47,6 +50,8 @@ export class QuotesTableComponent implements OnInit {
   dsPipe = new DatasourceFilterPipe;
 
   subs = new Subscription();
+
+  selection = new SelectionModel<Quote>(true, []);
 
   pageEvent = {
     length: 0,
@@ -70,7 +75,11 @@ export class QuotesTableComponent implements OnInit {
 
   ngOnInit() {
     if (this.editColumn) {
-      this.displayedColumns.push('edit');
+      this.displayedColumns = [...this.displayedColumns, 'edit']
+    }
+
+    if (this.selectQuotes) {
+      this.displayedColumns = ['select', ...this.displayedColumns]
     }
   }
 
@@ -81,6 +90,10 @@ export class QuotesTableComponent implements OnInit {
   handlePageEvent(event) {
     this.pageEvent = event;
     this.updateDatasource();
+  }
+
+  emitSelectedQuotes() {
+    this.selectedQuotes.emit(this.selection.selected)
   }
 
   updateDatasource() {
@@ -142,5 +155,16 @@ export class QuotesTableComponent implements OnInit {
         .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
         .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
     }
+  }
+
+  isAllSelected() {
+    return !this.paginatedDatasource.find(row => !this.selection.isSelected(row));
+  }
+
+  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  masterToggle() {
+    this.isAllSelected() ?
+        this.selection.clear() :
+        this.paginatedDatasource.forEach(row => this.selection.select(row));
   }
 }

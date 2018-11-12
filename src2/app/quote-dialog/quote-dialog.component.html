@@ -1,5 +1,6 @@
 <div mat-dialog-content>
-    <mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
+    <app-quotes-table [editColumn]="false" [selectQuotes]="true" (selectedQuotes)="setSelection($event)"></app-quotes-table>
+<!--     <mat-table #table [dataSource]="paginatedDatasource" class="mat-elevation-z8">
 
         <ng-container matColumnDef="select">
             <th mat-header-cell *matHeaderCellDef>
@@ -67,5 +68,5 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length" showFirstLastButtons (page)="handlePageEvent($event)"></mat-paginator>
     <mat-toolbar color="accent" *ngIf="dataSource.length < 1"> There are no Quotes saved yet. Please add Quote(s) first.</mat-toolbar>
 
-
+ -->
 </div>

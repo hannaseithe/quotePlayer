@@ -16,3 +16,12 @@
 .left-margin {
   margin-left: 10px
 }
+
+.mat-column-select {
+  overflow: initial;
+  margin-right: 8px;
+}
+
+td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+    border: none;
+}

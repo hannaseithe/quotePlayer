@@ -4,7 +4,7 @@ import { QuotesTableComponent, DatasourceFilterPipe } from './quotes-table.compo
 import { BehaviorSubject } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { CdkTableModule } from '@angular/cdk/table';
-import { MatTableModule, MatIconModule, MatDialogModule, MatFormFieldModule, MatProgressSpinnerModule, MatDividerModule, MatTooltipModule, MatChipsModule, MatPaginatorModule, MatToolbarModule, MatInputModule, MatDialog, MatSnackBar, MatSnackBarModule } from '@angular/material';
+import { MatTableModule, MatIconModule, MatDialogModule, MatFormFieldModule, MatProgressSpinnerModule, MatDividerModule, MatTooltipModule, MatChipsModule, MatPaginatorModule, MatToolbarModule, MatInputModule, MatDialog, MatSnackBar, MatSnackBarModule, MatCheckboxModule } from '@angular/material';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -16,7 +16,7 @@ const testQuote1 = { quote: 'TEST QUOTE1', author: 'TEST AUTHOR1', source: 'TEST
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: '2' };
 const parsedQuote = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', tags: [] }
 
-fdescribe('DatasourceFilterPipe', () => {
+describe('DatasourceFilterPipe', () => {
   let pipe: DatasourceFilterPipe;
 
   beforeEach(() => {
@@ -35,7 +35,7 @@ fdescribe('DatasourceFilterPipe', () => {
 class QuoteDialogStubComponent {
 }
 
-fdescribe('QuotesTableComponent', () => {
+describe('QuotesTableComponent', () => {
   let component: QuotesTableComponent;
   let fixture: ComponentFixture<QuotesTableComponent>;
   let dataService, dialog;
@@ -78,6 +78,7 @@ fdescribe('QuotesTableComponent', () => {
         MatToolbarModule,
         MatInputModule,
         MatSnackBarModule,
+        MatCheckboxModule,
         FormsModule,
         ReactiveFormsModule
       ],

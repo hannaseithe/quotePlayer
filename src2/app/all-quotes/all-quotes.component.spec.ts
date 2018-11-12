@@ -27,7 +27,7 @@ class QuoteStubComponent {
 }
 
 
-fdescribe('AllQuotesComponent', () => {
+describe('AllQuotesComponent', () => {
   let component: AllQuotesComponent;
   let fixture: ComponentFixture<AllQuotesComponent>;
   let dataService: DataService;
