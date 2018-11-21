@@ -1,39 +1,33 @@
 <div class="app-all-quotes">
 
+  <mat-accordion id="quote-accordion" displayMode="flat">
 
-  <app-quotes-table (editQuote)="setEditQuote($event)" editColumn="true"></app-quotes-table>
-  <mat-divider></mat-divider>
-
-  <mat-accordion id="quote-accordion">
-
-    <mat-expansion-panel class="mat-expansion-panel-1" [expanded]="panelOpenState" (opened)="panelOpenState = true"
-      (closed)="panelOpenState = false">
+    <mat-expansion-panel class="mat-expansion-panel-1"  [expanded]="panelOpenState">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button mat-stroked-button color="primary">Add a new Quote</button>
+          <button mat-button (click)="chooseOption(true); $event.stopPropagation()" [class.active]="quoteExpanded">Add a new Quote</button>
+          <button mat-button  (click)="chooseOption(false); $event.stopPropagation()" [class.active]="!quoteExpanded">Import Quotes from Excel File</button>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <app-quote [quote]="editElement"></app-quote>
-    </mat-expansion-panel>
-
-    <mat-expansion-panel>
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          <button mat-stroked-button color="primary">Import Quotes from Excel File</button>
-        </mat-panel-title>
-        <mat-panel-description>
-          Help Here
-        </mat-panel-description>
-      </mat-expansion-panel-header>
-      <mat-form-field>
-        <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
-        <mat-icon matSuffix>folder</mat-icon>
-      </mat-form-field>
-      <button class="left-margin" mat-raised-button color="accent" (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import
-        Quotes from Excel
-        <mat-spinner class="custom-spinner" *ngIf="importInProgress" [diameter]="25"></mat-spinner>
-      </button>
+      <div *ngIf="quoteExpanded">
+        <app-quote [quote]="editElement"></app-quote>
+      </div>
+      <div *ngIf="!quoteExpanded">
+        <mat-form-field>
+          <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
+          <mat-icon matSuffix>folder</mat-icon>
+        </mat-form-field>
+        <button class="left-margin" mat-raised-button color="accent" (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import
+          Quotes from Excel
+          <mat-spinner class="custom-spinner" *ngIf="importInProgress" [diameter]="25"></mat-spinner>
+        </button>
+      </div>
     </mat-expansion-panel>
 
   </mat-accordion>
+  <mat-divider></mat-divider>
+  <app-quotes-table (editQuote)="setEditQuote($event)" editColumn="true"></app-quotes-table>
+  
+
+  
 </div>

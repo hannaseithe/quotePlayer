@@ -34,17 +34,19 @@ export class DatasourceFilterPipe implements PipeTransform {
 @Component({
   selector: 'app-all-quotes',
   templateUrl: './all-quotes.component.html',
-  styleUrls: ['./all-quotes.component.css']
+  styleUrls: ['./all-quotes.component.scss']
 })
 export class AllQuotesComponent implements OnInit {
 
   editElement: Quote;
+
 
   subs = new Subscription();
 
   excelFile = new FormControl(null, [Validators.required]);
 
   panelOpenState = false;
+  quoteExpanded = true;
   importInProgress = false;
 
   constructor(private data: DataService,
@@ -60,7 +62,13 @@ export class AllQuotesComponent implements OnInit {
 
   setEditQuote(event) {
     this.panelOpenState = true;
+    this.quoteExpanded = true;
     this.editElement = event;
+  }
+
+  chooseOption(showQuote) {
+    this.quoteExpanded = showQuote;
+    this.panelOpenState = true;
   }
 
   checkAndSaveParsedData(parsedData) {

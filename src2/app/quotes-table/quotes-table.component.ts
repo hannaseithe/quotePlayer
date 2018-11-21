@@ -34,7 +34,7 @@ export class DatasourceFilterPipe implements PipeTransform {
 @Component({
   selector: 'app-quotes-table',
   templateUrl: './quotes-table.component.html',
-  styleUrls: ['./quotes-table.component.css']
+  styleUrls: ['./quotes-table.component.scss']
 })
 export class QuotesTableComponent implements OnInit {
 

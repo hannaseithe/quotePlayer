@@ -148,8 +148,7 @@
               "src2/test.xlsx"
             ],
             "styles": [
-              "src2/styles.css",
-              "src2/custom-theme.scss"
+              "src2/styles.scss"
             ],
             "scripts": [
               "node_modules/localstoragedb/localstoragedb.js",
@@ -205,8 +204,7 @@
               "node_modules/hammerjs/hammer.min.js"
             ],
             "styles": [
-              "src2/styles.css",
-              "src2/custom-theme.scss"
+              "src2/styles.scss"
             ],
             "assets": [
               "src2/assets",
@@ -378,7 +376,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

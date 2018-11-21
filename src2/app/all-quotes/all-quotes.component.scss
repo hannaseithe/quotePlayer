@@ -1,3 +1,6 @@
+@import '~@angular/material/theming';
+@import '../../custom-theme.scss';
+
 .mat-header-cell > div, .mat-cell > div{
     white-space: nowrap;
     overflow: hidden;
@@ -27,9 +30,13 @@
   overflow-y: auto;
 }
 
-.mat-expansion-panel {
-  background-color: rgb(238, 240, 255)
+.mat-expansion-panel-header, .mat-expansion-panel-header:hover, .mat-expansion-panel-header:focus {
+  &.mat-expanded {
+    background-color: map_get($candy-app-primary,900);
+  }
+  background-color: map_get($candy-app-primary,900);
 }
-.mat-expansion-panel-header {
-  background-color: rgb(235, 237, 252)
+
+.mat-button.active {
+  color: map_get($candy-app-accent);
 }

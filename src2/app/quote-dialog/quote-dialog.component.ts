@@ -4,7 +4,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 @Component({
   selector: 'app-quote-dialog',
   templateUrl: './quote-dialog.component.html',
-  styleUrls: ['./quote-dialog.component.css']
+  styleUrls: ['./quote-dialog.component.scss']
 })
 export class QuoteDialogComponent implements OnInit {
 

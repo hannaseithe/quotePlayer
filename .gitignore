@@ -34,6 +34,8 @@ npm-debug.log
 yarn-error.log
 testem.log
 /typings
+test.xlsx
+~test.xlsx
 
 # e2e
 /e2e/*.js
@@ -42,4 +44,5 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
+src2/test.xlsx
 src2/test.xlsx

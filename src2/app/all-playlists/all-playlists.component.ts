@@ -15,7 +15,7 @@ import { DragulaService } from 'ng2-dragula';
 @Component({
   selector: 'app-all-playlists',
   templateUrl: './all-playlists.component.html',
-  styleUrls: ['./all-playlists.component.css']
+  styleUrls: ['./all-playlists.component.scss']
 })
 export class AllPlaylistsComponent implements OnInit {
 

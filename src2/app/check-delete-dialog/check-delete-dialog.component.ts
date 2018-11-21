@@ -4,7 +4,7 @@ import {MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 @Component({
   selector: 'app-check-delete-dialog',
   templateUrl: './check-delete-dialog.component.html',
-  styleUrls: ['./check-delete-dialog.component.css']
+  styleUrls: ['./check-delete-dialog.component.scss']
 })
 export class CheckDeleteDialogComponent {
 

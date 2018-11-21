@@ -8,7 +8,7 @@ import { ENTER, COMMA } from '@angular/cdk/keycodes';
 @Component({
   selector: 'app-quote',
   templateUrl: './quote.component.html',
-  styleUrls: ['./quote.component.css']
+  styleUrls: ['./quote.component.scss']
 })
 export class QuoteComponent implements OnInit {
 
