@@ -162,6 +162,21 @@ describe('PopupComponent', () => {
     expect(chrome.browserAction.setIcon).toHaveBeenCalledWith({ path: 'iconk-run.png' });
   });
 
+  it('should startTimer when value is 01:00 (1h)', () => {
+    expect((global as any).chrome.runtime.sendMessage.calls.count()).toBe(1);
+    component.playlistForm.patchValue({
+      playlist: testPlaylist1,
+      speed: '01:00'
+    })
+    component.startTimer();
+    expect((global as any).chrome.runtime.sendMessage.calls.count()).toBe(2);
+    expect((global as any).chrome.runtime.sendMessage.calls.argsFor(1)[0]).toEqual({
+      msg: "startTimer",
+      time: 3600000,
+      playlist: testPlaylist1
+    });
+  })
+
   it('should stopTimer', () => {
     component.stopTimer();
     expect((global as any).chrome.runtime.sendMessage.calls.count()).toBe(2);

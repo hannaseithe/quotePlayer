@@ -85,10 +85,10 @@ export class PopupComponent implements OnInit {
 
     startTimer() {
         let that = this;
-        const timeArray = this.playlistForm.value.speed.match(/(\d{2}):(\d{2}):(\d{2})/);
+        const timeArray = this.playlistForm.value.speed.match(/(\d{2}):(\d{2}):?(\d{2})?/);
         chrome.runtime.sendMessage({
             msg: "startTimer",
-            time: Number(timeArray[1]) * 3600000 + Number(timeArray[2]) * 60000 + Number(timeArray[3]) * 1000,
+            time: Number(timeArray[1]) * 3600000 + Number(timeArray[2]) * 60000 + Number(timeArray[3] ? timeArray[3] : 0) * 1000,
             playlist: this.playlistForm.value.playlist
         }, function (response) {
             if (response) {
