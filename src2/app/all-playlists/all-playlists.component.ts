@@ -56,7 +56,7 @@ export class AllPlaylistsComponent implements OnInit {
     dragulaService.createGroup('QUOTES', {
       revertOnSpill: true,
       moves: function (el: any): any {
-        if (el.classList.includes('mat-header-row')) {
+        if (el.classList.contains('mat-header-row')) {
           return false; // this will stop the header from moving
         }
         return true;
