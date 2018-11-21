@@ -21,7 +21,7 @@
     @return (
         status-bar: map_get($mat-grey, 300),
         app-bar:    map_get($primary, 900),
-        background: white,
+        background: map_get($primary, 900),
         hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
         card:       map_get($accent, 50),
         dialog:     map_get($primary, 100),
@@ -55,9 +55,6 @@ $candy-app-accent:  mat-palette($mat-amber, 200, 600, 900);
 
 // The warn palette is optional (defaults to red).
 $candy-app-warn:    mat-palette($mat-red);
-
-$candy-app-foreground: mat-palette($mat-deep-orange);
-$candy-app-background: mat-palette($mat-cyan);
 
 
 // Create the theme object (a Sass map containing all of the palettes).

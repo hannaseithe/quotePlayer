@@ -35,8 +35,48 @@
     background-color: map_get($candy-app-primary,900);
   }
   background-color: map_get($candy-app-primary,900);
+  color: white;
 }
 
+
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header {
+  &:not([aria-disabled='true']) {
+    &.cdk-keyboard-focused,
+    &.cdk-program-focused,
+    &:hover {
+      background-color: map_get($candy-app-primary,900);
+    }
+  }
+}
+
+// Disable the hover on touch devices since it can appear like it is stuck. We can't use
+// `@media (hover)` above, because the desktop support browser support isn't great.
+@media (hover: none) {
+  .mat-expansion-panel:not(.mat-expanded):not([aria-disabled='true'])
+    .mat-expansion-panel-header:hover {
+      background-color: map_get($candy-app-primary,900);
+  }
+}
+
+.mat-expansion-panel-header-title {
+  color: white
+}
+
+.mat-expansion-panel-header-description,
+.mat-expansion-indicator::after {
+  color: white
+}
+
+.mat-expansion-panel-header[aria-disabled='true'] {
+  color: white;
+
+  .mat-expansion-panel-header-title,
+  .mat-expansion-panel-header-description {
+    color: inherit;
+  }
+}
+
+
 .mat-button.active {
-  color: map_get($candy-app-accent);
+  color: map_get($candy-app-accent,900);
 }

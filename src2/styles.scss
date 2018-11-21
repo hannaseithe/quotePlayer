@@ -10,6 +10,11 @@
 // use our theme with angular-material-theme mixin
 @include angular-material-theme($candy-app-theme);
 
+.mat-expansion-panel-header-description,
+.mat-expansion-indicator::after {
+  color: white
+}
+
 
 /* You can add global styles to this file, and also import other style files */
 body {

@@ -1,12 +1,15 @@
 <div class="app-all-quotes">
 
+  <mat-divider></mat-divider>
   <mat-accordion id="quote-accordion" displayMode="flat">
 
-    <mat-expansion-panel class="mat-expansion-panel-1"  [expanded]="panelOpenState">
+    <mat-expansion-panel class="mat-expansion-panel-1" [expanded]="panelOpenState" (closed)="panelOpenState = false" (opened)="panelOpenState = true">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button mat-button (click)="chooseOption(true); $event.stopPropagation()" [class.active]="quoteExpanded">Add a new Quote</button>
-          <button mat-button  (click)="chooseOption(false); $event.stopPropagation()" [class.active]="!quoteExpanded">Import Quotes from Excel File</button>
+          <button mat-button (click)="chooseOption(true); $event.stopPropagation()" [class.active]="panelOpenState && quoteExpanded">Add
+            a new Quote</button>
+          <button mat-button (click)="chooseOption(false); $event.stopPropagation()" [class.active]="panelOpenState && !quoteExpanded">Import
+            Quotes from Excel File</button>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div *ngIf="quoteExpanded">
@@ -27,7 +30,7 @@
   </mat-accordion>
   <mat-divider></mat-divider>
   <app-quotes-table (editQuote)="setEditQuote($event)" editColumn="true"></app-quotes-table>
-  
 
-  
+
+
 </div>
