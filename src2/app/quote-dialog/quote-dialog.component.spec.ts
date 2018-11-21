@@ -21,10 +21,10 @@ class MockDataService {
   allQuotes = new BehaviorSubject([testQuote1]);
 };
 
-@Component({selector: 'app-quote', template: ''})
-class QuoteStubComponent {
-  @Input() quote;
-  @Output() close = new EventEmitter<boolean>();
+@Component({ selector: 'app-quotes-table', template: '' })
+class QuotesTableStubComponent {
+  @Input() editColumn;
+  @Input() selectQuotes;
 }
 
 describe('QuoteDialogComponent', () => {
@@ -33,7 +33,7 @@ describe('QuoteDialogComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuoteDialogComponent, QuoteStubComponent, DatasourceFilterPipe ],
+      declarations: [ QuoteDialogComponent, QuotesTableStubComponent, DatasourceFilterPipe ],
       imports: [  
         NoopAnimationsModule,
         MatDialogModule, 

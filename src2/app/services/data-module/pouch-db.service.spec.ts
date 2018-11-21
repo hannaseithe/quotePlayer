@@ -105,7 +105,7 @@ const testQuote4 = { quote: null };
 
 
 
-fdescribe('PouchDbService', () => {
+describe('PouchDbService', () => {
   let service;
 
   Object.defineProperty(window.navigator, 'storage', { value: { persist: () => Promise.resolve() } });

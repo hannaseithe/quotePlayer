@@ -2,18 +2,20 @@ import { TestBed, inject } from '@angular/core/testing';
 
 import { AppLoadService } from './app-load.service';
 import { DataService } from './data-module/data.service';
-import { LocalStorageDbService } from './data-module/local-storage-db.service';
+import { PouchDbService } from './data-module/pouch-db.service';
 
 
 class MockDataService {
   init = jasmine.createSpy();
 };
-class MockLocalStorageDBService { };
+class MockPouchDbService {
+  init = () => Promise.resolve()
+ };
 
 const chrome = require('sinon-chrome');
 
 describe('AppLoadServiceService', () => {
-  let dataService, localStorageDbService, service;
+  let dataService, pouchDbService, service;
 
 
 
@@ -26,11 +28,11 @@ describe('AppLoadServiceService', () => {
     TestBed.configureTestingModule({
       providers: [AppLoadService,
         { provide: DataService, useClass: MockDataService },
-        { provide: LocalStorageDbService, useClass: MockLocalStorageDBService }]
+        { provide: PouchDbService, useClass: MockPouchDbService }]
     });
     service = TestBed.get(AppLoadService);
     dataService = TestBed.get(DataService);
-    localStorageDbService = TestBed.get(LocalStorageDbService);
+    pouchDbService = TestBed.get(PouchDbService);
   });
 
   it('should be created', () => {
@@ -41,7 +43,7 @@ describe('AppLoadServiceService', () => {
   it('should initialize the service', (done: DoneFn) => {
     const initPromise = service.init();
     initPromise.then(() => {
-      expect(dataService.init).toHaveBeenCalledWith(localStorageDbService);
+      expect(dataService.init).toHaveBeenCalledWith(pouchDbService);
       done()
     })
   });

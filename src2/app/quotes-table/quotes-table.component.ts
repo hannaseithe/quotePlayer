@@ -146,13 +146,22 @@ export class QuotesTableComponent implements OnInit {
     if (event.direction === "asc") {
       this.paginatedDatasource = this.dsPipe
         .transform(this.dataSource, this.filterArgs)
-        .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
+        .sort((a, b) => {
+          a[event.active] = a[event.active] ? a[event.active] : '';
+          b[event.active] = b[event.active] ? b[event.active] : '';
+          
+          return (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0)
+        })
         .reverse()
         .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
     } else {
       this.paginatedDatasource = this.dsPipe
         .transform(this.dataSource, this.filterArgs)
-        .sort((a, b) => (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0))
+        .sort((a, b) => {
+          a[event.active] = a[event.active] !== '' ? a[event.active] : null;
+          b[event.active] = b[event.active] !== '' ? b[event.active] : null;
+          return (a[event.active] > b[event.active]) ? 1 : ((b[event.active] > a[event.active]) ? -1 : 0)
+        })
         .slice(this.pageEvent.pageSize * (this.pageEvent.pageIndex), this.pageEvent.pageSize * (this.pageEvent.pageIndex + 1));
     }
   }

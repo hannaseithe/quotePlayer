@@ -14,6 +14,8 @@ import { Component } from '@angular/core';
 
 const testQuote1 = { quote: 'TEST QUOTE1', author: 'TEST AUTHOR1', source: 'TEST SOURCE1', ID: '1' };
 const testQuote2 = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', ID: '2' };
+const testQuote3 = { quote: 'TEST QUOTE3', author: 'TEST AUTHOR3', source: null, ID: '3' };
+const testQuote4 = { quote: 'TEST QUOTE4', author: 'TEST AUTHOR4', source: '', ID: '4' };
 const parsedQuote = { quote: 'TEST QUOTE2', author: 'TEST AUTHOR2', source: 'TEST SOURCE2', tags: [] }
 
 describe('DatasourceFilterPipe', () => {
@@ -189,4 +191,26 @@ describe('QuotesTableComponent', () => {
     component.sortingChanged(event2);
     expect(component.paginatedDatasource).toEqual([testQuote1, testQuote1, testQuote1, testQuote2, testQuote2]);
   });
+
+  it('should consider "" and null as same when sorting', () => {
+    component.dataSource = [testQuote3, testQuote2, testQuote1, testQuote4, testQuote1, testQuote2];
+    const event1 = {
+      direction: 'asc',
+      active: 'source'
+    }
+    const event2 = {
+      direction: 'dsc',
+      active: 'source'
+    }
+
+    component.sortingChanged(event1);
+    console.log(component.paginatedDatasource);
+    expect(component.paginatedDatasource).toEqual([testQuote2, testQuote2, testQuote1, testQuote1, testQuote4]);
+   
+
+
+    component.sortingChanged(event2);
+    console.log(component.paginatedDatasource);
+    expect(component.paginatedDatasource).toEqual([testQuote1, testQuote1, testQuote2, testQuote2, testQuote4]);
+  })
 });
