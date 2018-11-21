@@ -166,6 +166,7 @@ export class PlayerService {
       });
       return false;
     } else {
+      //VS Code throws a TS Error here, but that is a VSC Bug
       this.timeoutId = setTimeout(() => {
 
         let canvas = document.createElement('canvas');
@@ -175,8 +176,7 @@ export class PlayerService {
         var options = {
           type: "image",
           title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
-          message: this.quotes[this.state.count % this.quotes.length].quote.substring(0, 25) + ' ...',
-          contextMessage: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
+          message: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
           imageUrl: paintedCanvas.toDataURL('image/png'),
           buttons: [
             { title: "Next Quote" },
