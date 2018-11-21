@@ -2,7 +2,23 @@ import { async, ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core
 
 import { AllPlaylistsComponent } from './all-playlists.component';
 import { PlaylistComponent } from '../playlist/playlist.component';
-import { MatTableModule, MatIconModule, MatProgressSpinnerModule, MatToolbarModule, MatCardModule, MatTooltipModule, MatChipsModule, MatFormFieldModule, MatDialog, MatDialogModule, MatSnackBarModule, MatSnackBar, MatInputModule } from '../../../node_modules/@angular/material';
+import {
+  MatTableModule,
+  MatIconModule, 
+  MatProgressSpinnerModule, 
+  MatToolbarModule, 
+  MatCardModule, 
+  MatTooltipModule, 
+  MatChipsModule, 
+  MatFormFieldModule, 
+  MatDialog, 
+  MatDialogModule, 
+  MatSnackBarModule, 
+  MatSnackBar, 
+  MatInputModule,
+  MatExpansionModule,
+  MatDividerModule
+} from '../../../node_modules/@angular/material';
 import { DragulaModule, DragulaService } from '../../../node_modules/ng2-dragula';
 import { ReactiveFormsModule, FormsModule } from '../../../node_modules/@angular/forms';
 import { DataService } from '../services/data-module/data.service';
@@ -28,7 +44,8 @@ class MockDataService {
   saveOrUpdatePlaylist = () => Promise.resolve();
   deletePlaylist = () => {
     return Promise.resolve()
-      .then(() => this.allPlaylists.next([]))};
+      .then(() => this.allPlaylists.next([]))
+  };
   deleteQuoteFromPlaylist = () => Promise.resolve();
 }
 
@@ -70,6 +87,8 @@ describe('AllPlaylistsComponent', () => {
         MatDialogModule,
         MatSnackBarModule,
         MatInputModule,
+        MatExpansionModule,
+        MatDividerModule,
         DragulaModule.forRoot()],
       declarations: [AllPlaylistsComponent,
         PlaylistStubComponent],
