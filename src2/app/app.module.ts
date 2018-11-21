@@ -5,6 +5,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DragulaModule } from 'ng2-dragula';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { DataModule } from './services/data-module/data.module';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -48,6 +49,7 @@ export function init_app(appLoadService: AppLoadService) {
     MaterialFileInputModule,
     DragulaModule.forRoot(),
     DataModule.forRoot(),
+    FlexLayoutModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
