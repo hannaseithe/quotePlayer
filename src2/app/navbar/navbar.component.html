@@ -1,11 +1,9 @@
 <mat-toolbar color="primary">
-  <span id="title">"Quote Player"</span>
-  <span class="app-spacer"></span>
-  <a mat-button href="index.html#/quotes"><span>Quotes</span></a>
- 
-  <a mat-button href="index.html#/playlists"><span>Playlists</span></a>
- 
   
+  <a mat-button [routerLink]="['/quotes']" routerLinkActive="mat-accent"><span>Quotes</span></a>
+  <a mat-button [routerLink]="['/playlists']" routerLinkActive="mat-accent"><span>Playlists</span></a>
+  <span class="app-spacer"></span>
+  <span id="title">Quote Player</span>
   <span class="app-spacer"></span>
   <button mat-button><mat-icon>menu</mat-icon></button>
   

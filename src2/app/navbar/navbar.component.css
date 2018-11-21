@@ -5,3 +5,7 @@
   #title {
     font-size: larger;
   }
+
+  .mat-button {
+    font-size: 100%;
+  }
