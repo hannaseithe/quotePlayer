@@ -25,6 +25,8 @@ export class AllPlaylistsComponent implements OnInit {
   allQuotes: Quote[];
   filteredQuotes: Observable<Quote[]>;
   editElement: Playlist;
+  panelOpenState = false;
+
 
   displayedColumns = ['name', 'edit'];
   displayedColumns2 = ['quote', 'author', 'source', 'tags', 'edit'];
@@ -114,6 +116,7 @@ export class AllPlaylistsComponent implements OnInit {
 
   edit(element): void {
     this.editElement = element;
+    this.panelOpenState = true;
   }
 
   delete(element): void {

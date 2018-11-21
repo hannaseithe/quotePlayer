@@ -1,12 +1,8 @@
-<mat-card>
-  <mat-card-content>
-    <form [formGroup]="playlistForm" (ngSubmit)="onSubmit()">
-      <section>
-        <mat-form-field>
-          <input matInput type="text" formControlName="name" placeholder="Add a new Playlist">
-          <mat-spinner class="custom-spinner" *ngIf="saveInProgress" [diameter]="25"></mat-spinner>
-        </mat-form-field>
-      </section>
-    </form>
-  </mat-card-content>
-</mat-card>
+<form [formGroup]="playlistForm" (ngSubmit)="onSubmit()">
+  <section>
+    <mat-form-field>
+      <input matInput type="text" formControlName="name" placeholder="Add a new Playlist">
+      <mat-spinner class="custom-spinner" *ngIf="saveInProgress" [diameter]="25"></mat-spinner>
+    </mat-form-field>
+  </section>
+</form>

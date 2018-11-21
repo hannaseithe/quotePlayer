@@ -1,11 +1,15 @@
+@import '~@angular/material/theming';
+@import '../../custom-theme.scss';
+
 .highlight{
     background: #f8e8ae;
   }
 
   .item.item2 {
-    width: 75%;
+    width: calc(75% - 1px);
     display: inline-block;
     vertical-align: top;
+    border-left: 1px solid map-get( $candy-app-primary, 900 )
   }
 
   .item.item1 .mat-card, .item.item2 .mat-card {
@@ -13,9 +17,10 @@
   }
 
   .item.item1 {
-    width: 25%;
+    width: calc(25% - 1px);
     display: inline-block;
     vertical-align: top;
+    border-right: 1px solid map-get( $candy-app-primary, 900 )
   }
 
   .mat-header-cell > div, .mat-cell > div{
@@ -36,12 +41,60 @@
 
 .quotes-in-playlist .mat-row {cursor: -webkit-grab; cursor: grab;}
 
-.mat-card {
-  height: 60px;
-}
-
 .app-all-playlists {
   max-height: calc(100vh - 64px);
   display: block;
   overflow-y: auto;
+}
+
+
+.mat-expansion-panel-header, .mat-expansion-panel-header:hover, .mat-expansion-panel-header:focus {
+  &.mat-expanded {
+    background-color: map_get($candy-app-primary,900);
+  }
+  background-color: map_get($candy-app-primary,900);
+  color: white;
+}
+
+
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header {
+  &:not([aria-disabled='true']) {
+    &.cdk-keyboard-focused,
+    &.cdk-program-focused,
+    &:hover {
+      background-color: map_get($candy-app-primary,900);
+    }
+  }
+}
+
+// Disable the hover on touch devices since it can appear like it is stuck. We can't use
+// `@media (hover)` above, because the desktop support browser support isn't great.
+@media (hover: none) {
+  .mat-expansion-panel:not(.mat-expanded):not([aria-disabled='true'])
+    .mat-expansion-panel-header:hover {
+      background-color: map_get($candy-app-primary,900);
+  }
+}
+
+.mat-expansion-panel-header-title {
+  color: white
+}
+
+.mat-expansion-panel-header-description,
+.mat-expansion-indicator::after {
+  color: white
+}
+
+.mat-expansion-panel-header[aria-disabled='true'] {
+  color: white;
+
+  .mat-expansion-panel-header-title,
+  .mat-expansion-panel-header-description {
+    color: inherit;
+  }
+}
+
+
+.mat-button.active {
+  color: map_get($candy-app-accent,900);
 }
