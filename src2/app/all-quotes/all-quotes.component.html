@@ -1,4 +1,9 @@
 <div class="app-all-quotes">
+
+
+  <app-quotes-table (editQuote)="setEditQuote($event)" editColumn="true"></app-quotes-table>
+  <mat-divider></mat-divider>
+
   <mat-accordion id="quote-accordion">
 
     <mat-expansion-panel class="mat-expansion-panel-1" [expanded]="panelOpenState" (opened)="panelOpenState = true"
@@ -31,7 +36,4 @@
     </mat-expansion-panel>
 
   </mat-accordion>
-  <mat-divider></mat-divider>
-
-  <app-quotes-table (editQuote)="setEditQuote($event)" editColumn="true"></app-quotes-table>
 </div>

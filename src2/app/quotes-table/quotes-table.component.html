@@ -23,7 +23,7 @@
       <div>{{element.quote}}</div>
     </mat-cell>
     <mat-footer-cell *matFooterCellDef>
-      <button *ngIf="selectQuotes" mat-button (click)="emitSelectedQuotes()">Add Selected Quote(s)</button>
+      <button *ngIf="selectQuotes" mat-flat-button (click)="emitSelectedQuotes()" color="accent">Add Selected Quote(s)</button>
       <mat-paginator [pageSizeOptions]="[5, 10, 20]" [length]="(dataSource | datasourceFilter:filterArgs).length"
         showFirstLastButtons (page)="handlePageEvent($event)"></mat-paginator>
     </mat-footer-cell>

@@ -1,3 +1,7 @@
+.mat-header-row {
+  background-color: #fff1be;
+}
+
 .mat-header-cell > div, .mat-cell > div{
     white-space: nowrap;
     overflow: hidden;

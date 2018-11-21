@@ -1,5 +1,5 @@
 .highlight{
-    background: #C5CAE9;
+    background: #f8e8ae;
   }
 
   .item.item2 {
@@ -7,6 +7,11 @@
     display: inline-block;
     vertical-align: top;
   }
+
+  .item.item1 .mat-card, .item.item2 .mat-card {
+    background-color: #fff1be;
+  }
+
   .item.item1 {
     width: 25%;
     display: inline-block;

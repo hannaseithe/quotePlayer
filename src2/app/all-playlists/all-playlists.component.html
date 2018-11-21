@@ -35,7 +35,7 @@
       <mat-card>
         <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
         <mat-card-content>
-          <button mat-button (click)=addQuoteDialog()>Add Quotes
+          <button mat-stroked-button color="accent" (click)=addQuoteDialog()>Add Quotes
             <mat-spinner class="custom-spinner-2" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
           </button>
 
