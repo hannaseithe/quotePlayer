@@ -1,3 +1,6 @@
+@import '~@angular/material/theming';
+@import '../../custom-theme.scss';
+
 .app-spacer {
     flex: 1 1 auto;
   }
@@ -8,4 +11,8 @@
 
   .mat-button {
     font-size: 100%;
+  }
+  
+  .mat-divider {
+    border-top-color: map-get($candy-app-primary,600)
   }
