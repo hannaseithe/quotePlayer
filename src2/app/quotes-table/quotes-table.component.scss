@@ -2,6 +2,10 @@
   background-color: #fff1be;
 }
 
+.mat-cell {
+  cursor: default;
+}
+
 .mat-header-cell > div, .mat-cell > div{
     white-space: nowrap;
     overflow: hidden;

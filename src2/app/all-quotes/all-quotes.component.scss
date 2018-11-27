@@ -80,3 +80,7 @@
 .mat-button.active {
   color: map_get($candy-app-accent,900);
 }
+
+.button {
+  cursor: pointer;
+}

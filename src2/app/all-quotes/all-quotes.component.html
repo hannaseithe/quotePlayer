@@ -14,7 +14,7 @@
         <app-quote [quote]="editElement"></app-quote>
       </div>
       <div *ngIf="!quoteExpanded">
-        <mat-form-field>
+        <mat-form-field class="button">
           <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
           <mat-icon matSuffix>folder</mat-icon>
         </mat-form-field>

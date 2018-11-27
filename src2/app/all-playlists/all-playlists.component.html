@@ -70,12 +70,16 @@
 
         <ng-container matColumnDef="author">
           <mat-header-cell *matHeaderCellDef> Author </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.author}} </mat-cell>
+          <mat-cell *matCellDef="let element" [matTooltip]="element.author" matTooltipPosition="right"
+          matTooltipShowDelay="1000"> 
+          <div>{{element.author}}</div> </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="source">
           <mat-header-cell *matHeaderCellDef> Source </mat-header-cell>
-          <mat-cell *matCellDef="let element"> {{element.source}} </mat-cell>
+          <mat-cell *matCellDef="let element" [matTooltip]="element.source" matTooltipPosition="right"
+          matTooltipShowDelay="1000"> 
+          <div>{{element.source}}</div> </mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="tags">

@@ -31,6 +31,10 @@
     padding-left:11px;
 }
 
+.item1 .mat-cell {
+  cursor:pointer;
+}
+
 .quotes-in-playlist mat-cell:first-child {
   padding-left: 0px;
 }
