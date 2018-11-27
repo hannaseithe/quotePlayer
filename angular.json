@@ -21,7 +21,10 @@
               "src/favicon.ico",
               "src/manifest.json",
               "src/iconb.png",
+              "src/iconb-run.png",
+              "src/iconb_quad.png",
               "src/iconm.png",
+              "src/iconm-run.png",
               "src/iconk.png",
               "src/iconk-run.png"
             ],

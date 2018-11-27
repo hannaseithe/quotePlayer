@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { DataService } from '../../../../../src2/app/services/data-module/data.service';
 import { Quote } from '../../../../../src2/app/data-model/quote.model';
 import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
+import { promise } from 'protractor';
 
 
 @Injectable()
@@ -101,49 +102,7 @@ export class PlayerService {
     return this.startTimer(this.state.time);
   }
 
-  private drawText(canvas, text) {
-    /*not Unit Tested*/
 
-    let context = canvas.getContext("2d");
-
-    canvas.id = "CursorLayer";
-    canvas.width = 500;
-    canvas.height = 350;
-
-    const maxWidth = 440;
-    const x = (canvas.width - maxWidth) / 2;
-    const y = 15;
-
-    this.wrapText(context, text, x, y, maxWidth);
-    return canvas;
-  }
-
-  private wrapText(context, text, x, y, maxWidth) {
-    /*not Unit Tested*/
-    var words = text.split(' ');
-    var line = '';
-    let point, lineHeight;
-
-    point = Math.ceil(300 / (words.length + 4)) + 12;
-    context.font = point + "pt Calibri";
-    context.fillStyle = 'white';
-    lineHeight = point + 10;
-    for (var n = 0; n < words.length; n++) {
-      var testLine = line + words[n] + ' ';
-      var metrics = context.measureText(testLine);
-      var testWidth = metrics.width;
-      if (testWidth > maxWidth && n > 0) {
-        y += lineHeight;
-        context.fillText(line, x, y);
-        line = words[n] + ' ';
-      }
-      else {
-        line = testLine;
-      }
-    }
-    y += lineHeight;
-    context.fillText(line, x, y);
-  }
 
   private startTimer(time) {
 
@@ -171,27 +130,93 @@ export class PlayerService {
 
         let canvas = document.createElement('canvas');
         const text = this.quotes[this.state.count % this.quotes.length].quote;
-        let paintedCanvas = this.drawText(canvas, text);
+        this.drawText(canvas, text).then((paintedCanvas) => {
+          var options = {
+            type: "image",
+            title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
+            message: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
+            imageUrl: paintedCanvas.toDataURL('image/png'),
+            buttons: [
+              { title: "Next Quote" },
+              { title: "Stop" }
+            ],
+            requireInteraction: true,
+            iconUrl: "../iconb_quad.png"
+          };
+          try { chrome.notifications.create("quote" + this.notificationId, options) }
+          catch (error) { console.log('Could not create notification: ' + error) }
+          this.state.count++;
+        });
 
-        var options = {
-          type: "image",
-          title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
-          message: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
-          imageUrl: paintedCanvas.toDataURL('image/png'),
-          buttons: [
-            { title: "Next Quote" },
-            { title: "Stop" }
-          ],
-          requireInteraction: true,
-          iconUrl: "../iconm.png"
-        };
-        try { chrome.notifications.create("quote" + this.notificationId, options) }
-        catch (error) { console.log('Could not create notification: ' + error) }
-        this.state.count++;
+        
 
       }, time);
       return true
     }
 
   }
+
+  private drawText(canvas, text):Promise<any> {
+    /*not Unit Tested*/
+
+    let context = canvas.getContext("2d");
+
+    canvas.id = "CursorLayer";
+    canvas.width = 500;
+    canvas.height = 350;
+
+    const maxWidth = 440;
+    const x = (canvas.width - maxWidth) / 2;
+    const y = 15;
+
+    return this.wrapText(context, text, x, y, maxWidth, canvas);
+  }
+
+  private wrapText(context, text, x, y, maxWidth,canvas) {
+    /*not Unit Tested*/
+    return new Promise((resolve) => {
+
+      var words = text.split(' ');
+      var line = '';
+      let point, lineHeight;
+
+      context.fillStyle = "#1a237e";
+      context.fillRect(0, 0, 500, 350);
+
+      var img = new Image();
+      img.src = "../iconb-run.png";
+
+      img.onload = function () {
+        context.drawImage(img, x / 2, y / 2);
+
+        point = Math.ceil(300 / (words.length + 4)) + 12;
+        lineHeight = point + 10;
+
+        context.fillStyle = 'white';
+        context.font = point + "pt Calibri";
+
+        for (var n = 0; n < words.length; n++) {
+          var testLine = line + words[n] + ' ';
+          var metrics = context.measureText(testLine);
+          var testWidth = metrics.width;
+          if (testWidth > maxWidth && n > 0) {
+            y += lineHeight;
+            context.fillText(line, x, y);
+            line = words[n] + ' ';
+          }
+          else {
+            line = testLine;
+          }
+        }
+        y += lineHeight;
+        context.fillText(line, x, y);
+        resolve(canvas);
+      }
+      
+      
+
+    });
+  }
+
+
 }
