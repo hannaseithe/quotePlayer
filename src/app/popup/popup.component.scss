@@ -1,0 +1,30 @@
+@import '~@angular/material/theming';
+
+// import our custom theme
+@import '../../custom-theme.scss';
+
+.popup-footer {
+    text-align: center;
+    border-top: 1px solid map-get($candy-app-primary, 600);
+}
+
+.popup-footer button {
+    width: 100%;
+}
+
+.mat-slider-horizontal {
+    width: 100%;
+}
+
+.player {
+    border: 5px solid map-get($candy-app-primary, 900);
+    border-bottom: 8px solid map-get($candy-app-primary, 900);
+}
+
+.mat-autocomplete-panel.mat-autocomplete-visible {
+    max-height: 130px;
+}
+
+.mat-card.title {
+    background: map-get($candy-app-primary, 900);
+}

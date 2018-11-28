@@ -1,3 +1,8 @@
+<mat-card class="player title">
+  <mat-card-content>
+      <img src="/app2/assets/img/Titel.png" alt="Quote Player">
+  </mat-card-content>
+</mat-card>
 <mat-card class="player">
   <mat-card-content>
 
@@ -19,18 +24,18 @@
         </mat-autocomplete>
       </mat-form-field>
     </form>
-    <button mat-button color="accent" id="play" (click)="startTimer()" [disabled]="state.running" matTooltip="Start showing Quotes"
+    <button mat-flat-button color="accent" id="play" (click)="startTimer()" [disabled]="state.running" matTooltip="Start showing Quotes"
       class="play-button">
       <mat-icon>play_arrow</mat-icon>
     </button>
-    <button mat-button color="accent" id="stop" (click)="stopTimer()" [disabled]="!state.running" class="stop-button">
+    <button mat-flat-button color="accent" id="stop" (click)="stopTimer()" [disabled]="!state.running" class="stop-button">
       <mat-icon>stop</mat-icon>
     </button>
 
   </mat-card-content>
   <mat-card-content class="popup-footer">
-    <button mat-button color="primary" (click)="openEditPage()" class="edit-button">
-      Edit Playlists
+    <button mat-flat-button color="primary" (click)="openEditPage()" class="edit-button">
+      Manage Quotes
     </button>
 
   </mat-card-content>

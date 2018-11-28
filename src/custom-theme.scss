@@ -1,0 +1,61 @@
+@function create-smooth-foreground($primary, $accent) {
+    @return (
+        base:              black,
+        divider:           map_get($primary, 900),
+        dividers:          map_get($primary, 900),
+        disabled:          $dark-disabled-text,
+        disabled-button:   rgba(black, 0.26),
+        disabled-text:     $dark-disabled-text,
+        hint-text:         $dark-disabled-text,
+        secondary-text:    $dark-secondary-text,
+        icon:              rgba(black, 0.54),
+        icons:             rgba(black, 0.54),
+        text:              rgba(black, 0.87),
+        slider-min:        rgba(black, 0.87),
+        slider-off:        rgba(black, 0.26),
+        slider-off-active: rgba(black, 0.38),
+    );
+  }
+
+@function create-smooth-background($primary, $accent) {
+    @return (
+        status-bar: map_get($mat-grey, 300),
+        app-bar:    map_get($primary, 900),
+        background: map_get($primary, 900),
+        hover:      rgba(black, 0.04), // TODO(kara): check style with Material Design UX
+        card:       map_get($accent, 50),
+        dialog:     map_get($primary, 100),
+        disabled-button: rgba(map_get($primary,200), 0.12),
+        raised-button: map_get($primary, 50),
+        focused-button: $dark-focused,
+        selected-button: map_get($mat-grey, 300),
+        selected-disabled-button: map_get($mat-grey, 400),
+        disabled-button-toggle: map_get($mat-grey, 200),
+        unselected-chip: map_get($mat-grey, 300),
+        disabled-list-option: map_get($mat-grey, 200),
+    );
+  }
+
+// instead of creating a theme with mat-light-theme like a sane person, we will create our own theme-creating function that lets us apply our own foreground and background palettes.
+@function create-smooth-theme($primary, $accent, $warn) {
+  @return (
+    primary: mat-palette($primary, 900),
+    accent: mat-palette($accent, 900),
+    warn: $warn,
+    is-dark: false,
+    foreground: create-smooth-foreground($primary, $accent),
+    background: create-smooth-background($primary, $accent),
+  );
+}
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$candy-app-primary: mat-palette($mat-indigo);
+$candy-app-accent:  mat-palette($mat-amber, 200, 600, 900);
+
+// The warn palette is optional (defaults to red).
+$candy-app-warn:    mat-palette($mat-red);
+
+
+// Create the theme object (a Sass map containing all of the palettes).
+$candy-app-theme: create-smooth-theme($mat-indigo, $mat-amber, $candy-app-warn);

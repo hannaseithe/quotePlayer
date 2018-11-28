@@ -1,0 +1,28 @@
+@import '~@angular/material/theming';
+
+// always include only once per project
+@include mat-core();
+
+// import our custom theme
+@import 'custom-theme.scss';
+
+
+// use our theme with angular-material-theme mixin
+@include angular-material-theme($candy-app-theme);
+
+
+.mat-slider-horizontal .mat-slider-wrapper {
+    left: 0px;
+    right: 0px;
+}
+body {
+    margin:0px;
+}
+
+.popup-autocomplete.mat-autocomplete-panel.mat-autocomplete-visible {
+    max-height: 130px;
+}
+
+.mat-card-title {
+    background-color: map-get($candy-app-accent,300)
+}
