@@ -46,7 +46,7 @@ export class AllQuotesComponent implements OnInit {
   excelFile = new FormControl(null, [Validators.required]);
 
   panelOpenState = false;
-  quoteExpanded = true;
+  quoteSelected = true;
   importInProgress = false;
 
   constructor(private data: DataService,
@@ -62,13 +62,13 @@ export class AllQuotesComponent implements OnInit {
 
   setEditQuote(event) {
     this.panelOpenState = true;
-    this.quoteExpanded = true;
+    this.quoteSelected = true;
     this.editElement = event;
   }
 
   chooseOption(showQuote) {
-    this.quoteExpanded = showQuote;
-    this.panelOpenState = true;
+    this.panelOpenState = this.panelOpenState ? (showQuote !== this.quoteSelected) : true;
+    this.quoteSelected = showQuote;
   }
 
   checkAndSaveParsedData(parsedData) {

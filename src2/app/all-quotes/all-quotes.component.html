@@ -4,16 +4,16 @@
     <mat-expansion-panel class="mat-expansion-panel-1" [expanded]="panelOpenState" (closed)="panelOpenState = false" (opened)="panelOpenState = true">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <button mat-button (click)="chooseOption(true); $event.stopPropagation()" [class.active]="panelOpenState && quoteExpanded">Add
+          <button mat-button (click)="chooseOption(true); $event.stopPropagation()" [class.active]="panelOpenState && quoteSelected">Add
             a new Quote</button>
-          <button mat-button (click)="chooseOption(false); $event.stopPropagation()" [class.active]="panelOpenState && !quoteExpanded">Import
+          <button mat-button (click)="chooseOption(false); $event.stopPropagation()" [class.active]="panelOpenState && !quoteSelected">Import
             Quotes from Excel File</button>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div *ngIf="quoteExpanded">
+      <div *ngIf="quoteSelected">
         <app-quote [quote]="editElement"></app-quote>
       </div>
-      <div *ngIf="!quoteExpanded">
+      <div *ngIf="!quoteSelected">
         <mat-form-field class="button">
           <ngx-mat-file-input [formControl]="excelFile" placeholder="Select Excel File to Import" accept=".xls, .xlsx"></ngx-mat-file-input>
           <mat-icon matSuffix>folder</mat-icon>
