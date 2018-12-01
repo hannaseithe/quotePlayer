@@ -8,8 +8,8 @@ import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-
 import { Pipe, PipeTransform } from '@angular/core';
 
 import * as XLSX from 'xlsx';
-import { FormControl, Validators } from '../../../node_modules/@angular/forms';
-import { Subscription } from '../../../node_modules/rxjs';
+import { FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Pipe({
   name: 'datasourceFilter',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
-import { Subscription } from '../../../node_modules/rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
