@@ -96,7 +96,7 @@ export class PlayerService {
 
   private startInterval = function (duration, playlist) {
     this.state.running = true;
-    this.state.time = duration || 60000;
+    this.state.time = duration;
     this.state.playlist = playlist;
     this.quotes = playlist.quoteDocs;
     return this.startTimer(this.state.time);
