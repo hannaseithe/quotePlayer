@@ -5,7 +5,10 @@
   <span class="app-spacer"></span>
   <img src="/app2/assets/img/Titel.png" alt="Quote Player">
   <span class="app-spacer"></span>
-  <button mat-button><mat-icon>menu</mat-icon></button>
+  <button mat-button [matMenuTriggerFor]="appMenu"><mat-icon>menu</mat-icon></button>
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item (click)="report()">Report a bug</button>
+  </mat-menu>
   
 </mat-toolbar>
 <mat-divider></mat-divider>

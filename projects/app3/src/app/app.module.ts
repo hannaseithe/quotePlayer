@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { PlayerService } from './services/player.service';
-import { DataModule } from '../../../../src2/app/services/data-module/data.module';
+import { DataModule } from '../../../app2/src2/app/services/data-module/data.module';
 import { AppRoutingModule } from './app-routing-module';
 
 @NgModule({

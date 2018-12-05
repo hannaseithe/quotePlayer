@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { DataService } from '../../../../../src2/app/services/data-module/data.service';
-import { Quote } from '../../../../../src2/app/data-model/quote.model';
-import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
+import { DataService } from '../../../../app2/src2/app/services/data-module/data.service';
+import { Quote } from '../../../../app2/src2/app/data-model/quote.model';
+import { PouchDbService } from '../../../../app2/src2/app/services/data-module/pouch-db.service';
 import { promise } from 'protractor';
 
 

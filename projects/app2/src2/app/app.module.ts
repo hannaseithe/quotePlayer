@@ -22,6 +22,8 @@ import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { SharedMaterialModule } from './app.shared-material.module';
 import { QuotesTableComponent } from './quotes-table/quotes-table.component';
+import { ReportBugComponent } from './report-bug/report-bug.component';
+import { HttpClientModule } from '@angular/common/http';
 
 export function init_app(appLoadService: AppLoadService) {
   return () => appLoadService.init();
@@ -38,7 +40,8 @@ export function init_app(appLoadService: AppLoadService) {
     AllPlaylistsComponent,
     PlaylistComponent,
     DatasourceFilterPipe,
-    QuotesTableComponent
+    QuotesTableComponent,
+    ReportBugComponent
   ],
   imports: [
     CdkTableModule,
@@ -49,14 +52,15 @@ export function init_app(appLoadService: AppLoadService) {
     MaterialFileInputModule,
     DragulaModule.forRoot(),
     DataModule.forRoot(),
-    FlexLayoutModule
+    FlexLayoutModule,
+    HttpClientModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     AppLoadService,
     { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
   ],
-  entryComponents: [QuoteDialogComponent, CheckDeleteDialogComponent],
+  entryComponents: [QuoteDialogComponent, CheckDeleteDialogComponent, ReportBugComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

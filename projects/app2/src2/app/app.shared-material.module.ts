@@ -1,4 +1,4 @@
-import { MatButtonModule, MatAutocompleteModule, MatInputModule, MatCardModule, MatFormFieldModule, MatIconModule, MatTableModule, MatDialogModule, MatToolbarModule, MatChipsModule, MatTooltipModule, MatCheckboxModule, MatPaginatorModule, MatExpansionModule, MatSnackBarModule, MatProgressSpinnerModule, MatSortModule, MatGridListModule, MatDividerModule } from '@angular/material';
+import { MatButtonModule, MatAutocompleteModule, MatInputModule, MatCardModule, MatFormFieldModule, MatIconModule, MatTableModule, MatDialogModule, MatToolbarModule, MatChipsModule, MatTooltipModule, MatCheckboxModule, MatPaginatorModule, MatExpansionModule, MatSnackBarModule, MatProgressSpinnerModule, MatSortModule, MatGridListModule, MatDividerModule, MatMenuModule } from '@angular/material';
 import { NgModule } from '@angular/core';
 
 @NgModule({
@@ -21,7 +21,8 @@ import { NgModule } from '@angular/core';
         MatSnackBarModule,
         MatProgressSpinnerModule,
         MatSortModule,
-        MatDividerModule
+        MatDividerModule,
+        MatMenuModule
     ],
     exports: [
         MatIconModule,
@@ -42,7 +43,8 @@ import { NgModule } from '@angular/core';
         MatSnackBarModule,
         MatProgressSpinnerModule,
         MatSortModule,
-        MatDividerModule
+        MatDividerModule,
+        MatMenuModule
     ],
 })
 export class SharedMaterialModule { }

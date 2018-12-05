@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { QuoteDialogComponent } from '../quote-dialog/quote-dialog.component';
 import { Subscription } from 'rxjs';
+import { ReportBugComponent } from '../report-bug/report-bug.component';
 
 @Component({
   selector: 'app-navbar',
@@ -29,5 +30,16 @@ export class NavbarComponent implements OnInit {
     this.subs.add(dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     }));
+  }
+
+  report(): void {
+    let dialogRef = this.dialog.open(ReportBugComponent, {
+      width: '500px',
+      data: {}
+    });
+
+    this.subs.add(dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      }));
   }
 }

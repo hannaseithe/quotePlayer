@@ -1,0 +1,17 @@
+<mat-card>
+  <mat-card-title>
+    Report a Bug
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="bugForm" (ngSubmit)="onSubmit()" class="example-container">
+      <mat-form-field>
+        <textarea matInput type="text" formControlName="bug" placeholder="Describe the bug. What behavior did you expect? What did actually happen? Which feature is concerned"
+          matTextareaAutosize></textarea>
+      </mat-form-field>
+      <mat-form-field *ngIf="!userLoggedIn">
+          <input matInput type="email" formControlName="user" placeholder="Please enter your email">
+        </mat-form-field>
+    </form>
+    <button mat-button [disabled]="bugForm.invalid || bugForm.untouched" (click)="onSubmit()"><mat-icon>send</mat-icon></button>
+  </mat-card-content>
+</mat-card>

@@ -15,7 +15,10 @@
     "permissions": [
         "notifications",
         "tabs",
-        "unlimitedStorage"
+        "unlimitedStorage",
+        "http://www.hannaseithe.de/",
+        "identity",
+        "identity.email"
     ],
     "background": {
         "page": "app3/index.html",
