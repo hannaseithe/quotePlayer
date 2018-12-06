@@ -2,16 +2,34 @@
   <mat-card-title>
     Report a Bug
   </mat-card-title>
+  <mat-card-subtitle>
+    Please fill out the form below. Make sure to describe the bug adequately. <br/><br/>
+    <mat-icon color="accent" >warning</mat-icon><span class="aligned-with-icon-relative">If I cannot reproduce it, I cannot fix it.</span>
+  </mat-card-subtitle>
   <mat-card-content>
+    
     <form [formGroup]="bugForm" (ngSubmit)="onSubmit()" class="example-container">
       <mat-form-field>
-        <textarea matInput type="text" formControlName="bug" placeholder="Describe the bug. What behavior did you expect? What did actually happen? Which feature is concerned"
-          matTextareaAutosize></textarea>
+        <textarea matInput type="text" formControlName="faulty" placeholder="Describe the bug. What did go wrong?"
+          matTextareaAutosize matAutosizeMinRows=3></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput type="text" formControlName="expected" placeholder="What behavior did you expect instead?"
+          matTextareaAutosize matAutosizeMinRows=3></textarea>
+      </mat-form-field>
+      <mat-form-field>
+        <textarea matInput type="text" formControlName="reproduce" placeholder="How can I reproduce the bug? What steps do I have to take?"
+          matTextareaAutosize matAutosizeMinRows=3></textarea>
       </mat-form-field>
       <mat-form-field *ngIf="!userLoggedIn">
-          <input matInput type="email" formControlName="user" placeholder="Please enter your email">
-        </mat-form-field>
+        <input matInput type="email" formControlName="user" placeholder="Please enter your email in case I need more information">
+      </mat-form-field>
     </form>
-    <button mat-button [disabled]="bugForm.invalid || bugForm.untouched" (click)="onSubmit()"><mat-icon>send</mat-icon></button>
+    <button mat-icon-button color="primary" [disabled]="bugForm.invalid || bugForm.untouched" (click)="onSubmit()">
+      <mat-icon>send</mat-icon>
+    </button>
+    <mat-icon *ngIf="sendSuccess" class="send-success">done</mat-icon>
+    <div *ngIf="sendSuccess" class="send-success">Thank you very much for committing this bug report.<br/>
+       Only with your feedback I can improve the Quote Player. For further questions contact: info@hannaseithe.de</div>
   </mat-card-content>
 </mat-card>

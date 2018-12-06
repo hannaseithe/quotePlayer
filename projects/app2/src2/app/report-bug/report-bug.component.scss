@@ -6,3 +6,12 @@
   .example-container > * {
     width: 100%;
   }
+
+  .aligned-with-icon-relative{
+    position: relative;
+    top: -5px;
+    margin-left: 5px; /* optional */
+}
+.send-success {
+  color: green;
+}
