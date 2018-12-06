@@ -6,6 +6,7 @@ import { DragulaModule } from 'ng2-dragula';
 import { MaterialFileInputModule } from 'ngx-material-file-input';
 import { DataModule } from './services/data-module/data.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MdePopoverModule } from '@material-extended/mde';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -53,7 +54,8 @@ export function init_app(appLoadService: AppLoadService) {
     DragulaModule.forRoot(),
     DataModule.forRoot(),
     FlexLayoutModule,
-    HttpClientModule
+    HttpClientModule,
+    MdePopoverModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

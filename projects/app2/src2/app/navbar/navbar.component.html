@@ -6,7 +6,7 @@
   <img src="/app2/assets/img/Titel.png" alt="Quote Player">
   <span class="app-spacer"></span>
   <button mat-button [matMenuTriggerFor]="appMenu"><mat-icon>menu</mat-icon></button>
-  <mat-menu #appMenu="matMenu">
+  <mat-menu #appMenu="matMenu" yPosition="below" [overlapTrigger]="false">
     <button mat-menu-item (click)="report()">Report a bug</button>
   </mat-menu>
   
