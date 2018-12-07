@@ -3,8 +3,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 
 import { PlayerService } from './player.service';
-import { DataService } from '../../../../../src2/app/services/data-module/data.service';
-import { PouchDbService } from '../../../../../src2/app/services/data-module/pouch-db.service';
+import { DataService } from '../../../app2/src2/app/services/data-module/data.service';
+import { PouchDbService } from '../../../app2/src2/app/services/data-module/pouch-db.service';
 import { async } from '../../../../../node_modules/@types/q';
 import { doesNotThrow } from 'assert';
 import { componentFactoryName } from '../../../../../node_modules/@angular/compiler';

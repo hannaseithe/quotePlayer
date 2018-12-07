@@ -34,14 +34,14 @@ export class PopupComponent implements OnInit {
     state = {
         running: false,
         time: null,
-        playlist: null,
+        playlistIndex: null,
         playlists: [],
         count: 0
     }
     playlists;
 
     playlistForm = this.formbuilder.group({
-        playlist: null,
+        playlistIndex: null,
         speed: null
     });
 
@@ -52,6 +52,12 @@ export class PopupComponent implements OnInit {
                 switch (request.msg) {
                     case "updateState":
                         that.state = request.data;
+                        const timeDate = new Date(request.data.time);
+                        that.state.time = timeDate.toUTCString().match(/((\d{2}:){2}\d{2})/g)[0];
+                        that.playlistForm.patchValue({
+                            playlistIndex: that.state.playlistIndex ? that.state.playlistIndex : 0,
+                            speed: that.state.time
+                        });
                         chrome.browserAction.setIcon({ path: that.state.running ? "iconk-run.png" : "iconk.png" });
                         ref.detectChanges();
                         break;
@@ -67,15 +73,12 @@ export class PopupComponent implements OnInit {
         let that = this;
         chrome.runtime.sendMessage({ msg: "getState" }, function (response) {
 
-            that.state.running = response.running;
-            that.state.playlist = response.playlist;
-            that.state.playlists = response.playlists;
-            that.state.count = response.count;
+            that.state = response;
             const timeDate = new Date(response.time);
             that.state.time = timeDate.toUTCString().match(/((\d{2}:){2}\d{2})/g)[0];
 
             that.playlistForm.patchValue({
-                playlist: that.state.playlist ? that.state.playlist : that.state.playlists[0],
+                playlistIndex: that.state.playlistIndex ? that.state.playlistIndex : 0,
                 speed: that.state.time
             })
 
@@ -89,7 +92,7 @@ export class PopupComponent implements OnInit {
         chrome.runtime.sendMessage({
             msg: "startTimer",
             time: Number(timeArray[1]) * 3600000 + Number(timeArray[2]) * 60000 + Number(timeArray[3] ? timeArray[3] : 0) * 1000,
-            playlist: this.playlistForm.value.playlist
+            playlistIndex: this.playlistForm.value.playlistIndex
         }, function (response) {
             if (response) {
                 that.state.running = response.running;
@@ -114,7 +117,9 @@ export class PopupComponent implements OnInit {
         this.getState();
     }
 
-    displayFn = (q) => q ? q.name : undefined;
+    displayFn = (q) => {
+        return isNaN(q) ? undefined : this.state.playlists[q].name;
+    };
 
     openEditPage() {
         chrome.tabs.query({ url: 'chrome-extension://*/app2/index.html*' }, tabs => {

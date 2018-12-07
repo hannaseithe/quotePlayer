@@ -26,8 +26,13 @@ export class PlayerService {
     get running() { return this.r },
     r: false,
     time: 60000,
-    playlists: [],
-    playlist: null
+    set playlists(x) {
+      this.pls = x;
+      chrome.runtime.sendMessage({ msg: "updateState", data: this });
+    },
+    get playlists() { return this.pls },
+    pls: [],
+    playlistIndex: null
   }
 
 
@@ -68,7 +73,7 @@ export class PlayerService {
             sendResponse(that.state);
             break;
           case "startTimer":
-            if (that.startInterval(request.time, request.playlist)) {
+            if (that.startInterval(request.time, request.playlistIndex)) {
               sendResponse(that.state)
             };
             break;
@@ -94,19 +99,17 @@ export class PlayerService {
 
   }
 
-  private startInterval = function (duration, playlist) {
+  private startInterval = function (duration, playlistIndex) {
     this.state.running = true;
     this.state.time = duration;
-    this.state.playlist = playlist;
-    this.quotes = playlist.quoteDocs;
+    this.state.playlistIndex = playlistIndex;
+    this.quotes = this.state.playlists[playlistIndex].quoteDocs;
     return this.startTimer(this.state.time);
   }
 
 
 
   private startTimer(time) {
-
-    console.log(this.quotes);
 
     if (!this.quotes) {
       chrome.notifications.create("noPlaylistSelected", {
@@ -147,8 +150,6 @@ export class PlayerService {
           catch (error) { console.log('Could not create notification: ' + error) }
           this.state.count++;
         });
-
-        
 
       }, time);
       return true
@@ -213,8 +214,6 @@ export class PlayerService {
         resolve(canvas);
       }
       
-      
-
     });
   }
 
