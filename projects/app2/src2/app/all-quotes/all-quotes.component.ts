@@ -4,6 +4,7 @@ import { Quote } from '../data-model/quote.model';
 import { DataService } from '../services/data-module/data.service';
 import { MatDialog, MatSnackBar } from '@angular/material';
 import { CheckDeleteDialogComponent } from '../check-delete-dialog/check-delete-dialog.component';
+import { ImportExcelComponent } from '../info/import-excel/import-excel.component';
 
 import { Pipe, PipeTransform } from '@angular/core';
 
@@ -50,7 +51,8 @@ export class AllQuotesComponent implements OnInit {
   importInProgress = false;
 
   constructor(private data: DataService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -69,6 +71,16 @@ export class AllQuotesComponent implements OnInit {
   chooseOption(showQuote) {
     this.panelOpenState = this.panelOpenState ? (showQuote !== this.quoteSelected) : true;
     this.quoteSelected = showQuote;
+  }
+
+  openInfoDialog(compName) {
+    let dialogRef = this.dialog.open(ImportExcelComponent, {
+      data: {}
+    });
+
+    this.subs.add(dialogRef.afterClosed().subscribe(result => {
+        console.log('The dialog was closed');
+      }));
   }
 
   checkAndSaveParsedData(parsedData) {

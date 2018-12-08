@@ -22,6 +22,7 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
 import { PlaylistComponent } from './playlist/playlist.component';
 import { SharedMaterialModule } from './app.shared-material.module';
+import { InfoModule } from './info/info.module';
 import { QuotesTableComponent } from './quotes-table/quotes-table.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -55,7 +56,8 @@ export function init_app(appLoadService: AppLoadService) {
     DataModule.forRoot(),
     FlexLayoutModule,
     HttpClientModule,
-    MdePopoverModule
+    MdePopoverModule,
+    InfoModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },

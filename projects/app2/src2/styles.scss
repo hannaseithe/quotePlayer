@@ -48,3 +48,7 @@ body {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=20)";
     filter: alpha(opacity=20);
   }
+
+  .tooltip-accent {
+    background-color: map-get($candy-app-accent,900); 
+  }

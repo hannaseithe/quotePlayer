@@ -40,8 +40,10 @@ export class QuotesTableComponent implements OnInit {
 
   @Input() editColumn: boolean;
   @Input() selectQuotes: boolean;
+  @Input() alreadyAdded: String[] = [];
   @Output() editQuote = new EventEmitter<Quote>();
   @Output() selectedQuotes = new EventEmitter<Quote[]>();
+
 
   dataSource: any[] = [];
   paginatedDatasource: Quote[];

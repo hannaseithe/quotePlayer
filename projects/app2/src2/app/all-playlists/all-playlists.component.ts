@@ -102,7 +102,8 @@ export class AllPlaylistsComponent implements OnInit {
 
   addQuoteDialog(): void {
     let dialogRef = this.dialog.open(QuoteDialogComponent, {
-      width: '90%'
+      width: '90%',
+      data: {alreadyAdded: this.selectedPlaylist.quotes}
     });
 
     this.subs.add(dialogRef.afterClosed().subscribe(result => {

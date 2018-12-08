@@ -91,7 +91,11 @@
 
 
   <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <mat-row *matRowDef="let row; columns: displayedColumns;" 
+  [ngClass]="{'already-added': this.alreadyAdded.indexOf(row.ID) > -1}"
+  matTooltip="This quote has been already added to the playlist, but if you want to you can add it again"
+        [matTooltipDisabled]="this.alreadyAdded.indexOf(row.ID) < 0"
+        matTooltipClass="tooltip-accent"></mat-row>
   <mat-footer-row *matFooterRowDef="['quote']; sticky: true">
   </mat-footer-row>
 </mat-table>
