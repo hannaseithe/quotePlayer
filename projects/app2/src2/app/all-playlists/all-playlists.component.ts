@@ -11,6 +11,7 @@ import { Playlist } from '../data-model/playlist.model';
 import { FormControl, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { DragulaService } from 'ng2-dragula';
+import { InfoService } from '../info/info.service';
 
 @Component({
   selector: 'app-all-playlists',
@@ -39,7 +40,8 @@ export class AllPlaylistsComponent implements OnInit {
   constructor(private data: DataService,
     public dialog: MatDialog,
     private dragulaService: DragulaService,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    private info:InfoService) {
 
     this.subs.add(data.allPlaylists
       .subscribe(x => {

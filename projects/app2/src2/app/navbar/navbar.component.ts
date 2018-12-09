@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material';
 import { Subscription } from 'rxjs';
 import { ReportBugComponent } from '../report-bug/report-bug.component';
+import { InfoService } from '../info/info.service';
 
 @Component({
   selector: 'app-navbar',
@@ -12,7 +13,8 @@ export class NavbarComponent implements OnInit {
 
   subs = new Subscription();
 
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog,
+    private info: InfoService) { }
 
   ngOnInit() {
   }

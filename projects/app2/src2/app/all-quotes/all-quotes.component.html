@@ -20,7 +20,6 @@
           <mat-icon matSuffix>folder</mat-icon>
         </mat-form-field>
         <button class="left-margin" mat-raised-button color="accent" (click)='importExcel()' [disabled]="excelFile.pristine || excelFile.untouched || excelFile.invalid">Import
-          Quotes from Excel
           <mat-spinner class="custom-spinner" *ngIf="importInProgress" [diameter]="25"></mat-spinner>
         </button>
 

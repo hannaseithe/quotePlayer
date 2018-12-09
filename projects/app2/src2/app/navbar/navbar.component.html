@@ -1,7 +1,13 @@
 <mat-toolbar color="primary">
   
-  <a mat-button [routerLink]="['/quotes']" routerLinkActive="mat-accent"><span>Quotes</span></a>
-  <a mat-button [routerLink]="['/playlists']" routerLinkActive="mat-accent"><span>Playlists</span></a>
+  <a mat-button [routerLink]="['/quotes']" routerLinkActive="mat-accent" #qrla="routerLinkActive"><span>Quotes</span></a>
+  <button mat-icon-button color="accent" (click)="info.openInfoDialog('quotes')" *ngIf="qrla.isActive">
+    <mat-icon>info</mat-icon>
+  </button>
+  <a mat-button [routerLink]="['/playlists']" routerLinkActive="mat-accent"#prla="routerLinkActive"><span>Playlists</span></a>
+  <button mat-icon-button color="accent" (click)="info.openInfoDialog('playlists')" *ngIf="prla.isActive">
+    <mat-icon>info</mat-icon>
+  </button>
   <span class="app-spacer"></span>
   <img src="/app2/assets/img/Titel.png" alt="Quote Player">
   <span class="app-spacer"></span>

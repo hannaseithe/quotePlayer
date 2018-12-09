@@ -47,7 +47,11 @@
 
     <div *ngIf="selectedPlaylist" class="selected-playlist-container">
       <mat-card>
-        <mat-card-title>{{selectedPlaylist?.name}}</mat-card-title>
+        <mat-card-title>{{selectedPlaylist?.name}}
+          <button mat-icon-button (click)="info.openInfoDialog('selectedPlaylist')">
+            <mat-icon>info</mat-icon>
+          </button>
+        </mat-card-title>
         <mat-card-content>
           <button mat-stroked-button color="accent" (click)=addQuoteDialog()>Add Quotes
             <mat-spinner class="custom-spinner-2" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
