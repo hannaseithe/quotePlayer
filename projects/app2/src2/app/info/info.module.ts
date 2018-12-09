@@ -6,6 +6,8 @@ import { InfoService } from './info.service';
 import { QuotesInfoComponent } from './quotes-info/quotes-info.component';
 import { PlaylistsInfoComponent } from './playlists-info/playlists-info.component';
 import { SelectedPlaylistInfoComponent } from './selected-playlist-info/selected-playlist-info.component';
+import { GeneralInfoComponent } from './general-info/general-info.component';
+import { PopupInfoComponent } from './popup-info/popup-info.component';
 
 
 @NgModule({
@@ -13,12 +15,13 @@ import { SelectedPlaylistInfoComponent } from './selected-playlist-info/selected
     CommonModule,
     SharedMaterialModule
   ],
-  declarations: [ImportExcelComponent, QuotesInfoComponent, PlaylistsInfoComponent, SelectedPlaylistInfoComponent],
+  declarations: [ImportExcelComponent, QuotesInfoComponent, PlaylistsInfoComponent, SelectedPlaylistInfoComponent, GeneralInfoComponent, PopupInfoComponent],
   entryComponents: [
     ImportExcelComponent,
     QuotesInfoComponent,
     PlaylistsInfoComponent,
-    SelectedPlaylistInfoComponent
+    SelectedPlaylistInfoComponent,
+    GeneralInfoComponent
   ],
   providers: [InfoService]
 })

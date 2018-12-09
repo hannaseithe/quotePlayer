@@ -1,3 +1,23 @@
-<p>
-  selected-playlist-info works!
-</p>
+<mat-card>
+  <mat-card-title>
+    How to manage a single playlist
+  </mat-card-title>
+  <mat-card-content>
+    <p>There are three things you can do here:</p>
+    <ol>
+      <li><b>Delete</b> a Quote (the Quote will be only deleted from the playlist, it will still be available in the
+        Quotes Database
+      </li>
+      <li><b>Reorder</b> the Quotes: Hover with your mouse over a quote, you want to reorder, then press the left
+        mousebutton. Then while holding the mousebutton pressed move the quote to a different position in the list.
+        And let go of the mousebutton. The Quotes will be reordered automatically
+      </li>
+      <li><b>Add new Quote(s)</b>: Click on the Button <button mat-stroked-button color="accent">Add Quotes</button>.
+        This will open a dialog, with a list of all quotes in your database. Select one or more quotes to be added to
+        your
+        playlist. And then click the button <button mat-flat-button color="accent">Add Selected Quotes</button>. The
+        selected
+        Quotes will be automatically added.</li>
+    </ol>
+  </mat-card-content>
+</mat-card>

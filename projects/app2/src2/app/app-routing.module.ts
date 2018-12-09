@@ -3,10 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { AllQuotesComponent } from './all-quotes/all-quotes.component';
 import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
+import { GeneralInfoComponent } from './info/general-info/general-info.component';
 
 const routes: Routes = [
     { path: 'quotes', component: AllQuotesComponent },
     { path: 'playlists', component: AllPlaylistsComponent },
+    { path: 'documentation', component: GeneralInfoComponent },
     {
         path: '',
         redirectTo: '/quotes',
