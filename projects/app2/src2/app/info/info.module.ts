@@ -8,6 +8,7 @@ import { PlaylistsInfoComponent } from './playlists-info/playlists-info.componen
 import { SelectedPlaylistInfoComponent } from './selected-playlist-info/selected-playlist-info.component';
 import { GeneralInfoComponent } from './general-info/general-info.component';
 import { PopupInfoComponent } from './popup-info/popup-info.component';
+import { TableOfContentsComponent } from './table-of-contents/table-of-contents.component';
 
 
 @NgModule({
@@ -15,7 +16,7 @@ import { PopupInfoComponent } from './popup-info/popup-info.component';
     CommonModule,
     SharedMaterialModule
   ],
-  declarations: [ImportExcelComponent, QuotesInfoComponent, PlaylistsInfoComponent, SelectedPlaylistInfoComponent, GeneralInfoComponent, PopupInfoComponent],
+  declarations: [ImportExcelComponent, QuotesInfoComponent, PlaylistsInfoComponent, SelectedPlaylistInfoComponent, GeneralInfoComponent, PopupInfoComponent, TableOfContentsComponent],
   entryComponents: [
     ImportExcelComponent,
     QuotesInfoComponent,

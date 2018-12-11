@@ -52,3 +52,8 @@ body {
   .tooltip-accent {
     background-color: map-get($candy-app-accent,900); 
   }
+
+  .mat-dialog-container .mat-card {
+    max-height: 65vh;
+    overflow: auto;
+}

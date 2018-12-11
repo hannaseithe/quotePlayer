@@ -1,5 +1,16 @@
-<app-popup-info></app-popup-info>
-<app-quotes-info></app-quotes-info>
-<app-import-excel></app-import-excel>
-<app-playlists-info></app-playlists-info>
-<app-selected-playlist-info></app-selected-playlist-info>
+<div class="inner-container">
+  <div class="side-container">
+    <mat-list>
+        <button mat-list-item class="mat-button mat-primary" type="button" *ngFor="let item of contentItems"  color="primary" (click)="scrollTo(item)">
+          {{getText(item)}}
+        </button>
+      </mat-list>
+  </div>
+  <div class="main-container">
+    <app-popup-info #internalLink></app-popup-info>
+    <app-quotes-info #internalLink></app-quotes-info>
+    <app-import-excel #internalLink></app-import-excel>
+    <app-playlists-info #internalLink></app-playlists-info>
+    <app-selected-playlist-info #internalLink></app-selected-playlist-info>
+  </div>
+</div>

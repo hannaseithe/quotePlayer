@@ -1,14 +1,36 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule, Injectable } from '@angular/core';
+import { RouterModule, Routes, CanDeactivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 
 import { AllQuotesComponent } from './all-quotes/all-quotes.component';
 import { AllPlaylistsComponent } from './all-playlists/all-playlists.component';
 import { GeneralInfoComponent } from './info/general-info/general-info.component';
+import { Observable } from 'rxjs';
+
+
+
+@Injectable()
+export class CanDeactivateDocGuard implements CanDeactivate<GeneralInfoComponent> {
+
+  canDeactivate(
+    component: GeneralInfoComponent,
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<boolean> | boolean {
+    // you can just return true or false synchronously
+    if (component.internallyScrolled === true) {
+        component.scrollBack();
+        return true
+    } else {
+      return true;
+    }
+
+  }
+}
 
 const routes: Routes = [
     { path: 'quotes', component: AllQuotesComponent },
     { path: 'playlists', component: AllPlaylistsComponent },
-    { path: 'documentation', component: GeneralInfoComponent },
+    { path: 'documentation', component: GeneralInfoComponent},
     {
         path: '',
         redirectTo: '/quotes',
@@ -21,3 +43,4 @@ const routes: Routes = [
     exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
