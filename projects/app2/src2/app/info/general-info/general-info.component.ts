@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ViewChildren, ElementRef, ChangeDetectorR
 import { PlatformLocation } from '@angular/common';
 
 import { Router } from '@angular/router';
+import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
   selector: 'app-general-info',
@@ -10,10 +11,28 @@ import { Router } from '@angular/router';
 })
 export class GeneralInfoComponent implements OnInit {
 
-  @ViewChildren('internalLink', { read: ElementRef }) contentItems;
+  @ViewChildren('internalLink', { read: ElementRef }) contentItemsList;
+  @ViewChild('mainContainer', { read: ElementRef }) mainContainer;
+  contentItems = [];
   internallyScrolled = false;
+  scrollingSubscription;
 
-  constructor(private router: Router, private ref: ChangeDetectorRef, private el: ElementRef) {
+  constructor(private router: Router, private ref: ChangeDetectorRef, private scroll: ScrollDispatcher) {
+
+    this.scrollingSubscription = this.scroll
+      .scrolled()
+      .subscribe((data: CdkScrollable) => {
+        this.onWindowScroll(data);
+      });
+  }
+
+  private onWindowScroll(data: CdkScrollable) {
+    const offSet = data.getElementRef().nativeElement.scrollTop
+    if (offSet === 0) {
+      this.internallyScrolled = false;
+    } else {
+      this.internallyScrolled = true;
+    }
   }
 
   ngOnInit() {
@@ -21,10 +40,7 @@ export class GeneralInfoComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.contentItems.changes.subscribe((r) => {
-      console.log(r)
-    });
-
+    this.contentItems = this.contentItemsList.toArray();
     this.ref.detectChanges();
 
   }
@@ -43,7 +59,7 @@ export class GeneralInfoComponent implements OnInit {
   scrollBack() {
 
     this.internallyScrolled = false;
-    this.el.nativeElement.scrollTop = 0;
+    this.mainContainer.nativeElement.scrollTop = 0;
 
   }
 

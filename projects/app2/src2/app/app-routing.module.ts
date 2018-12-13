@@ -19,7 +19,7 @@ export class CanDeactivateDocGuard implements CanDeactivate<GeneralInfoComponent
     // you can just return true or false synchronously
     if (component.internallyScrolled === true) {
         component.scrollBack();
-        return true
+        return false;
     } else {
       return true;
     }
@@ -30,7 +30,7 @@ export class CanDeactivateDocGuard implements CanDeactivate<GeneralInfoComponent
 const routes: Routes = [
     { path: 'quotes', component: AllQuotesComponent },
     { path: 'playlists', component: AllPlaylistsComponent },
-    { path: 'documentation', component: GeneralInfoComponent},
+    { path: 'documentation', component: GeneralInfoComponent, canDeactivate: [CanDeactivateDocGuard]},
     {
         path: '',
         redirectTo: '/quotes',

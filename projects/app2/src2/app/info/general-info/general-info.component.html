@@ -6,7 +6,8 @@
         </button>
       </mat-list>
   </div>
-  <div class="main-container">
+  <div class="main-container" #mainContainer cdkScrollable>
+    <h1>How to use the Quote Player</h1>
     <app-popup-info #internalLink></app-popup-info>
     <app-quotes-info #internalLink></app-quotes-info>
     <app-import-excel #internalLink></app-import-excel>

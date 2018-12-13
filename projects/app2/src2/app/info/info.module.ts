@@ -9,14 +9,22 @@ import { SelectedPlaylistInfoComponent } from './selected-playlist-info/selected
 import { GeneralInfoComponent } from './general-info/general-info.component';
 import { PopupInfoComponent } from './popup-info/popup-info.component';
 import { TableOfContentsComponent } from './table-of-contents/table-of-contents.component';
+import { ScrollDispatchModule } from '@angular/cdk/scrolling';
 
 
 @NgModule({
   imports: [
     CommonModule,
-    SharedMaterialModule
+    SharedMaterialModule,
+    ScrollDispatchModule
   ],
-  declarations: [ImportExcelComponent, QuotesInfoComponent, PlaylistsInfoComponent, SelectedPlaylistInfoComponent, GeneralInfoComponent, PopupInfoComponent, TableOfContentsComponent],
+  declarations: [ImportExcelComponent, 
+    QuotesInfoComponent, 
+    PlaylistsInfoComponent, 
+    SelectedPlaylistInfoComponent, 
+    GeneralInfoComponent, 
+    PopupInfoComponent, 
+    TableOfContentsComponent],
   entryComponents: [
     ImportExcelComponent,
     QuotesInfoComponent,

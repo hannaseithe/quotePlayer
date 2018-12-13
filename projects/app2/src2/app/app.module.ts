@@ -8,7 +8,7 @@ import { DataModule } from './services/data-module/data.module';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MdePopoverModule } from '@material-extended/mde';
 
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule, CanDeactivateDocGuard } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { QuoteComponent } from './quote/quote.component';
@@ -56,13 +56,13 @@ export function init_app(appLoadService: AppLoadService) {
     DataModule.forRoot(),
     FlexLayoutModule,
     HttpClientModule,
-    MdePopoverModule,
     InfoModule
   ],
   providers: [
     { provide: LocationStrategy, useClass: HashLocationStrategy },
     AppLoadService,
-    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true }
+    { provide: APP_INITIALIZER, useFactory: init_app, deps: [AppLoadService], multi: true },
+    CanDeactivateDocGuard
   ],
   entryComponents: [QuoteDialogComponent, CheckDeleteDialogComponent, ReportBugComponent],
   bootstrap: [AppComponent]
