@@ -103,3 +103,11 @@
 .mat-button.active {
   color: map_get($candy-app-accent,900);
 }
+
+.app-spacer {
+  flex: 1 1 auto;
+}
+
+.to-the-right {
+  float: right;
+}

@@ -51,13 +51,10 @@
           <button mat-icon-button (click)="info.openInfoDialog('selectedPlaylist')">
             <mat-icon>info</mat-icon>
           </button>
+          <button mat-stroked-button color="accent" (click)=addQuoteDialog() class="to-the-right">Add Quotes
+              <mat-spinner class="custom-spinner-2" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
+            </button>
         </mat-card-title>
-        <mat-card-content>
-          <button mat-stroked-button color="accent" (click)=addQuoteDialog()>Add Quotes
-            <mat-spinner class="custom-spinner-2" *ngIf="addQuotesInProgress" [diameter]="25"></mat-spinner>
-          </button>
-
-        </mat-card-content>
       </mat-card>
       <mat-table #table [dataSource]="selectedPlaylist?.quoteDocs" class="quotes-in-playlist" dragula="QUOTES"
         [(dragulaModel)]='selectedPlaylist.quoteDocs'>
