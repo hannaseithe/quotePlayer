@@ -1,17 +1,22 @@
+<mat-toolbar color="primary">
+  <button mat-button color="accent">Documentation</button>
+  <span class="app-spacer"></span>
+</mat-toolbar>
 <div class="inner-container">
-  <div class="side-container">
-    <mat-list>
-        <button mat-list-item class="mat-button mat-primary" type="button" *ngFor="let item of contentItems"  color="primary" (click)="scrollTo(item)">
-          {{getText(item)}}
-        </button>
-      </mat-list>
-  </div>
   <div class="main-container" #mainContainer cdkScrollable>
-    <h1>How to use the Quote Player</h1>
     <app-popup-info #internalLink></app-popup-info>
     <app-quotes-info #internalLink></app-quotes-info>
     <app-import-excel #internalLink></app-import-excel>
     <app-playlists-info #internalLink></app-playlists-info>
     <app-selected-playlist-info #internalLink></app-selected-playlist-info>
   </div>
+  <div class="side-container content-background">
+    <mat-list>
+      <button mat-list-item class="mat-button mat-primary" type="button" *ngFor="let item of contentItems" color="primary"
+        (click)="scrollTo(item)">
+        {{getText(item)}}
+      </button>
+    </mat-list>
+  </div>
+
 </div>

@@ -19,6 +19,7 @@
 /* You can add global styles to this file, and also import other style files */
 body {
     margin: 0px;
+    background-color: map-get($candy-app-primary,50);
 }
 
 /* in-flight clone */
@@ -56,4 +57,24 @@ body {
   .mat-dialog-container .mat-card {
     max-height: 65vh;
     overflow: auto;
+}
+
+body .mat-card {
+  padding: 0 0 24px 0;
+}
+
+.mat-card-title {
+  padding: 24px;
+  background: map-get($candy-app-accent,100)
+}
+.mat-card-actions, .mat-card-content, .mat-card-subtitle {
+  padding: 0 24px;
+}
+
+.content-background {
+  background: map-get($candy-app-accent,50)
+}
+
+.mat-h1 {
+  background: map-get($candy-app-accent,200)
 }
