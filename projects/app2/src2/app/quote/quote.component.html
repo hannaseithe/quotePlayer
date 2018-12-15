@@ -40,7 +40,7 @@
       <button mat-button [disabled]="quoteForm.untouched || quoteForm.invalid" type="reset" (click)="extraReset()">
         <mat-icon>cancel</mat-icon>
       </button>
-      <button (click)="submitForm()" type="button" mat-button [disabled]="quoteForm.untouched || quoteForm.invalid">
+      <button (click)="submitForm()" type="button" mat-button [disabled]="quoteForm.pristine || quoteForm.invalid">
         <mat-icon>send</mat-icon>
         <mat-spinner class="custom-spinner" *ngIf="saveInProgress" [diameter]="25"></mat-spinner>
       </button>

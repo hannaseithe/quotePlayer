@@ -4,7 +4,7 @@
       <input matInput type="text" formControlName="name" placeholder="Add a new Playlist">
       <mat-spinner class="custom-spinner" *ngIf="saveInProgress" [diameter]="25"></mat-spinner>
     </mat-form-field>
-    <button (click)="onSubmit()" type="button" mat-button [disabled]="playlistForm.untouched || playlistForm.invalid">
+    <button (click)="onSubmit()" type="button" mat-button [disabled]="playlistForm.pristine || playlistForm.invalid">
         <mat-icon>send</mat-icon>
       </button>
   </section>
