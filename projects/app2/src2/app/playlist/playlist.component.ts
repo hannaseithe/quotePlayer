@@ -33,7 +33,7 @@ export class PlaylistComponent implements OnInit {
     }
 
     this.playlistForm = this.formbuilder.group({
-      name: this.playlist.name
+      name: [this.playlist.name, Validators.required]
     });
 
   }
