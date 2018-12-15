@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, ChangeDetectorRef } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { DataService } from '../services/data-module/data.service';
 import { Playlist } from '../data-model/playlist.model';
 import { MatSnackBar } from '@angular/material';
@@ -41,7 +41,7 @@ export class PlaylistComponent implements OnInit {
   ngOnChanges(changes) {
     if (this.playlist) {
       this.playlistForm = this.formbuilder.group({
-        name: this.playlist.name
+        name: [this.playlist.name, Validators.required],
       });
       this.cd.detectChanges();
     }
