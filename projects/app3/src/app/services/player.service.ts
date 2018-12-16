@@ -144,7 +144,7 @@ export class PlayerService {
               { title: "Stop" }
             ],
             requireInteraction: true,
-            iconUrl: "../iconb_quad.png"
+            iconUrl: "../iconb.png"
           };
           try { chrome.notifications.create("quote" + this.notificationId, options) }
           catch (error) { console.log('Could not create notification: ' + error) }
