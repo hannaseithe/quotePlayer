@@ -10,6 +10,7 @@ import { GeneralInfoComponent } from './general-info/general-info.component';
 import { PopupInfoComponent } from './popup-info/popup-info.component';
 import { TableOfContentsComponent } from './table-of-contents/table-of-contents.component';
 import { ScrollDispatchModule } from '@angular/cdk/scrolling';
+import { WindowsNotificationInfoComponent } from './windows-notification-info/windows-notification-info.component';
 
 
 @NgModule({
@@ -24,7 +25,7 @@ import { ScrollDispatchModule } from '@angular/cdk/scrolling';
     SelectedPlaylistInfoComponent, 
     GeneralInfoComponent, 
     PopupInfoComponent, 
-    TableOfContentsComponent],
+    TableOfContentsComponent, WindowsNotificationInfoComponent],
   entryComponents: [
     ImportExcelComponent,
     QuotesInfoComponent,

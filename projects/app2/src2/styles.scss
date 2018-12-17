@@ -61,6 +61,7 @@ body {
 
 body .mat-card {
   padding: 0 0 24px 0;
+  overflow: auto;
 }
 
 .mat-card-title {
@@ -75,6 +76,31 @@ body .mat-card {
   background: map-get($candy-app-accent,50)
 }
 
-.mat-h1 {
-  background: map-get($candy-app-accent,200)
+.small-stamp {
+  height: 25px;
+  width: 25px;
+  padding: 0 5px;
+  margin-top: 6px;
+  margin-bottom: -6px;
 }
+
+.float-left {
+  float: left;
+}
+
+.float-right {
+  float: right;
+}
+
+.clear-float {
+  clear:both;
+}
+
+body .mat-list .mat-list-item .mat-list-item-content {
+  align-items: baseline;
+}
+
+body .mat-list .mat-list-item {
+  height: auto;
+}
+

@@ -5,6 +5,7 @@
 <div class="inner-container">
   <div class="main-container" #mainContainer cdkScrollable>
     <app-popup-info #internalLink></app-popup-info>
+    <app-windows-notification-info #internalLink></app-windows-notification-info>
     <app-quotes-info #internalLink></app-quotes-info>
     <app-import-excel #internalLink></app-import-excel>
     <app-playlists-info #internalLink></app-playlists-info>
@@ -12,10 +13,13 @@
   </div>
   <div class="side-container content-background">
     <mat-list>
-      <button mat-list-item class="mat-button mat-primary" type="button" *ngFor="let item of contentItems" color="primary"
-        (click)="scrollTo(item)">
-        {{getText(item)}}
-      </button>
+      <mat-list-item *ngFor="let item of contentItems">
+          <button mat-button type="button" color="primary"
+          (click)="scrollTo(item)">
+          {{getText(item)}}
+        </button>
+      </mat-list-item>
+      
     </mat-list>
   </div>
 
