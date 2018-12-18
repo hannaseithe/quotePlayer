@@ -3,22 +3,37 @@
     How to import Quotes from an Excel File
   </mat-card-title>
   <mat-card-content>
-    <p>1. Click on the folder Icon and then choose the excel file you want to import from your computer.</p>
-    <p>2. Click on the enabled "Import Quotes from Excel" Button (next to the folder icon)</p>
-    <p>The file can contain only one table and that table has to follow certain specifications</p>
-      <p>(otherwise the "Quote Player" wont be able to interpret the data correctly).</p>
-    <ul>
-      <li>the first row (1) has to contain four fields (from A to D) with the EXACT words:<br />
-        quote | author | source | tags
-      </li>
-      <li>each quote is entered in a new row (e.g. row 2:A-D)</li>
-      <li>the quote column always has to be filled out, the other columns are optional</li>
-      <li>if you want to add more than one tag for one quote, you have to seperate the tags by "," - e.g.
-        "responsibility, vision"</li>
-    </ul>
 
-    <p>Here is a screenshot of an example Excel File:</p>
-    <img src="/app2/assets/img/excel-example.png" width="500px" alt="Image could not be found, please make a bug report">
+   
+    <p><img src="./assets/img/stamp1t.png" class="small-stamp"> Click on the folder Icon and then choose the excel file you want to import from your computer.</p>
+    <img src="./assets/img/import-excel-screenshot_1.jpg" alt="Image could not be found, please make a bug report">
+    
+    
+    <p><img src="./assets/img/stamp2t.png" class="small-stamp">2. Click on the enabled "Import Quotes from Excel" Button (next to the folder icon)</p>
+    <img src="./assets/img/import-excel-screenshot_2.jpg" alt="Image could not be found, please make a bug report">
+    
+    <mat-card>
+      <mat-card-content>
+        <p><br/>The file can contain only one table and that table has to follow certain specifications (otherwise the
+          "Quote Player" wont be able to interpret the data correctly).</p>
+        <img src="/app2/assets/img/excel-example.png" width="500px" alt="Image could not be found, please make a bug report"
+          class="float-left">
+        <mat-list>
+          <mat-list-item><img src="./assets/img/stamp1t.png" class="small-stamp">
+            <p>the first row (1) has to contain four fields (from A to D) with the EXACT words:<br />
+              <strong>quote | author | source | tags</strong>
+            </p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp2t.png" class="small-stamp">
+            <p>the quote column always has to be filled out. The other columns can be left empty</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp3t.png" class="small-stamp">
+            <p>if you want to add more than one tag for one quote, you have to seperate the tags by ", " - e.g.
+              "responsibility, vision"</p>
+          </mat-list-item>
 
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
   </mat-card-content>
 </mat-card>

@@ -1,23 +1,51 @@
 <mat-card>
-    <mat-card-title>
-      Managing your Quotes
-    </mat-card-title>
-    <mat-card-content>
-      <p>Here you can create, import, edit and delete your Quotes.</p>
-      <p><mat-icon>warning</mat-icon>In order to "play" your quotes in the QuotePlayer Popup, you will first have to add them to a playlist,
-        which you then will select in the QuotePlayer Popup.</p>
-      <p>To <b>add a new Quote</b> click on the Link <button mat-button>Add a new Quote</button> in the blue navigation bar, fill out the 
-          input fields (only the "Quote" field is obligatory) and click on the send<mat-icon>send</mat-icon> Button.
-          The new quote will be automatically added.</p>
-      <p>To <b>import Quote(s) from Excel</b> click on the Link <button mat-button>Import Quotes from Excel File</button> 
-        in the blue navigation bar,
-        select the excel file that has been prepared by you on your computer, and then click on the orange button
-      <button mat-flat-button color="accent">Import</button>. The Quotes will be automatically added.</p>
-      <p>In the <b>Quotes Table</b> you can view all the Quotes that currently exist in your Database.</p>
-      <p>You can edit <mat-icon>edit</mat-icon> or delete<mat-icon>delete</mat-icon> each Quote</p>
-      <p>You can <b>filter</b> Quotes. Just enter the word by which you want to filter in the corresponding input field.
-      E.g. If you want to show all Quotes by Nietzsche, you enter "Nietzsche" in the "Filter Authors" input field.</p>
-      <p>You can <b>sort</b> the quotes, by clicking on the <mat-icon>arrow_upward</mat-icon>/<mat-icon>arrow_downward</mat-icon>
-        arrow that shows when you hover over the Filter input fields.</p>
-    </mat-card-content>
-  </mat-card>
+  <mat-card-title>
+    Managing your Quotes
+  </mat-card-title>
+  <mat-card-content>
+    <p>Here you can create, import, edit and delete your Quotes.</p>
+    <p>
+      <mat-icon>warning</mat-icon>In order to "play" your quotes in the QuotePlayer Popup, you will first have to add
+      them to a playlist,
+      which you then will select in the QuotePlayer Popup.
+    </p>
+    <mat-card>
+      <mat-card-content>
+        <img src="./assets/img/manage-quotes-screenshot_1.jpg" width="60%" class="float-left">
+        <mat-list>
+          <mat-list-item><img src="./assets/img/stamp1t.png" class="small-stamp">
+            <p>To <b>add a new Quote</b> click on the Link <strong>Add a new Quote</strong>in the blue navigation bar,
+              then fill out the
+              input fields (only the "Quote" field is obligatory) and click on the send<mat-icon>send</mat-icon>
+              Button.
+              The new quote will be automatically added. <br />
+            In order to <strong>clear</strong> all fields without saving them, click <mat-icon>cancel</mat-icon></p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp2t.png" class="small-stamp">
+            <p>To <b>import Quote(s) from Excel</b> click on the Link <strong>Import Quotes from Excel File</strong>
+              in the blue navigation bar.</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp3t.png" class="small-stamp">
+            <p>In the <b>Quotes Table</b> you can view all the Quotes that currently exist in your Database.</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp4t.png" class="small-stamp">
+            <p>You can edit <mat-icon>edit</mat-icon> or delete<mat-icon>delete</mat-icon> each Quote</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp5t.png" class="small-stamp">
+            <p>You can <b>filter</b> Quotes. Just enter the word by which you want to filter in the corresponding input field.
+              E.g. If you want to show all Quotes by Nietzsche, you enter "Nietzsche" in the "Filter Authors" input field.</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp6t.png" class="small-stamp">
+            <p>You can <b>sort</b> the quotes, by clicking on the <mat-icon>arrow_upward</mat-icon>/<mat-icon>arrow_downward</mat-icon>
+              arrow that shows when you hover over the Filter input fields.</p>  
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp7t.png" class="small-stamp">
+            <p>With the table paginator you can select how many quotes you want to see at once and move between data sets</p>  
+          </mat-list-item>
+
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+  </mat-card-content>
+</mat-card>
