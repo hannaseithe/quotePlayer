@@ -4,22 +4,52 @@
   </mat-card-title>
   <mat-card-content>
     <p>Here you can create, edit and delete your playlists.</p>
-    <p>In order to "play" your quotes in the QuotePlayer Popup, you will first have to add them to a playlist,
+    <p>In order to play your quotes in the QuotePlayer Popup, you will first have to add them to a playlist,
       which you then will select in the QuotePlayer Popup.</p>
-    <p>To <b>add a new Playlist</b> click on the button "Add a new Playlist in the blue navigation bar, fill out the 
-        input field and press Enter. The new (and empty) playlist will be automatically added.</p>
-    <p>In the <b>Left Table</b> you can select a Playlist that you want to edit, by clicking on it.
-      Furthermore you can delete <mat-icon>delete</mat-icon> the Playlist or edit<mat-icon>edit</mat-icon>
-      the name of the Playlist</p>
-    <p>Once you have selected a Playlist on the Left, the <b>Right Table</b> will show the selected
-      Playlist with its Quotes. Here you can
-      <ul>
-        <li>change the order of the quotes (as they will be played
-          in the QuotePlayer Popup)</li>
-        <li>delete<mat-icon>delete</mat-icon> Quotes </li>
-        <li>add Quotes that are already saved in your Database</li>
-      </ul>
-    <p><mat-icon>warning</mat-icon>Changes to a Playlist that is currently playing in the QuotePlayer 
-      will only show after you stop and start the QuotePlayer again</p>
+    <mat-card>
+      <mat-card-content>
+        <img src="./assets/img/manage-playlists-screenshot_1.jpg" width="100%" alt="Image could not be found, please make a bug report"
+          class="float-left">
+
+
+        <mat-list>
+          <mat-list-item><img src="./assets/img/stamp1t.png" class="small-stamp">
+            <p>To <b>add a new Playlist</b> click on the button "Add a new Playlist in the blue navigation bar, fill
+              out the
+              input field and press Enter. The new (and empty) playlist will be automatically added.</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp2t.png" class="small-stamp">
+            <p>In the <b>Left Table</b> you can select a Playlist that you want to edit, by clicking on it.
+              Furthermore you can delete <mat-icon>delete</mat-icon> the Playlist or edit<mat-icon>edit</mat-icon>
+              the name of the Playlist</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp3t.png" class="small-stamp">
+            <p>Once you have selected a Playlist on the Left, the <b>Right Table</b> will show the selected
+              Playlist with its Quotes. Here you can:</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp4t.png" class="small-stamp">
+            <p><strong>Add Quotes</strong> that are already saved in your Database</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp5t.png" class="small-stamp">
+            <p>delete<mat-icon>delete</mat-icon> Quotes from your Playlist</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp6t.png" class="small-stamp">
+            <p>change the order of the quotes (as they will be played
+              in the QuotePlayer Popup). <br />
+              Hover with your mouse over a quote, you want to reorder, then press the left mousebutton. Then while
+              holding the mousebutton pressed move the quote to a different position in the list. And let go of the
+              mousebutton. The Quotes will be reordered automatically</p>
+          </mat-list-item>
+          <mat-list-item>
+            <img src="./assets/img/manage-playlists-screenshot_2.jpg" width="100%" alt="Image could not be found, please make a bug report">
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+
+    <p>
+      <mat-icon>warning</mat-icon>Changes to a Playlist that is currently playing in the QuotePlayer
+      will only show after you stop and start the QuotePlayer again
+    </p>
   </mat-card-content>
 </mat-card>

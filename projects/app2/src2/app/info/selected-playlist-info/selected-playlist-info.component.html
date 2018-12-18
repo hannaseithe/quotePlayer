@@ -1,23 +1,32 @@
 <mat-card>
   <mat-card-title>
-    How to manage a single playlist
+   Add Quotes to your Playlist
   </mat-card-title>
   <mat-card-content>
-    <p>There are three things you can do here:</p>
-    <ol>
-      <li><b>Delete</b> a Quote (the Quote will be only deleted from the playlist, it will still be available in the
-        Quotes Database
-      </li>
-      <li><b>Reorder</b> the Quotes: Hover with your mouse over a quote, you want to reorder, then press the left
-        mousebutton. Then while holding the mousebutton pressed move the quote to a different position in the list.
-        And let go of the mousebutton. The Quotes will be reordered automatically
-      </li>
-      <li><b>Add new Quote(s)</b>: Click on the Button <button mat-stroked-button color="accent">Add Quotes</button>.
-        This will open a dialog, with a list of all quotes in your database. Select one or more quotes to be added to
-        your
-        playlist. And then click the button <button mat-flat-button color="accent">Add Selected Quotes</button>. The
-        selected
-        Quotes will be automatically added.</li>
-    </ol>
+
+    <p>In this Dialog you can add Quotes from your Quotes-Database to your currently selected Playlist</p>
+
+    <mat-card>
+      <mat-card-content>
+        <img src="./assets/img/add-quotes-to-playlist-screenshot_1.jpg" width="100%" class="float-left">
+        <mat-list>
+          <mat-list-item><img src="./assets/img/stamp1t.png" class="small-stamp">
+            <p>Click on the select field to select all shown quotes</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp2t.png" class="small-stamp">
+            <p>Click on the select field of a single quote to select that one quote</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp3t.png" class="small-stamp">
+            <p>Quotes that have already been added to your playlist will be greyed in. You are free to add them
+              multiple times though.</p>
+          </mat-list-item>
+          <mat-list-item><img src="./assets/img/stamp4t.png" class="small-stamp">
+            <p>Once you have selected all Quotes that you want to add to your playlist, click <strong>Add selected
+                Quote(s)</strong>. The quotes will be added to your playlist.</p>
+          </mat-list-item>
+
+        </mat-list>
+      </mat-card-content>
+      </mat-card>
   </mat-card-content>
 </mat-card>
