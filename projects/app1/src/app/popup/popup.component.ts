@@ -118,7 +118,7 @@ export class PopupComponent implements OnInit {
     }
 
     displayFn = (q) => {
-        return isNaN(q) ? undefined : this.state.playlists[q].name;
+        return (!q && q!=0) ? undefined : this.state.playlists[q].name;
     };
 
     openEditPage(info: string) {
