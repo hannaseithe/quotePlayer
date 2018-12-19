@@ -4,13 +4,17 @@
 </mat-toolbar>
 <div class="inner-container">
   <div class="main-container" #mainContainer cdkScrollable>
-    TEagfösldgfksdfgsdg
-    sfdg
-    sd<br/>
-    fg<br/>
-    sd
-    fg
-    sfdggsd
+    <mat-card #internalLink>
+      <mat-card-title>Introduction</mat-card-title>
+      <mat-card-content>
+        <p>The QuotePlayer extension lets you play back your favourite quotes to you while you are working on your
+          computer.</p>
+        <p>The quotes will be shown as notifications and will popup in a time interval that you set. E.g. Every half an
+          hour a quote will be shown to you.</p>
+        <p>You will be able to manage your quotes with tags and add them to playlists. You can also import quotes from
+          Excel.</p>
+      </mat-card-content>
+    </mat-card>
     <app-popup-info #internalLink></app-popup-info>
     <app-windows-notification-info #internalLink></app-windows-notification-info>
     <app-quotes-info #internalLink></app-quotes-info>
@@ -21,12 +25,11 @@
   <div class="side-container content-background">
     <mat-list>
       <mat-list-item *ngFor="let item of contentItems">
-          <button mat-button type="button" color="primary"
-          (click)="scrollTo(item)">
+        <button mat-button type="button" color="primary" (click)="scrollTo(item)">
           {{getText(item)}}
         </button>
       </mat-list-item>
-      
+
     </mat-list>
   </div>
 
