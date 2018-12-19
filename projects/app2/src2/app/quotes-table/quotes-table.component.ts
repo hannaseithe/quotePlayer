@@ -127,8 +127,6 @@ export class QuotesTableComponent implements OnInit {
             this.snackBar.open(error, "QuoteNotDeleted", { duration: 2000 });
           })
       }
-
-      console.log('The dialog was closed');
     }));
   }
 

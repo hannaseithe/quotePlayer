@@ -156,7 +156,7 @@ export class PlayerService {
             iconUrl: "../iconb.png"
           };
           try { chrome.notifications.create("quote" + this.notificationId, options) }
-          catch (error) { console.log('Could not create notification: ' + error) }
+          catch (error) { console.error('Could not create notification: ' + error) }
           this.state.count++;
         } else {
           this.drawText(canvas, text).then((paintedCanvas) => {
@@ -173,7 +173,7 @@ export class PlayerService {
               iconUrl: "../iconb.png"
             };
             try { chrome.notifications.create("quote" + this.notificationId, options) }
-            catch (error) { console.log('Could not create notification: ' + error) }
+            catch (error) { console.error('Could not create notification: ' + error) }
             this.state.count++;
           });
         }

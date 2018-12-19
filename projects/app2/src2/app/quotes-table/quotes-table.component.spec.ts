@@ -204,13 +204,11 @@ describe('QuotesTableComponent', () => {
     }
 
     component.sortingChanged(event1);
-    console.log(component.paginatedDatasource);
     expect(component.paginatedDatasource).toEqual([testQuote2, testQuote2, testQuote1, testQuote1, testQuote4]);
    
 
 
     component.sortingChanged(event2);
-    console.log(component.paginatedDatasource);
     expect(component.paginatedDatasource).toEqual([testQuote1, testQuote1, testQuote2, testQuote2, testQuote4]);
   })
 });

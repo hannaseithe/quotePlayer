@@ -11,8 +11,6 @@ export class AppLoadService {
 
   init(): Promise<any> {
     return new Promise((resolve, reject) => {
-      console.log(`initializeApp:: inside promise`);
-
       this.pouchDB.init()
       .then(() => {
         this.data.init(this.pouchDB);

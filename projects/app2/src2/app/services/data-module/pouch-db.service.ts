@@ -41,15 +41,12 @@ export class PouchDbService implements DataSourceService {
   }
 
   init() {
-    console.log('inside init');
-    console.log('PouchDB', this.PouchDB);
     return navigator.storage.persist()
       .then(() => {
-        console.log('inside Promise');
         this.db = new this.PouchDB('quote_database');
         this.PouchDB.plugin(plugin);
-        this.PouchDB.plugin(debugPlugin);
-        this.PouchDB.debug.enable('*');
+/*         this.PouchDB.plugin(debugPlugin); */
+       /*  this.PouchDB.debug.enable('*'); */
         this.db.changes({
           since: 'now',
           live: true,
@@ -88,7 +85,6 @@ export class PouchDbService implements DataSourceService {
         if (details.doc_count == 0 && details.update_seq == 0) {
           return this.addFirstQuote()
             .then((result) => {
-              console.log('Here?', result);
               return this.addFirstPlaylist(result.id)
             })
         } else {
@@ -125,7 +121,6 @@ export class PouchDbService implements DataSourceService {
 
   saveQuotes(quotes) {
     let error = false;
-    console.log(quotes);
     let mappedQuotes = quotes.map(x => {
       x.type = "quote";
       error = x.quote ? error : true;
@@ -219,7 +214,6 @@ export class PouchDbService implements DataSourceService {
         }
       }
     }
-    console.log('inside getAllQuotes');
 
     // save the design doc
     return this.db.put(ddoc).catch(function (err) {
@@ -235,7 +229,7 @@ export class PouchDbService implements DataSourceService {
       this.allQuotes.next(this.structureQuotes(result));
       return Promise.resolve()
     }).catch(function (err) {
-      console.log("ERROR in getAllQuotes", err);
+      console.error("ERROR in getAllQuotes", err);
     });
   }
 
@@ -295,7 +289,7 @@ export class PouchDbService implements DataSourceService {
       this.allPlaylists.next(this.structurePlaylists(result));
       return Promise.resolve()
     }).catch(function (err) {
-      console.log("ERROR in getAllPlaylists", err);
+      console.error("ERROR in getAllPlaylists", err);
     });
   }
 
@@ -383,7 +377,6 @@ export class PouchDbService implements DataSourceService {
       views: {
         index: {
           map: function (doc) {
-            console.log();
             if (doc.type == 'playlist') {
               for (let i in doc.quotes) {
                 emit(doc.quotes[i], null);
@@ -413,7 +406,7 @@ export class PouchDbService implements DataSourceService {
       });
       return Promise.all(promiseArray)
     }).catch(function (err) {
-      console.log("ERROR in deleteQuoteFromPlaylists", err);
+      console.error("ERROR in deleteQuoteFromPlaylists", err);
     });
   }
 
