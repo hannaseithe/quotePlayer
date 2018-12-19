@@ -159,7 +159,7 @@ export class PlayerService {
           catch (error) { console.log('Could not create notification: ' + error) }
           this.state.count++;
         } else {
-           this.drawText(canvas, text).then((paintedCanvas) => {
+          this.drawText(canvas, text).then((paintedCanvas) => {
             var options = {
               type: "image",
               title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
@@ -207,7 +207,12 @@ export class PlayerService {
       var line = '';
       let point, lineHeight;
 
-      context.fillStyle = "#1a237e";
+      var grd = context.createLinearGradient(300, 150, 500, 350);
+      grd.addColorStop(0, "#1a237e");
+      grd.addColorStop(1, "#3F51B5");
+
+      // Fill with gradient
+      context.fillStyle = grd;
       context.fillRect(0, 0, 500, 350);
 
       var img = new Image();
