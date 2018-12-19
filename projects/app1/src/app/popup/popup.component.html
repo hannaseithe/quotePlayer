@@ -4,11 +4,15 @@
   </mat-card-content>
 </mat-card>
 <mat-card class="player">
+    <button mat-icon-button class="info-button" (click)="openEditPage('popup')">
+        <mat-icon>info</mat-icon>
+      </button>
   <mat-card-content>
 
 
 
     <form [formGroup]="playlistForm">
+        
       <mat-form-field class="example-full-width">
         <input matInput placeholder="Time between Quotes" formControlName="speed" [disableControl]="state.running" type="time" step="1"
           class="time-field">

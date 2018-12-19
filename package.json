@@ -8,7 +8,9 @@
     "build": "ng build --prod",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "ng-build-all": "ng build --project app1 && ng build --project app2 && ng build --project app3",
+    "ng-build-popup": "ng build --project app1 && ng build --project app3"
   },
   "private": true,
   "dependencies": {

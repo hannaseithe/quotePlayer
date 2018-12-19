@@ -121,14 +121,28 @@ export class PopupComponent implements OnInit {
         return isNaN(q) ? undefined : this.state.playlists[q].name;
     };
 
-    openEditPage() {
-        chrome.tabs.query({ url: 'chrome-extension://*/app2/index.html*' }, tabs => {
-            if (tabs.length > 0) {
-                chrome.tabs.update(tabs[0].id, { active: true })
-            } else {
-                chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html') });
-            }
-        });
+    openEditPage(info: string) {
+        if (info) {
+            chrome.tabs.query({ url: 'chrome-extension://*/app2/index.html*' }, tabs => {
+                if (tabs.length > 0) {
+                    chrome.tabs.update(tabs[0].id, {
+                        url: chrome.extension.getURL('app2/index.html#/documentation/' + info),
+                        active: true
+                    })
+                } else {
+                    chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html#/documentation/' + info) });
+                }
+            });
+        } else {
+            chrome.tabs.query({ url: 'chrome-extension://*/app2/index.html*' }, tabs => {
+                if (tabs.length > 0) {
+                    chrome.tabs.update(tabs[0].id, { active: true })
+                } else {
+                    chrome.tabs.create({ url: chrome.extension.getURL('app2/index.html') });
+                }
+            });
+        }
+
 
     }
 

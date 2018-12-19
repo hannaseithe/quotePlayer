@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ViewChildren, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { PlatformLocation } from '@angular/common';
 
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ScrollDispatcher, CdkScrollable } from '@angular/cdk/scrolling';
 
 @Component({
@@ -17,7 +17,10 @@ export class GeneralInfoComponent implements OnInit {
   internallyScrolled = false;
   scrollingSubscription;
 
-  constructor(private router: Router, private ref: ChangeDetectorRef, private scroll: ScrollDispatcher) {
+  constructor(private router: Router,
+    private ref: ChangeDetectorRef,
+    private scroll: ScrollDispatcher,
+    private route: ActivatedRoute) {
 
     this.scrollingSubscription = this.scroll
       .scrolled()
@@ -42,6 +45,20 @@ export class GeneralInfoComponent implements OnInit {
   ngAfterViewInit() {
     this.contentItems = this.contentItemsList.toArray();
     this.ref.detectChanges();
+
+    this.route.params.subscribe(params => {
+      let item: ElementRef;
+      switch (params['sub']) {
+        case 'popup': {
+          item = this.contentItems.find((value) => {
+            return value.nativeElement.localName === 'app-popup-info';
+          });
+          break;
+        }
+      }
+      this.scrollTo(item);
+    });
+    
 
   }
 

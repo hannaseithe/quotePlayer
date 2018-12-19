@@ -28,3 +28,9 @@
 .mat-card.title {
     background: map-get($candy-app-primary, 900);
 }
+
+.info-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

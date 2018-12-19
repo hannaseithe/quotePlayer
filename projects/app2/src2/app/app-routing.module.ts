@@ -30,6 +30,7 @@ export class CanDeactivateDocGuard implements CanDeactivate<GeneralInfoComponent
 const routes: Routes = [
     { path: 'quotes', component: AllQuotesComponent },
     { path: 'playlists', component: AllPlaylistsComponent },
+    { path: 'documentation/:sub', component: GeneralInfoComponent, canDeactivate: [CanDeactivateDocGuard]},
     { path: 'documentation', component: GeneralInfoComponent, canDeactivate: [CanDeactivateDocGuard]},
     {
         path: '',
