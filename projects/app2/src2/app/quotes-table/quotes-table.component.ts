@@ -10,6 +10,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { SelectionModel } from '@angular/cdk/collections';
+import { InfoService } from '../info/info.service';
 
 @Pipe({
   name: 'datasourceFilter',
@@ -67,7 +68,8 @@ export class QuotesTableComponent implements OnInit {
 
   constructor(private data: DataService,
     public dialog: MatDialog,
-    private snackBar: MatSnackBar) {
+    private snackBar: MatSnackBar,
+    public info: InfoService) {
 
     this.subs.add(data.allQuotes.subscribe(x => {
       this.dataSource = x;

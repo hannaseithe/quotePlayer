@@ -40,8 +40,7 @@ export class AllPlaylistsComponent implements OnInit {
   constructor(private data: DataService,
     public dialog: MatDialog,
     private dragulaService: DragulaService,
-    private snackBar: MatSnackBar,
-    private info:InfoService) {
+    private snackBar: MatSnackBar) {
 
     this.subs.add(data.allPlaylists
       .subscribe(x => {
