@@ -110,6 +110,15 @@ export class PlayerService {
 
 
   private startTimer(time) {
+    let OSName = "Unknown OS";
+    if (navigator.appVersion.indexOf("Win") != -1) OSName = "Windows";
+    if (navigator.appVersion.indexOf("Mac") != -1) OSName = "MacOS";
+    if (navigator.appVersion.indexOf("X11") != -1) OSName = "UNIX";
+    if (navigator.appVersion.indexOf("Linux") != -1) OSName = "Linux";
+
+    let raw = navigator.userAgent.match(/Chrom(e|ium)\/([0-9]+)\./);
+    let chromeVersion = raw ? parseInt(raw[2], 10) : false;
+
 
     if (!this.quotes) {
       chrome.notifications.create("noPlaylistSelected", {
@@ -133,12 +142,12 @@ export class PlayerService {
 
         let canvas = document.createElement('canvas');
         const text = this.quotes[this.state.count % this.quotes.length].quote;
-        this.drawText(canvas, text).then((paintedCanvas) => {
+        if (OSName === 'MacOS' && chromeVersion > 58) {
           var options = {
             type: "image",
             title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
-            message: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
-            imageUrl: paintedCanvas.toDataURL('image/png'),
+            message: text,
+            contextMessage: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
             buttons: [
               { title: "Next Quote" },
               { title: "Stop" }
@@ -149,15 +158,32 @@ export class PlayerService {
           try { chrome.notifications.create("quote" + this.notificationId, options) }
           catch (error) { console.log('Could not create notification: ' + error) }
           this.state.count++;
-        });
-
+        } else {
+           this.drawText(canvas, text).then((paintedCanvas) => {
+            var options = {
+              type: "image",
+              title: "A quote by " + this.quotes[this.state.count % this.quotes.length].author,
+              message: "Source: " + (this.quotes[this.state.count % this.quotes.length].source ? this.quotes[this.state.count % this.quotes.length].source : 'Unknown'),
+              imageUrl: paintedCanvas.toDataURL('image/png'),
+              buttons: [
+                { title: "Next Quote" },
+                { title: "Stop" }
+              ],
+              requireInteraction: true,
+              iconUrl: "../iconb.png"
+            };
+            try { chrome.notifications.create("quote" + this.notificationId, options) }
+            catch (error) { console.log('Could not create notification: ' + error) }
+            this.state.count++;
+          });
+        }
       }, time);
       return true
     }
 
   }
 
-  private drawText(canvas, text):Promise<any> {
+  private drawText(canvas, text): Promise<any> {
     /*not Unit Tested*/
 
     let context = canvas.getContext("2d");
@@ -173,7 +199,7 @@ export class PlayerService {
     return this.wrapText(context, text, x, y, maxWidth, canvas);
   }
 
-  private wrapText(context, text, x, y, maxWidth,canvas) {
+  private wrapText(context, text, x, y, maxWidth, canvas) {
     /*not Unit Tested*/
     return new Promise((resolve) => {
 
@@ -213,7 +239,7 @@ export class PlayerService {
         context.fillText(line, x, y);
         resolve(canvas);
       }
-      
+
     });
   }
 
