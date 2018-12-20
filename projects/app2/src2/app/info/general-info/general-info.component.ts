@@ -53,10 +53,11 @@ export class GeneralInfoComponent implements OnInit {
           item = this.contentItems.find((value) => {
             return value.nativeElement.localName === 'app-popup-info';
           });
+          this.scrollTo(item);
           break;
         }
       }
-      this.scrollTo(item);
+ 
     });
     
 

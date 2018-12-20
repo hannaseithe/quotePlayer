@@ -11,6 +11,7 @@ export class PlayerService {
   private notificationId = 0;
   private quotes: Array<Quote> = null;
   private timeoutId: number;
+  private timerRunning: boolean = false;
 
   private state = {
     set count(x) {
@@ -51,7 +52,7 @@ export class PlayerService {
       if (id === "quote" + that.notificationId) {
         if (buttonIndex === 0) {
           chrome.notifications.clear(id);
-          that.startTimer(that.state.time);
+          if (!that.timerRunning) that.startTimer(that.state.time);
         } else if (buttonIndex === 1) {
           that.stopInterval();
           /* Icon muss auch von hier gesetzt werden, da Popup geschlossen sein kann*/
@@ -61,7 +62,7 @@ export class PlayerService {
     });
 
     chrome.notifications.onClosed.addListener(function (id) {
-      if (id === "quote" + that.notificationId) {
+      if (id === "quote" + that.notificationId && !this.timerRunning) {
         that.startTimer(that.state.time);
       }
     });
@@ -110,6 +111,7 @@ export class PlayerService {
 
 
   private startTimer(time) {
+    
     let OSName = "Unknown OS";
     if (navigator.appVersion.indexOf("Win") != -1) OSName = "Windows";
     if (navigator.appVersion.indexOf("Mac") != -1) OSName = "MacOS";
@@ -137,6 +139,7 @@ export class PlayerService {
       });
       return false;
     } else {
+      this.timerRunning = true;
       //VS Code throws a TS Error here, but that is a VSC Bug
       this.timeoutId = setTimeout(() => {
 
@@ -175,8 +178,11 @@ export class PlayerService {
             try { chrome.notifications.create("quote" + this.notificationId, options) }
             catch (error) { console.error('Could not create notification: ' + error) }
             this.state.count++;
+            
+
           });
         }
+        this.timerRunning = false;
       }, time);
       return true
     }
@@ -218,7 +224,7 @@ export class PlayerService {
       var img = new Image();
       img.src = "../iconb-run.png";
 
-      img.onload = function () {
+      img.onload =  () => {
         context.drawImage(img, x / 2, y / 2);
 
         point = Math.ceil(300 / (words.length + 4)) + 12;
